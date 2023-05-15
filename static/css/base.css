@@ -1,0 +1,19 @@
+th, td{
+    text-align: center;
+    vertical-align: middle;
+    box-shadow: none !important;
+}
+
+@media (max-width: 723px) {
+    .home_title {
+        font-size: 20px;
+    }
+    .home_title_div {
+        text-align: center;
+        padding: 0px 10px;
+    }
+    .home_subtitle {
+        font-size: 16px;
+        padding: 0px 10px !important;
+    }
+}

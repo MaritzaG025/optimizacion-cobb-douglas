@@ -1,0 +1,38 @@
+{% extends './base.html' %} {% block title %} Información {% endblock %} {%
+block body %}
+<div class="container">
+    <h1>información de la función con tabla de ejemplos de la app</h1>
+</div>  
+  <!-- {% for exp in exponentes %}
+        <h3>{{exp}}</h3>
+    {% endfor %} -->
+  <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalFuncion" type="button" >
+        delete file
+    </button>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- <script src="{{ url_for('static', filename='js/modal.js') }}"></script> -->
+{% endblock %}
