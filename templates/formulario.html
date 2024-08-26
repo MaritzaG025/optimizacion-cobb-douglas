@@ -9,8 +9,8 @@ body %}
           >Maximizar o Minimizar?</label
         >
         <select id="inputState" class="form-select">
-          <option selected>Maximizar</option>
-          <option>Minimizar</option>
+          <option selected value="maximizar">Maximizar</option>
+          <option value="minimizar">Minimizar</option>
         </select>
       </div>
       <div class="col-md-5">
@@ -24,8 +24,8 @@ body %}
         ></select>
       </div>
       <div class="col-md-3">
-        <label for="inputCity" class="form-label">Tecnología</label>
-        <input type="text" class="form-control" id="inputTecnologia"/>
+        <label for="inputTecnologia" class="form-label">Tecnología</label>
+        <input type="text" class="form-control" id="inputTecnologia" onkeypress="return soloNumeros(event);"/>
       </div>
       <div class="col-12">
         <div class="form-check">
@@ -35,7 +35,7 @@ body %}
             id="RestriccionCheck"
             onchange="cantidadExponente('inputDimension')"
           />
-          <label class="form-check-label" for="gridCheck">
+          <label class="form-check-label" for="RestriccionCheck">
             Función con restricción presupuestal
           </label>
         </div>
@@ -113,13 +113,13 @@ body %}
           class="btn btn-info btn-opacity-75"
           data-bs-toggle="modal"
           data-bs-target="#modalOptimizar"
+          id="formulario-optimizacion"
         >
           Optimizar
         </button>
-        <!-- Button trigger modal -->
 
         <!-- Modal -->
-        <div
+        <!-- <div
           class="modal fade"
           id="modalOptimizar"
           aria-labelledby="modalOptimizarLabel"
@@ -140,7 +140,9 @@ body %}
                   aria-label="Close"
                 ></button>
               </div>
-              <div class="modal-body"></div>
+              <div class="modal-body">
+                <h1>Body</h1>
+              </div>
               <div class="modal-footer">
                 <button
                   type="button"
@@ -155,11 +157,12 @@ body %}
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </form>
   </div>
 </div>
 
 <script src="{{ url_for('static', filename='js/formulario.js') }}"></script>
+
 {% endblock %}

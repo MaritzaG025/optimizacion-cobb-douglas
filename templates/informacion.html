@@ -1,38 +1,274 @@
 {% extends './base.html' %} {% block title %} Información {% endblock %} {%
 block body %}
-<div class="container">
-    <h1>información de la función con tabla de ejemplos de la app</h1>
-</div>  
-  <!-- {% for exp in exponentes %}
-        <h3>{{exp}}</h3>
-    {% endfor %} -->
-  <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalFuncion" type="button" >
-        delete file
-    </button>
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Launch demo modal
-  </button>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
+<div>
+  <h1>Funciones de tipo Cobb-Douglas</h1>
+  <span class="my-10">
+    Una función de tipo Cobb-Douglas (CD) es una función matemática multivariada comúnmente utilizada para
+    expresar funciones de utilidad y/o producción, dado que cumple con las condiciones que se le exigen tanto
+    a las curvas de indiferencia, de la teoría del consumo, como a las curvas isocuantas de la teoría de la
+    producción (convexidad, decrecimiento, continuidad, entre otros) . Una función de tipo CD está definida
+    por:
+  </span>
+  <p>
+    \begin{equation*}
+    f(x) = f(x_{1}, ..., x_{n}) = A \prod_{i=1}^{n} x_{i}^{\alpha_{i}}
+    \end{equation*}
+  </p>
+  <span>
+    con A > 0, donde A representa la técnología de la función y los valores de f representan:
+  </span>
+  <ul class="my-3">
+    <li>
+      cantidad producida, cuando se usan \(x_{i} \) unidades del i-ésimo insumo.
+    </li>
+    <li>
+      niveles de utilidad, cuando se usan \(x_{i} \) unidades de i-ésimo consumo de ciertos bienes.
+    </li>
+    <li>
+      costos de producción, cuando \(x_{i} \) representa el precio del i-ésimo insumo de producción.
+    </li>
+    <li>
+      gasto, cuando \(x_{i} \) representa el precio del i-ésimo bien consumido.
+    </li>
+  </ul>
+
+  <span>Propiedades de una función de tipo CD:</span>
+
+  <ul class="my-3">
+    <li>
+      Dominio \(\mathbb{R}^{n}_{+}\)
+    </li>
+    <li>
+      Es homogénea de grado \(\sum_{i=1}^{n} \alpha_{i}\). En efecto,
+      \[
+      f(\lambda x_{1}, ..., \lambda x_{n})
+      = A \prod_{i=1}^{n} (\lambda x_{i})^{\alpha_{i}}
+      = A \lambda^{\alpha_{1}+...+\alpha_{n}} \prod_{i=1}^{n} x_{i}^{\alpha_{i}}
+      = \lambda^{\sum_{i=1}^{n} \alpha_{i}} \biggl( A\prod_{i=1}^{n} x_{i}^{\alpha_{i}} \biggr)
+      = \lambda^{\sum_{i=1}^{n}} f(x)
+      \]
+    </li>
+    <li>
+      Su comportamiento marginal se deduce de sus derivadas parciales.
+      \[
+      \frac{\partial f}{\partial x_{i}}
+      = A x_{1}^{\alpha_{1}} \cdots \alpha_{i}x_{i}^{\alpha_{i} - 1} \cdots x_{n}^{\alpha_{n}}
+      = \frac{\alpha_{i}Ax_{1}^{\alpha_{1}}\cdots x_{i}^{\alpha_{i}} \cdots x_{n}^{\alpha_{n}}}{x_{i}}
+      = \alpha_{i} \frac{f(x)}{x_{i}}
+      \]
+      \[
+      \frac{\partial^{2} f}{\partial x_{i}^{2}}
+      = A x_{1}^{\alpha_{1}} \cdots \alpha_{i}(\alpha_{i} - 1) x_{i}^{\alpha_{i} - 2} \cdots x_{n}^{\alpha_{n}}
+      = \frac{\alpha_{i}(\alpha_{i} - 1) A x_{1}^{\alpha_{1}} \cdots x_{i}^{\alpha_{i}} \cdots
+      x_{n}^{\alpha_{n}}}{x_{i}^{2}}
+      = \alpha_{i} (\alpha_{i} - 1) \frac{f(x)}{x_{i}^{2}}
+      \]
+      \[ \cdots \]
+      \[
+      \frac{\partial^{k} f}{\partial x_{i}^{k}}
+      = \frac{\alpha_{i}(\alpha_{i} - 1) \cdots (\alpha_{i} - (k - 1)) A x_{1}^{\alpha_{1}} \cdots x_{i}^{\alpha_{i}}
+      \cdots x_{n}^{\alpha_{n}}}{x_{i}^{k}}
+      = \frac{f(x)}{x_{i}^{k}} \prod_{j = 0}^{k - 1}(\alpha_{i} - j)
+      = \frac{f(x)}{x_{i}^{k}} \prod_{j = 1}^{k}(\alpha_{i} - j + 1)
+      \]
+    </li>
+    <li>
+      Los exponentes de cada variable representan la elasticidad de la función respectivamente. En efecto, la
+      aproximación de la elasticidad de una función de tipo CD con respecto a la i-ésima variable es:
+      \[E_{f_{x_{i}}}
+      = \frac{\triangle \% f}{\triangle \% x_{i}}
+      = \frac{\frac{\triangle f}{f}}{\frac{\triangle x_{i}}{x_{i}}}
+      = \frac{\triangle f}{\triangle x_{i}} \frac{x_{i}}{f} \approx \frac{\partial f}{\partial x_{i}} \frac{x_{i}}{f}
+      = \alpha_{i} \frac{f}{x_{i}} \frac{x_{i}}{f}
+      = \alpha_{i}
+      \]
+    </li>
+  </ul>
+
+  <div class="col-md-12">
+    <h4 class="py-3">Tener en cuenta</h4>
+    <ul>
+      <li>
+        Para optimizar funciones CD, es esencial identificar primero los puntos críticos mediante la derivación
+        de la función y la resolución de las ecuaciones del gradiente.
+      </li>
+      <li>
+        Para una función CD que representa costos o gastos y no tiene restricciones adicionales, no hay un mínimo o
+        máximo local, en el sentido de funciones no lineales. La optimización de funciones lineales suele depender de
+        los límites impuestos por restricciones externas. En ausencia de restricciones, la función se comporta de manera
+        predecible y lineal sin puntos críticos que analizar.
+        <br> <br>
+        Para optimizar la función, se necesita encontrar los puntos críticos con respecto a cada variable \(x_{i} \)
+        para obtener el gradiente. Obteniendo que:
+
+        \[
+        \frac{\partial f}{\partial x_{i}}
+        = \alpha_{i}
+        \]
+
+        Ahora se iguala el gradiente a cero y se resuelve las ecuaciones para encontrar los puntos críticos. Sin
+        embargo, en el caso de funciones lineales como las de costos o gasto, el gradiente no se iguala a cero, ya que
+        la función es lineal y no tiene puntos críticos.
+        <br> <br>
+        Para minimización de una función lineal de costos(gastos), el costo(gasto) total puede reducirse al mínimo
+        cuando
+        se usan las cantidades mínimas de insumos(bienes) que satisfacen cualquier restricción del problema. En ausencia
+        de restricciones, el costo(gasto) sigue siendo una función lineal sin un mínimo local, ya que no hay puntos
+        críticos.
+        <br> <br>
+        Para maximización de una función lineal de gasto(costo), el gasto(costo) puede aumentar indefinidamente a medida
+        que aumentan las cantidades de los bienes(insumos), dado que la función es lineal.
+
+
+      </li>
+      <li>
+        Analizar la Hessiana de la función es útil, ya que proporciona información crucial sobre la curvatura de la
+        función en esos puntos críticos. Este análisis permite determinar la naturaleza de la Hessiana, es decir, si es
+        definida positiva, definida negativa, semidefinida positiva o semidefinida negativa.
+      </li>
+      <li>
+        Teniendo definida la Hessiana se puede evaluar si la función es convexa o cóncava en la región de interés y,
+        esta información facilita una mejor optimización y agiliza el proceso de encontrar el óptimo.
+      </li>
+    </ul>
   </div>
 
+  <div class="col-md-12">
+    <h4 class="py-3">Lista de funciones de tipo Cobb-Douglas</h4>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Cantidad de variables</th>
+            <th>Función Cobb Douglas</th>
+            <th>Función de costos</th>
+            <th>Optimización sin restricciones</th>
+            <th>Optimización con restricción presupuestal</th>
+          </tr>
+        </thead>
+        <tbody id="optimizacionCobbDouglas">
+          {% for exp in exponentes %}
+          <tr>
+            <td>{{exp}}</td>
+            <td>
+              <p>
+                \begin{equation*}
+                f(x) = A
+                {% for index in exponentes %}
+                {% if index <= exp %} x_{{index}}^{\alpha_{{index}}} {% endif %} {% endfor %} \end{equation*} </p>
+            </td>
+            <td>
+              \[ c(x) =
+              {% for index in exponentes %}
+              {% if index < exp %} w_{{index}}x_{{index}} + {% endif %} {% if index==exp %} w_{{index}}x_{{index}}
+                {%endif %} {% endfor %} \] </td>
+            <td>
+              <div class="col-12 d-flex justify-content-center">
+                <button type="button" class="btn btn-info btn-opacity-75" data-bs-toggle="modal"
+                  data-bs-target="#modalOptimizacion" id="formulario-optimizacion"
+                  onclick="optimizacion_exp_sin('{{exp}}')">
+                  Optimizar
+                </button>
+              </div>
+            </td>
+            <td>
+              <div class="col-12 d-flex justify-content-center">
+                <button type="button" class="btn btn-info btn-opacity-75" data-bs-toggle="modal"
+                  data-bs-target="#modalOptimizacion" id="formulario-optimizacion_R"
+                  onclick="optimizacion_exp_con('{{exp}}')">
+                  Optimizar
+                </button>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td>n</td>
+            <td>
+              <p>
+                \begin{equation*}
+                f(x) = f(x_{1}, ..., x_{n}) = A \prod_{i=1}^{n} x_{i}^{\alpha_{i}}
+                \end{equation*}
+              </p>
+            </td>
+            <td>\[ C = \sum_{i=1}^{n} w_{i}x_{i}\]</td>
+            <td>
+              <div class="col-12 d-flex justify-content-center">
+                <button type="button" class="btn btn-info btn-opacity-75" data-bs-toggle="modal"
+                  data-bs-target="#modalOptimizacion" id="formulario-optimizacion" onclick="optimizacion_exp_sin('n')">
+                  Optimizar
+                </button>
+              </div>
+            </td>
+            <td>
+              <div class="col-12 d-flex justify-content-center">
+                <button type="button" class="btn btn-info btn-opacity-75" data-bs-toggle="modal"
+                  data-bs-target="#modalOptimizacion" id="formulario-optimizacion_R"
+                  onclick="optimizacion_exp_con('n')">
+                  Optimizar
+                </button>
+              </div>
+            </td>
+            <td>
+              <div class="col-12 d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary btn-opacity-75" data-bs-toggle="modal"
+                  data-bs-target="#modalEjemplo" id="formulario-ejemplo" disabled>
+                  ver
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
-<!-- <script src="{{ url_for('static', filename='js/modal.js') }}"></script> -->
+
+<!-- Modal de optimización -->
+<div class="modal fade" id="modalOptimizacion" aria-labelledby="modalOptimizarLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-fullscreen modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalOptimizarLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="body_modalOptimizacion">
+        <div id="text_func_opt_CD"></div>
+        <div class="w-full d-flex justify-content-center" id="funcion_optimizar_CD"></div>
+        <br>
+        <div id="text_ini_deri_parc_CD"></div>
+        <div class="w-full d-flex justify-content-center" id="funcion_deri_parc_CD"></div>
+        <br>
+        <p>
+          Ahora debemos encontrar los puntos críticos, esto se realiza igualando las derivadas parciales a cero. Así,
+        </p>
+        <div class="w-full d-flex justify-content-center" id="funcion_deri_parc_0_CD"></div>
+        <!-- <p>La función de costos asociada se define como:</p>
+        <div class="w-full d-flex justify-content-center" id="funcion_costos_CD"></div>
+        <br>
+        <p>
+          donde \(w_{i} \) es el costo por unidad del i-ésimo insumo o bien. ,
+          mientras se considera la función de costos \(c(x) \)
+        </p> -->
+
+        <br>
+        <p>Para \(A \neq 0 \) y cada \(\alpha_{i} \neq 0\).</p>
+        <br>
+        <div id="funcion_hessiana_CD"></div> <br>
+        <div id="maximizar_CD"></div> <br>
+        <div id="minimizar_CD"></div> <br>
+        <div id="conclusion_CD"></div> <br>
+        <!-- <div id="hessiana"></div> -->
+
+      </div>
+      <div class="modal-footer"></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/optimizacion_Sin_R.js') }}"></script>
+<script src="{{ url_for('static', filename='js/optimizacion_Con_R.js') }}"></script>
+
 {% endblock %}

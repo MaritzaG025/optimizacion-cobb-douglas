@@ -1,0 +1,92 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{matematicasud}[2020/07/31 Paquete matematicas udistrital]
+\LoadClass[12pt, titlepage]{article}
+\RequirePackage{xcolor, amssymb, amsmath, amsthm, fancyhdr, hyperref, graphicx, tikz, pgfplots, pgf, tkz-euclide, enumerate, float}
+
+%%CONFIGURACIÓN DE PGF Y TIKZ
+\pgfplotsset{width=7cm,compat=1.8}
+%\usetkzobj{all}
+%\usetikzlibrary{calc, patterns, angles, quotes}
+\usepgfplotslibrary{polar}
+
+%%LAS IMAGENES DEBEN ESTAR VECTORIZADAS EN FORMATO PDF
+\DeclareGraphicsExtensions{.pdf}
+
+%% ESTILOS DE TEOREMAS
+\theoremstyle{plain}
+\newtheorem{teorema}{Teorema}
+\newtheorem*{teorema*}{Teorema}
+\newtheorem{lema}{Lema}
+\newtheorem{proposicion}{Proposición}
+\newtheorem{corolario}{Corolario}
+\theoremstyle{definition}
+\newtheorem{definicion}{Definición}
+\theoremstyle{remark}
+\newtheorem{nota}{Nota}
+\newtheorem{ejercicio}{Ejercicio}
+
+%% IDIOMAS
+\usepackage[spanish]{babel}
+
+%% MÁRGENES
+\usepackage{geometry}
+\geometry{letterpaper,tmargin=4cm,bmargin=4cm,lmargin=2cm,
+	rmargin=2cm, headheight=1cm,headsep=1cm,footskip=2cm}
+
+%% FUENTES
+\usepackage{kpfonts,baskervald}
+
+
+
+
+\usepackage{etoolbox}
+\usepackage{hyperref}
+\patchcmd{\abstract}{\null\vfil}{}{}{}
+
+\AtBeginDocument{
+\setlength{\parskip}{\medskipamount}
+\setlength{\parindent}{0pt}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{1pt}
+\fancyhf{}
+\fancyhead{}
+\chead{\leftmark}
+\cfoot{Página \thepage}
+}
+
+
+\begin{document}
+Para una firma que usa n insumos $x_{1}, ..., x_{n}$ a precios $w_{1}, ..., w_{n}$ por unidad, respectivamente, el costo promedio es:
+
+\[ C = \frac{\sum_{i=1}^{n} w_{i}x_{i} }{f(x_{1}, ..., x_{n})}\]
+
+donde $f = f(x_{1}, ..., x_{n})$  es la función de producción. Las condiciones que se deben satisfacer para minimizar el costo promedio son:
+
+\[ \frac{\partial C}{\partial x_{i}} = \frac{w_{i}f(x_{1}, ..., x_{n}) - f_{x_{i}}(x_{1}, ..., x_{n}) \sum_{i=1}^{n} w_{i}x_{i}}{(f(x_{1}, ..., x_{n}))^{2}} = 0 \]
+\\
+para todo $i= 1, ..., n$.  Esta ecuación equivale a:
+
+\[ w_{i}f(x_{1}, ..., x_{n}) - f_{x_{i}}(x_{1}, ..., x_{n}) \sum_{i=1}^{n} w_{i}x_{i} = 0 \]
+
+luego de transponer los términos negativos obtenemos que: 
+
+\[ w_{i}f(x_{1}, ..., x_{n}) = f_{x_{i}}(x_{1}, ..., x_{n}) \sum_{i=1}^{n} w_{i}x_{i} \]
+
+para $i = 1, ..., n$. Ahora bien , fijemos $i$ y realicemos el cociente entre las expresiones. Entonces, 
+
+\[ \frac{w_{i}f(x_{1}, ..., x_{n})}{w_{1}f(x_{1}, ..., x_{n})} = \frac{f_{x_{i}}(x_{1}, ..., x_{n}) \sum_{j=1}^{n} w_{j}x_{j}}{f_{x_{1}}(x_{1}, ..., x_{n}) \sum_{j=1}^{n} w_{j}x_{j}}\]
+\[\cdots\]
+\[ \frac{w_{i}f(x_{1}, ..., x_{n})}{w_{i-1}f(x_{1}, ..., x_{n})} = \frac{f_{x_{i}}(x_{1}, ..., x_{n}) \sum_{j=1}^{n} w_{j}x_{j}}{f_{x_{i-1}}(x_{1}, ..., x_{n}) \sum_{j=1}^{n} w_{j}x_{j}}\]
+\[ \frac{w_{i}f(x_{1}, ..., x_{n})}{w_{i+1}f(x_{1}, ..., x_{n})} = \frac{f_{x_{i}}(x_{1}, ..., x_{n}) \sum_{j=1}^{n} w_{j}x_{j}}{f_{x_{i+1}}(x_{1}, ..., x_{n}) \sum_{j=1}^{n} w_{j}x_{j}}\]
+\[\cdots\]
+\[ \frac{w_{i}f(x_{1}, ..., x_{n})}{w_{n}f(x_{1}, ..., x_{n})} = \frac{f_{x_{i}}(x_{1}, ..., x_{n}) \sum_{j=1}^{n} w_{j}x_{j}}{f_{x_{n}}(x_{1}, ..., x_{n}) \sum_{j=1}^{n} w_{j}x_{j}}\]
+
+simplificando obtenemos que,
+
+\[\frac{w_{i}}{w_{1}} = \frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{1}}(x_{1}, ..., x_{n})}, \ \cdots, \ \frac{w_{i}}{w_{i-1}} = \frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i-1}}(x_{1}, ..., x_{n})}, \ \frac{w_{i}}{w_{i+1}} = \frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i+1}}(x_{1}, ..., x_{n})}, \ \cdots, \ \frac{w_{i}}{w_{n}} = \frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{n}}(x_{1}, ..., x_{n})}\]
+
+para cada $i = 1, ..., n$. Entonces, las cantidades de insumos que el productor debe usar para minimizar su costo promedio son aquellas para las cuales la relación entre las productividades marginales es igual a la relación entre los precios de los insumos de producción. Así, si el productor vende su producto a P por unidad, los beneficios están dados por:
+
+\[ \Pi(x_{1}, ..., x_{n}) = Pf(x_{1}, ..., x_{n}) - \sum_{i=1}^{n} w_{i}x_{i} \]
+\end{document}
