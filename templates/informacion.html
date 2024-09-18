@@ -1,6 +1,6 @@
 {% extends './base.html' %} {% block title %} Información {% endblock %} {%
 block body %}
-<div>
+<div class="mx-5">
   <h1>Funciones de tipo Cobb-Douglas</h1>
   <span class="my-10">
     Una función de tipo Cobb-Douglas (CD) es una función matemática multivariada comúnmente utilizada para
@@ -31,7 +31,17 @@ block body %}
       gasto, cuando \(x_{i} \) representa el precio del i-ésimo bien consumido.
     </li>
   </ul>
-
+  <div class="plot-container">
+    <div class="plot">
+      <img src="data:image/png;base64,{{ plot_image }}" alt="Gráfico de Cobb-Douglas">
+      <div class="plot-title">
+        <p class="letra_img">
+          Figura 1: Gráficos de la función Cobb-Douglas \(f(x_1, x_2, x_3) = x_1^{0.3} \cdot x_2^{0.4} \cdot x_3^{0.3} \). A la
+          izquierda, con \( x_3 = 1 - x_1 - x_2 \); a la derecha, con \(x_3 = 2 \).
+        </p>
+      </div>
+    </div>
+  </div>
   <span>Propiedades de una función de tipo CD:</span>
 
   <ul class="my-3">
@@ -39,54 +49,120 @@ block body %}
       Dominio \(\mathbb{R}^{n}_{+}\)
     </li>
     <li>
-      Es homogénea de grado \(\sum_{i=1}^{n} \alpha_{i}\). En efecto,
-      \[
-      f(\lambda x_{1}, ..., \lambda x_{n})
-      = A \prod_{i=1}^{n} (\lambda x_{i})^{\alpha_{i}}
-      = A \lambda^{\alpha_{1}+...+\alpha_{n}} \prod_{i=1}^{n} x_{i}^{\alpha_{i}}
-      = \lambda^{\sum_{i=1}^{n} \alpha_{i}} \biggl( A\prod_{i=1}^{n} x_{i}^{\alpha_{i}} \biggr)
-      = \lambda^{\sum_{i=1}^{n}} f(x)
-      \]
+      <p class="hidden_pc">
+        Es homogénea de grado \(\sum_{i=1}^{n} \alpha_{i}\). En efecto,
+        \[
+        f(\lambda x_{1}, ..., \lambda x_{n})
+        = A \prod_{i=1}^{n} (\lambda x_{i})^{\alpha_{i}}
+        \]
+        \[
+        f(\lambda x_{1}, ..., \lambda x_{n})
+        = A \lambda^{\alpha_{1}+...+\alpha_{n}} \prod_{i=1}^{n} x_{i}^{\alpha_{i}}
+        \]
+        \[
+        f(\lambda x_{1}, ..., \lambda x_{n})
+        = \lambda^{\sum_{i=1}^{n} \alpha_{i}} \biggl( A\prod_{i=1}^{n} x_{i}^{\alpha_{i}} \biggr)
+        \]
+        \[
+        f(\lambda x_{1}, ..., \lambda x_{n})
+        = \lambda^{\sum_{i=1}^{n} \alpha_{i}} f(x)
+        \]
+      </p>
+      <p class="hidden_phone">
+        Es homogénea de grado \(\sum_{i=1}^{n} \alpha_{i}\). En efecto,
+
+        \[
+        f(\lambda x_{1}, ..., \lambda x_{n})
+        = A \prod_{i=1}^{n} (\lambda x_{i})^{\alpha_{i}}
+        = A \lambda^{\alpha_{1}+...+\alpha_{n}} \prod_{i=1}^{n} x_{i}^{\alpha_{i}}
+        = \lambda^{\sum_{i=1}^{n} \alpha_{i}} \biggl( A\prod_{i=1}^{n} x_{i}^{\alpha_{i}} \biggr)
+        = \lambda^{\sum_{i=1}^{n} \alpha_{i}} f(x)
+        \]
+      </p>
     </li>
     <li>
-      Su comportamiento marginal se deduce de sus derivadas parciales.
-      \[
-      \frac{\partial f}{\partial x_{i}}
-      = A x_{1}^{\alpha_{1}} \cdots \alpha_{i}x_{i}^{\alpha_{i} - 1} \cdots x_{n}^{\alpha_{n}}
-      = \frac{\alpha_{i}Ax_{1}^{\alpha_{1}}\cdots x_{i}^{\alpha_{i}} \cdots x_{n}^{\alpha_{n}}}{x_{i}}
-      = \alpha_{i} \frac{f(x)}{x_{i}}
-      \]
-      \[
-      \frac{\partial^{2} f}{\partial x_{i}^{2}}
-      = A x_{1}^{\alpha_{1}} \cdots \alpha_{i}(\alpha_{i} - 1) x_{i}^{\alpha_{i} - 2} \cdots x_{n}^{\alpha_{n}}
-      = \frac{\alpha_{i}(\alpha_{i} - 1) A x_{1}^{\alpha_{1}} \cdots x_{i}^{\alpha_{i}} \cdots
-      x_{n}^{\alpha_{n}}}{x_{i}^{2}}
-      = \alpha_{i} (\alpha_{i} - 1) \frac{f(x)}{x_{i}^{2}}
-      \]
-      \[ \cdots \]
-      \[
-      \frac{\partial^{k} f}{\partial x_{i}^{k}}
-      = \frac{\alpha_{i}(\alpha_{i} - 1) \cdots (\alpha_{i} - (k - 1)) A x_{1}^{\alpha_{1}} \cdots x_{i}^{\alpha_{i}}
-      \cdots x_{n}^{\alpha_{n}}}{x_{i}^{k}}
-      = \frac{f(x)}{x_{i}^{k}} \prod_{j = 0}^{k - 1}(\alpha_{i} - j)
-      = \frac{f(x)}{x_{i}^{k}} \prod_{j = 1}^{k}(\alpha_{i} - j + 1)
-      \]
+      <p class="hidden_pc">
+        Su comportamiento marginal se deduce de sus derivadas parciales.
+        \[
+        \frac{\partial f}{\partial x_{i}}
+        = \frac{\alpha_{i}Ax_{1}^{\alpha_{1}}\cdots x_{i}^{\alpha_{i}} \cdots x_{n}^{\alpha_{n}}}{x_{i}}
+        = \alpha_{i} \frac{f(x)}{x_{i}}
+        \]
+        \[
+        \frac{\partial^{2} f}{\partial x_{i}^{2}}
+        = \alpha_{i} (\alpha_{i} - 1) \frac{f(x)}{x_{i}^{2}}
+        \]
+        \[ \cdots \]
+        \[
+        \frac{\partial^{k} f}{\partial x_{i}^{k}}
+        = \frac{f(x)}{x_{i}^{k}} \prod_{j = 1}^{k}(\alpha_{i} - j + 1)
+        \]
+      </p>
+      <p class="hidden_phone">
+        Su comportamiento marginal se deduce de sus derivadas parciales.
+        \[
+        \frac{\partial f}{\partial x_{i}}
+        = A x_{1}^{\alpha_{1}} \cdots \alpha_{i}x_{i}^{\alpha_{i} - 1} \cdots x_{n}^{\alpha_{n}}
+        = \frac{\alpha_{i}Ax_{1}^{\alpha_{1}}\cdots x_{i}^{\alpha_{i}} \cdots x_{n}^{\alpha_{n}}}{x_{i}}
+        = \alpha_{i} \frac{f(x)}{x_{i}}
+        \]
+        \[
+        \frac{\partial^{2} f}{\partial x_{i}^{2}}
+        = A x_{1}^{\alpha_{1}} \cdots \alpha_{i}(\alpha_{i} - 1) x_{i}^{\alpha_{i} - 2} \cdots x_{n}^{\alpha_{n}}
+        = \frac{\alpha_{i}(\alpha_{i} - 1) A x_{1}^{\alpha_{1}} \cdots x_{i}^{\alpha_{i}} \cdots
+        x_{n}^{\alpha_{n}}}{x_{i}^{2}}
+        = \alpha_{i} (\alpha_{i} - 1) \frac{f(x)}{x_{i}^{2}}
+        \]
+        \[ \cdots \]
+        \[
+        \frac{\partial^{k} f}{\partial x_{i}^{k}}
+        = \frac{\alpha_{i}(\alpha_{i} - 1) \cdots (\alpha_{i} - (k - 1)) A x_{1}^{\alpha_{1}} \cdots x_{i}^{\alpha_{i}}
+        \cdots x_{n}^{\alpha_{n}}}{x_{i}^{k}}
+        = \frac{f(x)}{x_{i}^{k}} \prod_{j = 0}^{k - 1}(\alpha_{i} - j)
+        = \frac{f(x)}{x_{i}^{k}} \prod_{j = 1}^{k}(\alpha_{i} - j + 1)
+        \]
+      </p>
+      <div class="figure-container">
+        <div class="figure">
+          <img src="data:image/png;base64,{{ plot_image_derv }}" alt="Curvas de nivel y derivadas parciales">
+          <div class="figure-title">
+            <p class="letra_img">Figura 2: Curvas de nivel y derivadas parciales de la función Cobb-Douglas</p>
+          </div>
+        </div>
+      </div>
     </li>
     <li>
-      Los exponentes de cada variable representan la elasticidad de la función respectivamente. En efecto, la
-      aproximación de la elasticidad de una función de tipo CD con respecto a la i-ésima variable es:
-      \[E_{f_{x_{i}}}
-      = \frac{\triangle \% f}{\triangle \% x_{i}}
-      = \frac{\frac{\triangle f}{f}}{\frac{\triangle x_{i}}{x_{i}}}
-      = \frac{\triangle f}{\triangle x_{i}} \frac{x_{i}}{f} \approx \frac{\partial f}{\partial x_{i}} \frac{x_{i}}{f}
-      = \alpha_{i} \frac{f}{x_{i}} \frac{x_{i}}{f}
-      = \alpha_{i}
-      \]
+      <p class="hidden_phone">
+        Los exponentes de cada variable representan la elasticidad de la función respectivamente. En efecto, la
+        aproximación de la elasticidad de una función de tipo CD con respecto a la i-ésima variable es:
+        \[E_{f_{x_{i}}}
+        = \frac{\triangle \% f}{\triangle \% x_{i}}
+        = \frac{\frac{\triangle f}{f}}{\frac{\triangle x_{i}}{x_{i}}}
+        = \frac{\triangle f}{\triangle x_{i}} \frac{x_{i}}{f} \approx \frac{\partial f}{\partial x_{i}} \frac{x_{i}}{f}
+        = \alpha_{i} \frac{f}{x_{i}} \frac{x_{i}}{f}
+        = \alpha_{i}
+        \]
+      </p>
+      <p class="hidden_pc">
+        Los exponentes de cada variable representan la elasticidad de la función respectivamente. En efecto, la
+        aproximación de la elasticidad de una función de tipo CD con respecto a la i-ésima variable es:
+        \[E_{f_{x_{i}}}
+        = \frac{\triangle \% f}{\triangle \% x_{i}}
+        \]
+        \[E_{f_{x_{i}}}
+        = \frac{\frac{\triangle f}{f}}{\frac{\triangle x_{i}}{x_{i}}}
+        \]
+        \[E_{f_{x_{i}}}
+        = \alpha_{i} \frac{f}{x_{i}} \frac{x_{i}}{f}
+        = \alpha_{i}
+        \]
+      </p>
     </li>
   </ul>
 
-  <div class="col-md-12">
-    <h4 class="py-3">Tener en cuenta</h4>
+  <!-- A TENER EN CUENTA DESCOMENTAR PERO LUEGO DE EVALUAR QUE COLOCAR -->
+  <!-- <div class="col-md-12">
+    <h4 class="py-3">A tener en cuenta</h4>
     <ul>
       <li>
         Para optimizar funciones CD, es esencial identificar primero los puntos críticos mediante la derivación
@@ -131,7 +207,7 @@ block body %}
         esta información facilita una mejor optimización y agiliza el proceso de encontrar el óptimo.
       </li>
     </ul>
-  </div>
+  </div> -->
 
   <div class="col-md-12">
     <h4 class="py-3">Lista de funciones de tipo Cobb-Douglas</h4>
@@ -209,14 +285,6 @@ block body %}
                 </button>
               </div>
             </td>
-            <td>
-              <div class="col-12 d-flex justify-content-center">
-                <button type="button" class="btn btn-secondary btn-opacity-75" data-bs-toggle="modal"
-                  data-bs-target="#modalEjemplo" id="formulario-ejemplo" disabled>
-                  ver
-                </button>
-              </div>
-            </td>
           </tr>
         </tbody>
       </table>
@@ -238,19 +306,6 @@ block body %}
         <br>
         <div id="text_ini_deri_parc_CD"></div>
         <div class="w-full d-flex justify-content-center" id="funcion_deri_parc_CD"></div>
-        <br>
-        <p>
-          Ahora debemos encontrar los puntos críticos, esto se realiza igualando las derivadas parciales a cero. Así,
-        </p>
-        <div class="w-full d-flex justify-content-center" id="funcion_deri_parc_0_CD"></div>
-        <!-- <p>La función de costos asociada se define como:</p>
-        <div class="w-full d-flex justify-content-center" id="funcion_costos_CD"></div>
-        <br>
-        <p>
-          donde \(w_{i} \) es el costo por unidad del i-ésimo insumo o bien. ,
-          mientras se considera la función de costos \(c(x) \)
-        </p> -->
-
         <br>
         <p>Para \(A \neq 0 \) y cada \(\alpha_{i} \neq 0\).</p>
         <br>

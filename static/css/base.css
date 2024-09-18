@@ -4,16 +4,89 @@ th, td{
     box-shadow: none !important;
 }
 
-@media (max-width: 723px) {
+html {
+    font-size: 0.75rem;
+}
+
+.letra_img{
+    font-size: 12px;
+}
+
+.plot-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.plot {
+    flex: 1 1 50%;
+    max-width: 80%;
+}
+.plot img {
+    width: 100%;
+    height: auto;
+}
+.plot-title {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.figure-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+.figure {
+    flex: 1 1 55%;
+    max-width: 65%;
+}
+.figure img {
+    width: 100%;
+    height: auto;
+}
+.figure-title {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.hidden_pc{
+    display: none;
+}
+
+.hidden_phone{
+    display: block;
+}
+
+@media (max-width: 724px) {
     .home_title {
-        font-size: 20px;
+        font-size: 16px;
     }
     .home_title_div {
         text-align: center;
         padding: 0px 10px;
     }
     .home_subtitle {
-        font-size: 16px;
+        font-size: 12px;
         padding: 0px 10px !important;
     }
+    .letra_img{
+        font-size: 8px;
+    }
+    .plot {
+        flex: 1 1 70%;
+        max-width: 70%;
+    }
+    .hidden_pc{
+        display: block;
+    }
+    .hidden_phone{
+        display: none;
+    }
 }
+
+@media (min-width: 1023px) {
+    html {
+        font-size: 1rem;
+    }
+}
+

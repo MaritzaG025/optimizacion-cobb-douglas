@@ -178,6 +178,7 @@ def calcular_cobb_douglas(A, n, exponentes):
     hessiana = calcular_hessiana(A, n, exponentes)
     menores_principales = calcular_menores_principales(A, n, exponentes)
     hessiana_evaluada, menores_evaluados = evaluar_en_puntos_criticos(A, n, exponentes)
+    # generar_graficos = generate_plots(A, n, exponentes)
     # hessiana_evaluada = evaluar_hessiana_en_puntos_criticos(A, n, exponentes)
     # menores_evaluados = calcular_menores_principales(A, n, exponentes)
     

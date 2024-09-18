@@ -119,9 +119,6 @@ function mostrarCobbDouglasSin(cant_variables, tecnologia_A, valor_exponentes, c
     puntosCriticosDiv.innerHTML = `\\[ ${punto_critico_CD_sin} \\]`;
     hessianaDiv.innerHTML = `\\[ H_{f}(x) = ${hessiana_CD_sin} \\]`;
     menores_principales_Div.innerHTML = contenido_men_prin;
-
-    // const hessianaDiv = document.getElementById('funcion_max_CD_sin');
-    // hessianaDiv.innerHTML = `\\[ ${derivadas_prueba} \\]`; 
     MathJax.typeset();
 }
 
@@ -256,9 +253,6 @@ function optimizacion_exp_sin(exponente) {
     const funcion_derivada_parcial_CD_sin = document.getElementById("funcion_deri_parc_CD");
     let inicio_deri_parc = ``;
 
-    const funcion_deri_parc_0_CD_sin = document.getElementById("funcion_deri_parc_0_CD");
-    let inicio_deri_parc_0 = ``;
-
     const funcion_hessiana_CD_sin = document.getElementById("funcion_hessiana_CD");
     let inicio_hessiana = `<strong>Matriz Hessiana - Analísis de convexidad y concavidad</strong> <br> <br><p>Para determinar 
     si los puntos críticos son máximos, mínimos o puntos de silla, se calcula la matriz Hessiana:</p>`;
@@ -275,9 +269,8 @@ function optimizacion_exp_sin(exponente) {
     const text_ini_deri_parc_CD_sin = document.getElementById("text_ini_deri_parc_CD");
     text_ini_deri_parc_CD_sin.innerHTML = `
         <p>
-            La optimización de la función CD sin restricciones implica encontrar los valores de \(x_{i} \) que maximizan o
-            minimizan la función \(f(x) \). Derivando con respecto a cada variable con respecto a cada variable \(x_{i} \)
-            para obtener el gradiente, obtenemos que:
+            La optimización de la función CD sin restricciones implica encontrar los valores de \\(x_{i} \\) que maximizan o
+            minimizan la función \\(f(x) \\). Derivando con respecto a cada variable \\(x_{i} \\) e igualando a cero, obtenemos que:
         </p>
     `;
 
@@ -304,10 +297,7 @@ function optimizacion_exp_sin(exponente) {
     for (let i = 1; i <= exponente; i++) {
         inicio_var += ` x_{${i}}^{\\alpha_{${i}}}`;
         inicio_deri_parc += `
-            \\frac{\\partial f}{\\partial x_{${i}}} = \\alpha_{${i}} \\frac{f(x)}{x_{${i}}} 
-        `;
-        inicio_deri_parc_0 += `
-            \\alpha_{${i}} \\frac{f(x)}{x_{${i}}}  = 0
+            \\frac{\\partial f}{\\partial x_{${i}}} = \\alpha_{${i}} \\frac{f(x)}{x_{${i}}} = 0
         `;
         deri_parc_costo += ` 
             \\[ \\frac{\\partial C}{\\partial x_{${i}}} = \\frac{w_{${i}}f(x) - f_{x_{${i}}}(${costo_suma})}{f^{2}(${var_list})} = 0 \\]
@@ -327,7 +317,6 @@ function optimizacion_exp_sin(exponente) {
             exponentes_list_0_1 += ' , ';
             exponentes_suma += ' + ';
             inicio_deri_parc += ', \\ \\ \\ \\ \\';
-            inicio_deri_parc_0 += ', \\ \\ \\ \\ \\';
             cant_insumo_costo += `
             \\frac{w_{${i}}}{w_{${i + 1}}} = \\frac{f_{x_${i}}}{f_{x_{${i + 1}}}}, \\ \\ \\ \\
             `;
@@ -393,8 +382,8 @@ function optimizacion_exp_sin(exponente) {
         case "1":
             funcion_optimizar_CD_sin.innerHTML = `\\(${inicio_var}\\)`;
             funcion_derivada_parcial_CD_sin.innerHTML = `\\(${inicio_deri_parc}\\)`;
-            funcion_deri_parc_0_CD_sin.innerHTML = `\\(${inicio_deri_parc_0}\\)`;
             inicio_hessiana += `
+                <br><div id="hessiana"></div><br>
                 <p>
                     Para la función CD con una sola variable, esto generalmente no tiene soluciones para \\( x_{1} \\) a menos que \\( A \\) o \\( \\alpha_{1} \\) sean cero. 
                     Se puede calcular la segunda derivada para entender la curvatura de la función. La segunda derivada parcial de \\( f(x) \\) con respecto a \\( x_{1} \\) es:
@@ -527,8 +516,13 @@ function optimizacion_exp_sin(exponente) {
                     \\]
                 </p>
                 <p>
-                    La segunda derivada es positiva (\\( 6 > 0 \\)), lo que indica que \\( x = 0 \\) es un punto mínimo local y dado que \\( x = 0 \\)
-                    está en el dominio permitido, \\( f(x) = 0 \\) es el valor mínimo de la función CD. 
+                    La segunda derivada es positiva (\\( 6 > 0 \\)) para todos los valores de \\( x \\), lo que indica que 
+                    la función es convexa en todo su dominio y, \\( x = 0 \\) es un punto mínimo global. Ahora bien, dado 
+                    que \\( x = 0 \\) está en el dominio permitido, \\( f(x) = 0 \\) es el valor mínimo de la función CD.
+                    Por lo tanto, la función ( \\( f(x) = 3{x^{2}} \\) ) se minimiza en \\( x = 0 \\).
+                </p>
+                <p>
+                    
                 </p>
             `;
 
@@ -538,6 +532,8 @@ function optimizacion_exp_sin(exponente) {
                     se puede minimizar la función en \\( x = 0, \\) mientras que maximizarla sin restricciones sería imposible ya que la función CD sigue creciendo.
                 </p>
             `;
+
+            obtenerHessiana(exponente);
 
             break;
         
@@ -549,12 +545,9 @@ function optimizacion_exp_sin(exponente) {
                             = A x_{1}^{\\alpha_{1}} \\cdots \\alpha_{i}x_{i}^{\\alpha_{i} - 1} \\cdots x_{n}^{\\alpha_{n}}
                             = \\frac{\\alpha_{i}Ax_{1}^{\\alpha_{1}}\\cdots x_{i}^{\\alpha_{i}} \\cdots x_{n}^{\\alpha_{n}}}{x_{i}}
                             = \\alpha_{i} \\frac{f(x)}{x_{i}}
+                            = 0
                             \\ \\ \\ \\forall \\ i = 1, ..., n
                         \\]
-                        
-                    `;
-                    funcion_deri_parc_0_CD_sin.innerHTML = `
-                        \\[ \\alpha_{i} \\frac{f(x)}{x_{i}} = 0 \\ \\ \\ \\forall \\ i = 1, ..., n\\]
                         
                     `;
                     inicio_hessiana = `<p><strong>Matriz Hessiana - Analísis de convexidad y concavidad</strong></p>`;
@@ -677,14 +670,14 @@ function optimizacion_exp_sin(exponente) {
                         <p>
                             Maximizar funciones CD de n variables sin restricciones adicionales es generalmente imposible, 
                             ya que la función sigue creciendo en función de las variables \\( x_{i} \\). Para encontrar un máximo local, 
-                            típicamente se requiere introducir restricciones (como restricciones presupuestarias o de recursos) o un 
-                            análisis específico de los exponentes y su interacción.
+                            se requiere de restricciones (como restricciones presupuestarias o de recursos) o modificar la función de tal forma que 
+                            se pueda encontrar un máximo local para maximizar la función CD.
                         </p>
                     `;
         
                     inicio_minimizador += `
                         <p>
-                            Para maximizar funciones Cobb-Douglas (CD) de n variables, es esencial entender cómo el comportamiento de la 
+                            Para minimizar funciones Cobb-Douglas (CD) de n variables, es esencial entender cómo el comportamiento de la 
                             función cambia según los exponentes en la función.
                             <ul>
                                 <li>
@@ -713,31 +706,72 @@ function optimizacion_exp_sin(exponente) {
                             </ul>
                         </p>
                         <p>
-                            Minimizar una función Cobb-Douglas en n variables sin restricciones adicionales generalmente no es posible de 
+                            Minimizar una función Cobb-Douglas en n variables, sin restricciones adicionales, generalmente no es posible de 
                             manera directa. Sin embargo, en situaciones donde los exponentes son negativos, o existe una combinación de 
                             exponentes positivos y negativos, la función podría decrecer en algunas direcciones, lo que permite la 
                             existencia de mínimos locales o globales bajo ciertas condiciones.
                             
                             Al igual que con la maximización, introducir restricciones es clave para encontrar un mínimo significativo, 
-                            especialmente en contextos prácticos donde las variables \\( x_{i} \\) están sujetas a límites. La minimización 
-                            generalmente requiere un análisis detallado de las derivadas y la estructura de la función para determinar puntos 
-                            críticos y evaluar su naturaleza (mínimos, máximos, puntos de silla) usando la matriz Hessiana.
+                            especialmente en contextos donde las variables \\( x_{i} \\ \\forall \\ i = 1, ..., n \\ \\) están sujetas a límites. 
                         </p>
                     `;
         
                     inicio_conclusion += `
                         <p>
-                            Las funciones CD estándar no tienen puntos críticos interiores sin restricciones. La maximización o minimización 
+                            Para la función CD planteada:
+                        </p>
+                        <ul>
+                            <li>
+                                No es posible obtener un máximo finito; la función tiende a infinito. Entonces, 
+                                para maximizar la función \\( f(x) \\), es necesario considerar 
+                                restricciones que limiten los valores de cada \\( x_{i} \\ \\forall \\ i = 1, ..., n \\ \\).
+                            </li>
+                            <li>
+                                Alcanza su valor mínimo en los bordes del dominio, es decir, cuando al menos un 
+                                \\( x_{i} = 0 \\ \\forall \\ i = 1, ..., n \\ \\). En estos puntos, el valor de la función es 0.
+                            </li>
+                        </ul>
+                        <p>
+                            En conclusión, sin restricciones, la función Cobb-Douglas sigue creciendo conforme aumentan los insumos, y no es posible encontrar un punto máximo o mínimo.
+                            Por lo tanto, las funciones CD estándar no tienen puntos críticos interiores sin restricciones. La maximización o minimización 
                             generalmente ocurre en los bordes del dominio, pero no en un punto interior donde las derivadas parciales se anulen. 
                             Para hallar puntos críticos, se necesita un contexto con restricciones (como restricciones de presupuesto, por ejemplo) 
                             o una función modificada que altere la forma estándar.
                         </p>
                         <p>
-                            <u>Ejemplo:</u> Si la empresa produce n insumos con tecnología Cobb-Douglas (CD)
-                        </p>
-                            \\[f(X_{1}, ..., X_{n}) = A\\prod_{i=1}^{n} X_{i}^{\\alpha_{i}}\\]
+                            <u>Ejemplo:</u> 
+                            Para una firma que usa n insumos \\(x_{1}, ..., x_{n}\\) a precios \\(w_{1}, ..., w_{n}\\) por unidad, respectivamente, el costo promedio es:
+                            \\[ C = \\frac{\\sum_{i=1}^{n} w_{i}x_{i} }{f(x_{1}, ..., x_{n})}\\]
+
+                            donde \\(f = f(x_{1}, ..., x_{n})\\)  es la función de producción. Las condiciones que se deben satisfacer para minimizar el costo promedio son:
+
+                            \\[ \\frac{\\partial C}{\\partial x_{i}} = \\frac{w_{i}f(x_{1}, ..., x_{n}) - f_{x_{i}}(x_{1}, ..., x_{n}) \\sum_{i=1}^{n} w_{i}x_{i}}{(f(x_{1}, ..., x_{n}))^{2}} = 0 \\]
+                            \\
+                            para todo \\(i= 1, ..., n\\).  Esta ecuación equivale a:
+
+                            \\[ w_{i}f(x_{1}, ..., x_{n}) - f_{x_{i}}(x_{1}, ..., x_{n}) \\sum_{i=1}^{n} w_{i}x_{i} = 0 \\ \\ \\Rightarrow \\ \\ w_{i}f(x_{1}, ..., x_{n}) = f_{x_{i}}(x_{1}, ..., x_{n}) \\sum_{i=1}^{n} w_{i}x_{i} \\]
+
+                            para \\(i = 1, ..., n\\). Ahora bien , fijemos \\(i\\) y tomemos el cociente entre las expresiones correspondientes. Al simplificar, obtenemos que:
+
+                            \\[\\frac{w_{i}}{w_{1}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{1}}(x_{1}, ..., x_{n})}, \ \\cdots, \ \\frac{w_{i}}{w_{i-1}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i-1}}(x_{1}, ..., x_{n})}, \ \\frac{w_{i}}{w_{i+1}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i+1}}(x_{1}, ..., x_{n})}, \ \\cdots, \ \\frac{w_{i}}{w_{n}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{n}}(x_{1}, ..., x_{n})}\\]
+
+                            para cada $i = 1, ..., n$. Entonces, las cantidades de insumos que el productor debe usar para minimizar su costo promedio son aquellas para las cuales la relación entre las productividades marginales es igual a la relación entre los precios de los insumos de producción. Así, si el productor vende su producto a P por unidad, los beneficios están dados por:
+
+                            \\[ \\Pi(x_{1}, ..., x_{n}) = Pf(x_{1}, ..., x_{n}) - \\sum_{i=1}^{n} w_{i}x_{i} \\]
+
+                            Si la función de producción no es homogénea de grado uno, la combinación de insumos que produce el mayor beneficio son las soluciones del sistema de ecuaciones, 
+                            
+                            \\[\\frac{\\partial{\\Pi}}{\\partial x_{i}} = Pf_{x_{i}}(x_{1}, ..., x_{n})-w_{i} = 0 \\text{ para todo } i=1, ...,n\\]
+    
+                            Entonces, el valor de la productividad marginal de cada insumo de producción debe ser igual a su precio.  Ahora bien , fijemos \\(i\\) y realicemos el cociente entre las expresiones. Entonces, al simplificar términos obtenemos que:
+
+                            \\[\\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{1}}, \ \\cdots, \ \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i-1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{i-1}}, \ \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i+1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{i+1}}, \ \\cdots, \ \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{n}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{n}}\\]
+    
+                            para todo \\(i = 1, ..., n\\). Esto es, las condiciones necesarias (de primer orden) para minimizar el costo promedio y para maximizar el beneficio son las mismas.
+    
+                            Ahora bien, si la empresa produce n insumos con tecnología Cobb-Douglas (CD) \\[f(X_{1}, ..., X_{n}) = A\\prod_{i=1}^{n} X_{i}^{\\alpha_{i}}\\]
                         
-                            Derivando con respecto a cada variable obtenemos que 
+                            Derivando con respecto a cada variable, obtenemos que:
                         
                             \\[f_{X_{1}}(X_{1}, ..., X_{n}) = \\alpha_{1} \\frac{f(X_{1}, ..., X_{n})}{X_{1}}, 
                             \\cdots, f_{X_{n}}(X_{1}, ..., X_{n}) = \\alpha_{n} \\frac{f(X_{1}, ..., X_{n})}{X_{n}}\\]
@@ -825,6 +859,10 @@ function optimizacion_exp_sin(exponente) {
                             \\[ \\hat{\\Pi}(x_{1}, ..., x_{n}) = \\big( 1 - \\sum_{i=1}^{n} \\alpha_{i} \\big)
                             \\big[\\frac{1}{PA}  \\prod_{j=1}^{n}\\big(\\frac{w_{j}}{\\alpha_{j}} 
                             \\big)^{\\alpha_{j}} \\big]^{\\frac{1}{\\sum_{j=1}^{n} \\alpha_{j} - 1}} \\]
+                            Esto nos permite determinar cuánto beneficio genera la empresa bajo condiciones de maximización,
+                            y como resultado final muestra que el beneficio está directamente relacionado con los coeficientes αi
+                            y los precios de los insumos, lo que subraya la importancia de la estructura de costos y la eficiencia
+                            de la producción en la maximización del beneficio.
                         </p>
                     `;
         
@@ -832,7 +870,6 @@ function optimizacion_exp_sin(exponente) {
         default:
             funcion_optimizar_CD_sin.innerHTML = `\\(${inicio_var}\\)`;
             funcion_derivada_parcial_CD_sin.innerHTML = `\\(${inicio_deri_parc}\\)`;
-            funcion_deri_parc_0_CD_sin.innerHTML = `\\(${inicio_deri_parc_0}\\)`;
             inicio_hessiana += `
                 <br><div id="hessiana"></div><br>
                 <ul>
@@ -928,6 +965,26 @@ function optimizacion_exp_sin(exponente) {
                         \\( ${exponentes_suma} \\) \\( < 1 \\)
                     </li>
                 </ul>
+                <p>
+                    Así, concluimos que una función CD \\(f(x)\\), con \\(x \\in S \\subseteq \\mathbb{R}^{${exponente}}\\), tiene un: 
+                </p>
+                <ul>
+                    <li>
+                        mínimo absoluto sí \\( \\alpha_{i} \\notin [0, 1] \\ \\forall \\ i = ${indices_list} \\)  y 
+                        ${signo_operacion} \\( ${exponentes_list} \\) (\\( ${exponentes_suma} \\) - 1) \\( \\geq 0 \\)
+                    </li>
+                    <li>
+                        mínimo absoluto estricto sí \\( \\alpha_{i} \\notin [0, 1] \\ \\forall \\ i = ${indices_list} \\)  y 
+                        ${signo_operacion} \\( ${exponentes_list} \\) (\\( ${exponentes_suma} \\) - 1) \\( > 0 \\)
+                    <li>
+                        máximo absoluto sí y sólo si \\( 0 < \\alpha_{i} < 1 \\ \\forall \\ i = ${indices_list} \\)  y  
+                        \\( ${exponentes_suma} \\) \\( \\leq 1 \\)
+                    </li>
+                    <li>
+                        máximo absoluto estricto sí y sólo si \\( 0 < \\alpha_{i} < 1 \\ \\forall \\ i = ${indices_list} \\)  y  
+                        \\( ${exponentes_suma} \\) \\( < 1 \\)
+                    </li>
+                </ul>
             `;
             inicio_maximizador += `
                 <p>
@@ -1008,39 +1065,59 @@ function optimizacion_exp_sin(exponente) {
 
             inicio_conclusion += `
                 <p>
-                    Las funciones CD estándar no tienen puntos críticos interiores sin restricciones. La maximización o minimización 
-                    generalmente ocurre en los bordes del dominio, pero no en un punto interior donde las derivadas parciales se anulen. 
-                    Para hallar puntos críticos, se necesita un contexto con restricciones (como restricciones de presupuesto, por ejemplo) 
-                    o una función modificada que altere la forma estándar.
-                </p>
+                            Para la función CD planteada:
+                        </p>
+                        <ul>
+                            <li>
+                                No es posible obtener un máximo finito; la función tiende a infinito. Entonces, 
+                                para maximizar la función \\( f(x) \\), es necesario considerar 
+                                restricciones que limiten los valores de cada \\( x_{i} \\ \\forall \\ ${indices_list} \\ \\).
+                            </li>
+                            <li>
+                                Alcanza su valor mínimo en los bordes del dominio, es decir, cuando al menos un 
+                                \\( x_{i} = 0 \\ \\forall \\ i = ${indices_list} \\ \\). En estos puntos, el valor de la función es 0.
+                            </li>
+                        </ul>
+                        <p>
+                            En conclusión, sin restricciones, la función Cobb-Douglas sigue creciendo conforme aumentan los insumos, y no es posible encontrar un punto máximo o mínimo.
+                            Por lo tanto, las funciones CD estándar no tienen puntos críticos interiores sin restricciones. La maximización o minimización 
+                            generalmente ocurre en los bordes del dominio, pero no en un punto interior donde las derivadas parciales se anulen. 
+                            Para hallar puntos críticos, se necesita un contexto con restricciones (como restricciones de presupuesto, por ejemplo) 
+                            o una función modificada que altere la forma estándar.
+                        </p>
                 <p>
                     <u> Ejemplo </u>: Una empresa que usa ${exponente} insumos \\(${var_list}\\) a precios \\(${precio_var}\\) por unidad 
                     respectivamente, el costo promedio es
                     \\[ C =  \\frac{${costo_suma}}{f(${var_list})} \\]
-                    donde f es la función de producción CD. Así las condiciones para minimizar el costo promedio son:
+                    donde f es la función de producción CD. Así, las ondiciones que se deben satisfacer para minimizar el costo promedio son:
                     ${deri_parc_costo}
                     Por lo cual, las cantidades de insumos que el productor debe usar para minimizar el costo promedio son aquellas para las 
                     cuales la relación entre las productividades marginales es igual a la relación entre los precios de los insumos de producción.
                     \\[ ${cant_insumo_costo} \\]
-                    Si el productor vende su producto a un precio P por unidad, los beneficios estan dados por
+                    Si la función de producción no es homogénea de grado uno y los beneficios están dados por:
                     \\[ Q(${var_list}) = Pf(${var_list}) - (${costo_suma}) \\]
-                    Así, 
+                    Entonces, la combinación de insumos que produce el mayor beneficio son las soluciones del sistema de ecuaciones
                     ${deri_parc_beneficio}
-                    Por lo tanto, el valor de productividad marginal de cada insumo de producción debe ser igual a su precio. Entonces, las condiciones
-                    necesarias de primer orden para maximizar el beneficio a corto plazo, son las mismas para minimizar el costo promedio.
+                    Por lo tanto, el valor de productividad marginal de cada insumo de producción debe ser igual a su precio. Así, las condiciones
+                    necesarias de primer orden para maximizar el beneficio, son las mismas para minimizar el costo promedio.
                     \\[ ${cant_insumo_costo} \\]  
                     Ahora bien, la empresa produce con funciones CD de la forma 
                     \\[ ${inicio_var} \\] 
-                    Entonces, ${cant_beneficio_costo} <br>
+                    Entonces, derivando con respecto a cada variable y reemplazando en el cociente de las condiciones 
+                    necesarias, obtenemos que: ${cant_beneficio_costo} <br>
                     Al reemplazar esta expresión en la condición \\( Pf_{i} = w_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\) y despejando \\( x_{i} \\) 
                     obtenemos que: ${new_var_CD}
                     Las funciones \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\ \\) son las funciones de demanda de factores de la empresa, ellas 
-                    determinan las cantidades de factores que se han de usar para maximizar el beneficio. Así, , las cantidades que se deben producir para 
+                    determinan las cantidades de factores que se han de usar para maximizar el beneficio. Así, las cantidades que se deben producir para 
                     maximizar el beneficio son:  \\[ \\widehat{f}(x) = \\widehat{f}(${var_list}) = f(${var_list_CD}) = f( \\widehat{x} ) \\] 
                     Entonces, <strong>la función de oferta</strong> es: ${new_func_oferta}
                     <strong>La función de beneficio</strong> está dada por:
                     \\[ \\widehat{Q}(${var_list}) = PQ(\\widehat{x}) - (${new_costo_suma}) \\]
                     Por lo tanto, ${new_func_beneficio}
+                    Esto nos permite determinar cuánto beneficio genera la empresa bajo condiciones de maximización,
+                    y como resultado final muestra que el beneficio está directamente relacionado con los coeficientes αi
+                    y los precios de los insumos, lo que subraya la importancia de la estructura de costos y la eficiencia
+                    de la producción en la maximización del beneficio.
                 </p>
             `;
 
@@ -1062,4 +1139,3 @@ function optimizacion_exp_sin(exponente) {
     params.append('n', exponente);
 
 }
-
