@@ -34,10 +34,9 @@ def generar_hessiana(exponentes):
 
     # Incluir el factor común en la expresión final
     f_latex = sp.latex(f)
-    hessiana_latex =  hessiana_latex + f_latex
+    hessiana_latex =  hessiana_latex + "f(x)"
     
     return  hessiana_latex;
-
 
 def generar_hessiana_con(exponentes):
     # Crear las variables y los alphas hasta el número de exponentes especificado
@@ -82,6 +81,6 @@ def generar_hessiana_con(exponentes):
     
     # Incluir el factor común en la expresión final
     f_latex = sp.latex(f)
-    hessiana_latex =  hessiana_latex + f_latex
+    hessiana_latex =  hessiana_latex + "f(x)"
     
     return  hessiana_latex;

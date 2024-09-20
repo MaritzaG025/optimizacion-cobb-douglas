@@ -1,74 +1,61 @@
 {% extends './base.html' %} {% block title %} Formulario {% endblock %} {% block
 body %}
-<div class="row">
-  <div class="col-md-6 offset-md-3">
-    <h3 class="py-3">Datos de la función a optimizar</h3>
-    <form class="row g-3">
-      <div class="col-md-4">
-        <label for="inputState" class="form-label"
-          >Maximizar o Minimizar?</label
-        >
-        <select id="inputState" class="form-select">
-          <option selected value="maximizar">Maximizar</option>
-          <option value="minimizar">Minimizar</option>
-        </select>
+<div class="row gap-x-0 padding_form">
+  <h3 class="py-3">Datos de la función a optimizar</h3>
+  <form class="row g-3">
+    <div class="col-md-4">
+      <label for="inputState" class="form-label">Maximizar o Minimizar?</label>
+      <select id="inputState" class="form-select">
+        <option selected value="maximizar">Maximizar</option>
+        <option value="minimizar">Minimizar</option>
+      </select>
+    </div>
+    <div class="col-md-5">
+      <label for="inputDimension" class="form-label">Cantidad de variables</label>
+      <select id="inputDimension" class="form-select" onchange="cantidadExponente('inputDimension')"></select>
+    </div>
+    <div class="col-md-3">
+      <label for="inputTecnologia" class="form-label">Tecnología</label>
+      <input type="text" class="form-control" id="inputTecnologia" onkeypress="return soloNumeros(event);" />
+    </div>
+    <div class="col-12">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="RestriccionCheck"
+          onchange="cantidadExponente('inputDimension')" />
+        <label class="form-check-label" for="RestriccionCheck">
+          Función con restricción presupuestal
+        </label>
       </div>
-      <div class="col-md-5">
-        <label for="inputDimension" class="form-label"
-          >Cantidad de variables</label
-        >
-        <select
-          id="inputDimension"
-          class="form-select"
-          onchange="cantidadExponente('inputDimension')"
-        ></select>
+    </div>
+    <div class="col-md-12">
+      <h4 class="py-3">Lista de exponentes</h4>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Exponente</th>
+              <th>Valor</th>
+            </tr>
+          </thead>
+          <tbody id="tablaExponentes"></tbody>
+        </table>
       </div>
-      <div class="col-md-3">
-        <label for="inputTecnologia" class="form-label">Tecnología</label>
-        <input type="text" class="form-control" id="inputTecnologia" onkeypress="return soloNumeros(event);"/>
+    </div>
+    <div class="col-md-12" id="unidadesCosto">
+      <h4 class="py-3">Lista de unidades de costo</h4>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Variable correspondiente</th>
+              <th>Valor de costo</th>
+            </tr>
+          </thead>
+          <tbody id="tablaUnidadesCosto"></tbody>
+        </table>
       </div>
-      <div class="col-12">
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="checkbox"
-            id="RestriccionCheck"
-            onchange="cantidadExponente('inputDimension')"
-          />
-          <label class="form-check-label" for="RestriccionCheck">
-            Función con restricción presupuestal
-          </label>
-        </div>
-      </div>
-      <div class="col-md-12">
-        <h4 class="py-3">Lista de exponentes</h4>
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Exponente</th>
-                <th>Valor</th>
-              </tr>
-            </thead>
-            <tbody id="tablaExponentes"></tbody>
-          </table>
-        </div>
-      </div>
-      <div class="col-md-12" id="unidadesCosto">
-        <h4 class="py-3">Lista de unidades de costo</h4>
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Variable correspondiente</th>
-                <th>Valor de costo</th>
-              </tr>
-            </thead>
-            <tbody id="tablaUnidadesCosto"></tbody>
-          </table>
-        </div>
-      </div>
-      <!-- <div class="col-md-6">
+    </div>
+    <!-- <div class="col-md-6">
               <label for="inputEmail4" class="form-label">Email</label>
               <input type="email" class="form-control" id="inputEmail4">
             </div>
@@ -99,7 +86,7 @@ body %}
               <label for="inputZip" class="form-label">Zip</label>
               <input type="text" class="form-control" id="inputZip">
             </div> -->
-      <!-- <div class="col-12">
+    <!-- <div class="col-12">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="gridCheck" required>
                     <label class="form-check-label" for="gridCheck">
@@ -107,19 +94,14 @@ body %}
                     </label>
                 </div>
             </div> -->
-      <div class="col-12 d-flex justify-content-center">
-        <button
-          type="button"
-          class="btn btn-info btn-opacity-75"
-          data-bs-toggle="modal"
-          data-bs-target="#modalOptimizar"
-          id="formulario-optimizacion"
-        >
-          Optimizar
-        </button>
+    <div class="col-12 d-flex justify-content-center">
+      <button type="button" class="btn btn-info btn-opacity-75" data-bs-toggle="modal" data-bs-target="#modalOptimizar"
+        id="formulario-optimizacion">
+        Optimizar
+      </button>
 
-        <!-- Modal -->
-        <!-- <div
+      <!-- Modal -->
+      <!-- <div
           class="modal fade"
           id="modalOptimizar"
           aria-labelledby="modalOptimizarLabel"
@@ -158,9 +140,9 @@ body %}
             </div>
           </div>
         </div> -->
-      </div>
-    </form>
-  </div>
+    </div>
+  </form>
+
 </div>
 
 <script src="{{ url_for('static', filename='js/formulario.js') }}"></script>

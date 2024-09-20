@@ -17,16 +17,29 @@ function obtenerHessiana(n) {
 
 function mostrarMenoresPrincipales(menoresPrincipalesLatex) {
     const menoresPrincipalesDiv = document.getElementById('menoresPrincipales');
+    const menoresPrincipalesDiv_phone = document.getElementById('menoresPrincipales_phone');
     let contenido = '';
+    let contenido_phone = '';
     menoresPrincipalesLatex.forEach((conjunto, idx) => {
         if (conjunto.length > 0) {
+            let menores_principales_phone = ``;
             contenido += `<u>Menores Principales de Orden ${idx + 1}</u>: <br>`;
+            contenido_phone += `<u>Menores Principales de Orden ${idx + 1}</u>: <br><br>`;
             // Añadir \biggl y \biggr a los menores principales
             contenido += `\\[ M_{${idx + 1}} = \\left\\{ ${conjunto.join(', ')} \\right\\} \\] <br><br>`;
+            conjunto.forEach(element => {
+                menores_principales_phone += `<p>\\( ${element}, \\)</p>`
+            });
+            contenido_phone += `\\(M_{${idx + 1}}\\) = {
+                                    <div class="w-full d-flex align-items-center flex-column">
+                                        ${menores_principales_phone}
+                                    </div> 
+                                } <br><br>`;
         }
     });
 
     menoresPrincipalesDiv.innerHTML = contenido;
+    menoresPrincipalesDiv_phone.innerHTML = contenido_phone;
     MathJax.typeset();
 }
 
@@ -44,6 +57,12 @@ function obtenerMenoresPrincipales(n) {
 function mostrarCobbDouglasSin(cant_variables, tecnologia_A, valor_exponentes, calculos_CD_sin, operacion_CD) {
     
     let derivadas_CD_sin = calculos_CD_sin.derivadas;
+    let arr_derivadas_CD_sin_phone = String(derivadas_CD_sin).split(",");
+    let derivadas_CD_sin_phone = ``;
+    arr_derivadas_CD_sin_phone.forEach(element => {
+        derivadas_CD_sin_phone += `<p>\\( ${element} \\)</p>`
+    });
+
     let punto_critico_CD_sin = calculos_CD_sin.puntos_criticos;
     let hessiana_CD_sin = calculos_CD_sin.hessiana;
     let hessiana_evaluada_CD_sin = calculos_CD_sin.hessiana_evaluada;
@@ -52,15 +71,28 @@ function mostrarCobbDouglasSin(cant_variables, tecnologia_A, valor_exponentes, c
     let menores_evaluados_CD_sin = calculos_CD_sin.menores_evaluados;
 
     let contenido_men_prin = '';
+    let contenido_men_prin_phone = '';
     
     menores_evaluados_CD_sin.forEach((conjunto_ev, id) => {
         if (conjunto_ev.length > 0) {
             menores_principales_CD_sin.forEach((conjunto, idx) => {
                 if (conjunto.length > 0) {
+                    let contenido_men_eva = '';
                     contenido_men_prin += `<u>Menores Principales de Orden ${idx + 1}</u>: <br>`;
+                    contenido_men_prin_phone += `<u>Menores Principales de Orden ${idx + 1}</u>: <br>`;
+                    conjunto.forEach(element => {
+                        contenido_men_eva += `<p>\\( ${element}, \\)</p>`
+                    });
+                    contenido_men_prin_phone += `\\(M_{${idx + 1}}\\) = {
+                        <div class="w-full d-flex align-items-center flex-column">
+                            ${contenido_men_eva}
+                        </div> 
+                        }
+                        \\[ \\Rightarrow \\ M_{${idx + 1}}(x) = \\left\\{ ${conjunto_ev[idx].join(', ')} \\right\\} \\] <br><br>
+                    `;
                     contenido_men_prin += `
-                        \\[ H_{${idx + 1}}(x) = \\left\\{ ${conjunto.join(', ')} \\right\\}  \\ \\Rightarrow 
-                        \\ H_{${idx + 1}}(x) = \\left\\{ ${conjunto_ev[idx].join(', ')} \\right\\} \\] <br><br>
+                        \\[ M_{${idx + 1}}(x) = \\left\\{ ${conjunto.join(', ')} \\right\\}  \\ \\Rightarrow 
+                        \\ M_{${idx + 1}}(x) = \\left\\{ ${conjunto_ev[idx].join(', ')} \\right\\} \\] <br><br>
                     `;
                 }
             });
@@ -70,10 +102,22 @@ function mostrarCobbDouglasSin(cant_variables, tecnologia_A, valor_exponentes, c
     if (menores_evaluados_CD_sin.length == 0) {
         menores_principales_CD_sin.forEach((conjunto, idx) => {
             if (conjunto.length > 0) {
+                let contenido_men_eva = '';
                 contenido_men_prin += `<u>Menores Principales de Orden ${idx + 1}</u>: <br>`;
+                contenido_men_prin_phone += `<u>Menores Principales de Orden ${idx + 1}</u>: <br>`;
+                conjunto.forEach(element => {
+                    contenido_men_eva += `<p>\\( ${element}, \\)</p>`
+                });
+                contenido_men_prin_phone += `\\(M_{${idx + 1}}\\) = {
+                    <div class="w-full d-flex align-items-center flex-column">
+                        ${contenido_men_eva}
+                    </div> 
+                    }
+                    \\[ \\Rightarrow \\ M_{${idx + 1}}(x) = \\left\\{ \\text{N/A. No existen puntos críticos} \\right\\} \\] <br><br>
+                `;
                 contenido_men_prin += `
-                    \\[ H_{${idx + 1}}(x) = \\left\\{ ${conjunto.join(', ')} \\right\\}  \\ \\Rightarrow 
-                    \\ H_{${idx + 1}}(x) = \\left\\{ \\text{N/A. No existen puntos críticos} \\right\\} \\] <br><br>
+                    \\[ M_{${idx + 1}}(x) = \\left\\{ ${conjunto.join(', ')} \\right\\}  \\ \\Rightarrow 
+                    \\ M_{${idx + 1}}(x) = \\left\\{ \\text{N/A. No existen puntos críticos} \\right\\} \\] <br><br>
                 `;
             }
         });
@@ -115,10 +159,23 @@ function mostrarCobbDouglasSin(cant_variables, tecnologia_A, valor_exponentes, c
     };
 
     funcionDiv.innerHTML = `\\[ ${inicio_var} \\]`;
-    derivadaDiv.innerHTML = `\\[ ${derivadas_CD_sin} \\]`;
+    derivadaDiv.innerHTML = `<div class="d-flex align-items-center flex-column">
+                                ${derivadas_CD_sin_phone}
+                            </div>
+                            `;
     puntosCriticosDiv.innerHTML = `\\[ ${punto_critico_CD_sin} \\]`;
-    hessianaDiv.innerHTML = `\\[ H_{f}(x) = ${hessiana_CD_sin} \\]`;
-    menores_principales_Div.innerHTML = contenido_men_prin;
+    hessianaDiv.innerHTML = `
+                                <p>
+                                    \\[ H_{f}(x) = ${calculos_CD_sin.hessiana} \\]
+                                    <br>
+                                    \\[ \\Rightarrow \\ H_{f}(x) = ${hessiana_evaluada_CD_sin} \\]
+                                </p>
+                            `;
+    menores_principales_Div.innerHTML = `
+                                <p>
+                                    ${contenido_men_prin_phone}
+                                </p>
+                            `;
     MathJax.typeset();
 }
 
@@ -161,8 +218,15 @@ function generarNumerosAleatorios(cantidad, operacion_CD) {
 
     if (operacion_CD === "maximizar") {
         for (let i = 0; i < cantidad; i++) {
-            let numero = Math.random() * (1 - sumaTotal);
-            numero = parseFloat(numero.toFixed(2));
+            let numero;
+
+            do {
+                numero = Math.random() * (1 - sumaTotal);
+                numero = parseFloat(numero.toFixed(2));
+            } while (numero === 0);
+
+            // let numero = Math.random() * (1 - sumaTotal);
+            // numero = parseFloat(numero.toFixed(2));
             numeros.push(numero);
             sumaTotal += numero;
 
@@ -253,9 +317,12 @@ function optimizacion_exp_sin(exponente) {
     const funcion_derivada_parcial_CD_sin = document.getElementById("funcion_deri_parc_CD");
     let inicio_deri_parc = ``;
 
+    const funcion_derivada_parcial_CD_sin_phone = document.getElementById("funcion_deri_parc_CD_phone");
+    let inicio_deri_parc_phone = ``;
+
     const funcion_hessiana_CD_sin = document.getElementById("funcion_hessiana_CD");
     let inicio_hessiana = `<strong>Matriz Hessiana - Analísis de convexidad y concavidad</strong> <br> <br><p>Para determinar 
-    si los puntos críticos son máximos, mínimos o puntos de silla, se calcula la matriz Hessiana:</p>`;
+    si los puntos críticos son máximos, mínimos o puntos de silla, se calcula la matriz Hessiana \\(H_{f} (x)\\):</p>`;
     
     const maximizar_CD_sin = document.getElementById("maximizar_CD");
     let inicio_maximizador = '<strong>Maximización</strong> <br><br>';
@@ -298,6 +365,11 @@ function optimizacion_exp_sin(exponente) {
         inicio_var += ` x_{${i}}^{\\alpha_{${i}}}`;
         inicio_deri_parc += `
             \\frac{\\partial f}{\\partial x_{${i}}} = \\alpha_{${i}} \\frac{f(x)}{x_{${i}}} = 0
+        `;
+        inicio_deri_parc_phone += `
+            <p>
+                \\( \\frac{\\partial f}{\\partial x_{${i}}} = \\alpha_{${i}} \\frac{f(x)}{x_{${i}}} = 0 \\)
+            </p>
         `;
         deri_parc_costo += ` 
             \\[ \\frac{\\partial C}{\\partial x_{${i}}} = \\frac{w_{${i}}f(x) - f_{x_{${i}}}(${costo_suma})}{f^{2}(${var_list})} = 0 \\]
@@ -382,6 +454,7 @@ function optimizacion_exp_sin(exponente) {
         case "1":
             funcion_optimizar_CD_sin.innerHTML = `\\(${inicio_var}\\)`;
             funcion_derivada_parcial_CD_sin.innerHTML = `\\(${inicio_deri_parc}\\)`;
+            funcion_derivada_parcial_CD_sin_phone.innerHTML = `${inicio_deri_parc_phone}`;
             inicio_hessiana += `
                 <br><div id="hessiana"></div><br>
                 <p>
@@ -536,14 +609,32 @@ function optimizacion_exp_sin(exponente) {
             obtenerHessiana(exponente);
 
             break;
-        
         case "n":
-                    funcion_optimizar_CD_sin.innerHTML = `\\[f(X) = f(X_{1}, ..., X_{n}) = A\\prod_{i=1}^{n} X_{i}^{\\alpha_{i}}\\]`;
+                    funcion_optimizar_CD_sin.innerHTML = `\\[f(x) = f(x_{1}, ..., x_{n}) = A\\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}\\]`;
                     funcion_derivada_parcial_CD_sin.innerHTML = `
                         \\[
                             \\frac{\\partial f}{\\partial x_{i}}
                             = A x_{1}^{\\alpha_{1}} \\cdots \\alpha_{i}x_{i}^{\\alpha_{i} - 1} \\cdots x_{n}^{\\alpha_{n}}
                             = \\frac{\\alpha_{i}Ax_{1}^{\\alpha_{1}}\\cdots x_{i}^{\\alpha_{i}} \\cdots x_{n}^{\\alpha_{n}}}{x_{i}}
+                            = \\alpha_{i} \\frac{f(x)}{x_{i}}
+                            = 0
+                            \\ \\ \\ \\forall \\ i = 1, ..., n
+                        \\]
+                        
+                    `;
+                    funcion_derivada_parcial_CD_sin_phone.innerHTML = `
+                        \\[
+                            \\frac{\\partial f}{\\partial x_{i}}
+                            = A x_{1}^{\\alpha_{1}} \\cdots \\alpha_{i}x_{i}^{\\alpha_{i} - 1} \\cdots x_{n}^{\\alpha_{n}}
+                            \\ \\ \\ \\forall \\ i = 1, ..., n
+                            \\]
+                        \\[ \\Rightarrow
+                            \\frac{\\partial f}{\\partial x_{i}}
+                            = \\frac{\\alpha_{i}Ax_{1}^{\\alpha_{1}}\\cdots x_{i}^{\\alpha_{i}} \\cdots x_{n}^{\\alpha_{n}}}{x_{i}}
+                            \\ \\ \\ \\forall \\ i = 1, ..., n
+                        \\]
+                        \\[ \\Rightarrow
+                            \\frac{\\partial f}{\\partial x_{i}}
                             = \\alpha_{i} \\frac{f(x)}{x_{i}}
                             = 0
                             \\ \\ \\ \\forall \\ i = 1, ..., n
@@ -557,10 +648,25 @@ function optimizacion_exp_sin(exponente) {
                             Hessiana \\(H_{f}\\) de una función CD para \\(\\mathbb{R}^{n}\\), con \\(n \\in \\mathbb{N}\\) y 
                             \\(n \\geq 2\\), así:
                         </p>
-                        <p>
+                        <p class="hidden_pc">
+                            \\[
+                                H_{f}(x) = A 
+                                \\begin{pmatrix}
+                                    \\frac{\\alpha_1 (\\alpha_1 - 1) }{x_1^{2}}
+                                    & \\cdots & \\frac{\\alpha_1 \\alpha_n}{x_1 x_n} \\\\
+                                    \\frac{\\alpha_2 \\alpha_1}{x_2 x_1}
+                                    & \\cdots & \\frac{\\alpha_2 \\alpha_n}{x_2 x_n} \\\\
+                                    \\vdots & \\ddots & \\vdots \\\\
+                                    \\frac{\\alpha_n \\alpha_1}{x_n x_1}
+                                    & \\cdots & \\frac{\\alpha_n (\\alpha_n - 1)}{x_n^{2}}
+                                \\end{pmatrix}
+                                f(x)
+                            \\]
+                        </p>
+                        <p class="hidden_phone">
                             \\[
                                 H_{f}(x) = \\begin{pmatrix}
-                                \\alpha_1 (\\alpha_1 - 1) A \\cdot x_1^{\\alpha_1 - 2} \\cdot x_2^{\\alpha_2} \\cdots x_n^{\\alpha_n} 
+                                \\alpha_1 (\\alpha_1 - 1) 
                                 & \\alpha_1 \\alpha_2 A \\cdot x_1^{\\alpha_1 - 1} \\cdot x_2^{\\alpha_2 - 1} \\cdots x_n^{\\alpha_n} 
                                 & \\cdots & \\alpha_1 \\alpha_n A \\cdot x_1^{\\alpha_1 - 1} \\cdot x_2^{\\alpha_2} \\cdots x_n^{\\alpha_n - 1} \\\\
                                 \\alpha_2 \\alpha_1 A \\cdot x_1^{\\alpha_1 - 1} \\cdot x_2^{\\alpha_2 - 1} \\cdots x_n^{\\alpha_n} 
@@ -573,7 +679,8 @@ function optimizacion_exp_sin(exponente) {
                                 \\cdot x_2^{\\alpha_2} \\cdots x_n^{\\alpha_n - 2}
                                 \\end{pmatrix}
                             \\]
-
+                        </p>
+                        <p>
                             La cual es:
                             <ul>
                                 <li>
@@ -597,14 +704,25 @@ function optimizacion_exp_sin(exponente) {
                             <ul>
                                 <li>
                                     Convexa sí \\(\\alpha_{i} \\notin [0, 1]\\) para todo \\(i = 1, ..., n\\) y tenemos que:
-                                    \\[(-1)^{r+1} \\ \\alpha_{i_{1}} \\cdots \\alpha_{i_{r}} \\ \\biggl( \\sum \\alpha_{i_{k}} - 1 \\biggl) \\ \\geq \\ 0
-                                    \\ \\ \\ \\text{para} \\ r = 1, ..., n \\ \\text{y} \\ k = 1, .., r. \\]
-                                    
+                                    <p class="hidden_phone">
+                                        \\[(-1)^{r+1} \\ \\alpha_{i_{1}} \\cdots \\alpha_{i_{r}} \\ \\biggl( \\sum \\alpha_{i_{k}} - 1 \\biggl) \\ \\geq \\ 0
+                                        \\ \\ \\ \\text{para} \\ r = 1, ..., n \\ \\text{y} \\ k = 1, .., r. \\]
+                                    </p>
+                                    <p class="hidden_pc">
+                                        \\[(-1)^{r+1} \\ \\alpha_{i_{1}} \\cdots \\alpha_{i_{r}} \\ \\biggl( \\sum \\alpha_{i_{k}} - 1 \\biggl) \\ \\geq \\ 0 \\]
+                                        para \\[ r = 1, ..., n \\ \\text{y} \\ k = 1, .., r. \\]
+                                    </p>
                                 </li>
                                 <li>
                                     Estrictamente convexa sí \\(\\alpha_{i} \\notin [0, 1]\\) para todo \\(i = 1, ..., n\\) y tenemos que:
-                                    \\[(-1)^{r+1} \\ \\alpha_{i_{1}} \\cdots \\alpha_{i_{r}} \\ \\biggl( \\sum \\alpha_{i_{k}} - 1 \\biggl) \\ > \\ 0
-                                    \\ \\ \\ \\text{para} \\ r = 1, ..., n \\ \\text{y} \\ k = 1, .., r. \\]
+                                    <p class="hidden_phone">
+                                        \\[(-1)^{r+1} \\ \\alpha_{i_{1}} \\cdots \\alpha_{i_{r}} \\ \\biggl( \\sum \\alpha_{i_{k}} - 1 \\biggl) \\ > \\ 0
+                                        \\ \\ \\ \\text{para} \\ r = 1, ..., n \\ \\text{y} \\ k = 1, .., r. \\]
+                                    </p>
+                                    <p class="hidden_pc">
+                                        \\[(-1)^{r+1} \\ \\alpha_{i_{1}} \\cdots \\alpha_{i_{r}} \\ \\biggl( \\sum \\alpha_{i_{k}} - 1 \\biggl) \\ > \\ 0 \\]
+                                        para \\[ r = 1, ..., n \\ \\text{y} \\ k = 1, .., r. \\]
+                                    </p>
                                 </li>
                                 <li>
                                     Cóncava sí \\(0 < \\alpha_{i} < 1\\) y \\(\\sum \\alpha_{i} \\leq 1\\) para todo \\(i = 1, ..., n\\).
@@ -619,13 +737,25 @@ function optimizacion_exp_sin(exponente) {
                             <ul>
                                 <li>
                                     mínimo absoluto sí \\(\\alpha_{i} \\notin [0, 1]\\) para todo \\(i = 1, ..., n\\) y tenemos que:
-                                    \\[(-1)^{r+1} \\ \\alpha_{i_{1}} \\cdots \\alpha_{i_{r}} \\ \\biggl( \\sum \\alpha_{i_{k}} - 1 \\biggl) \\ \\geq \\ 0
-                                    \\ \\ \\ \\text{para} \\ r = 1, ..., n \\ \\text{y} \\ k = 1, .., r. \\]
+                                    <p class="hidden_phone">
+                                        \\[(-1)^{r+1} \\ \\alpha_{i_{1}} \\cdots \\alpha_{i_{r}} \\ \\biggl( \\sum \\alpha_{i_{k}} - 1 \\biggl) \\ \\geq \\ 0
+                                        \\ \\ \\ \\text{para} \\ r = 1, ..., n \\ \\text{y} \\ k = 1, .., r. \\]
+                                    </p>
+                                    <p class="hidden_pc">
+                                        \\[(-1)^{r+1} \\ \\alpha_{i_{1}} \\cdots \\alpha_{i_{r}} \\ \\biggl( \\sum \\alpha_{i_{k}} - 1 \\biggl) \\ \\geq \\ 0 \\]
+                                        para \\[ r = 1, ..., n \\ \\text{y} \\ k = 1, .., r. \\]
+                                    </p>
                                 </li>
                                 <li>
                                     mínimo absoluto estricto sí \\(\\alpha_{i} \\notin [0, 1]\\) para todo \\(i = 1, ..., n\\) y tenemos que:
-                                    \\[(-1)^{r+1} \\ \\alpha_{i_{1}} \\cdots \\alpha_{i_{r}} \\ \\biggl( \\sum \\alpha_{i_{k}} - 1 \\biggl) \\ > \\ 0
-                                    \\ \\ \\ \\text{para} \\ r = 1, ..., n \\ \\text{y} \\ k = 1, .., r. \\]
+                                    <p class="hidden_phone">
+                                        \\[(-1)^{r+1} \\ \\alpha_{i_{1}} \\cdots \\alpha_{i_{r}} \\ \\biggl( \\sum \\alpha_{i_{k}} - 1 \\biggl) \\ > \\ 0
+                                        \\ \\ \\ \\text{para} \\ r = 1, ..., n \\ \\text{y} \\ k = 1, .., r. \\]
+                                    </p>
+                                    <p class="hidden_pc">
+                                        \\[(-1)^{r+1} \\ \\alpha_{i_{1}} \\cdots \\alpha_{i_{r}} \\ \\biggl( \\sum \\alpha_{i_{k}} - 1 \\biggl) \\ > \\ 0 \\]
+                                        para \\[ r = 1, ..., n \\ \\text{y} \\ k = 1, .., r. \\]
+                                    </p>
                                 </li>
                                 <li>
                                     máximo absoluto sí \\(0 < \\alpha_{i} < 1\\) y \\(\\sum \\alpha_{i} \\leq 1\\) para todo \\(i = 1, ..., n\\).
@@ -745,118 +875,186 @@ function optimizacion_exp_sin(exponente) {
 
                             donde \\(f = f(x_{1}, ..., x_{n})\\)  es la función de producción. Las condiciones que se deben satisfacer para minimizar el costo promedio son:
 
-                            \\[ \\frac{\\partial C}{\\partial x_{i}} = \\frac{w_{i}f(x_{1}, ..., x_{n}) - f_{x_{i}}(x_{1}, ..., x_{n}) \\sum_{i=1}^{n} w_{i}x_{i}}{(f(x_{1}, ..., x_{n}))^{2}} = 0 \\]
-                            \\
+                            <span class="hidden_phone">
+                                \\[ \\frac{\\partial C}{\\partial x_{i}} = \\frac{w_{i}f(x_{1}, ..., x_{n}) - f_{x_{i}}(x_{1}, ..., x_{n}) \\sum_{i=1}^{n} w_{i}x_{i}}{(f(x_{1}, ..., x_{n}))^{2}} = 0 \\]
+                            </span>
+                            <span class="hidden_pc">
+                                \\[ \\frac{\\partial C}{\\partial x_{i}} = \\frac{w_{i}f(x_{1}, ..., x_{n}) - f_{x_{i}}(x_{1}, ..., x_{n}) \\sum_{i=1}^{n} w_{i}x_{i}}{(f(x_{1}, ..., x_{n}))^{2}} \\]
+                                \\[ \\Rightarrow \\frac{\\partial C}{\\partial x_{i}} = 0 \\]
+                            </span>
+                            
                             para todo \\(i= 1, ..., n\\).  Esta ecuación equivale a:
 
-                            \\[ w_{i}f(x_{1}, ..., x_{n}) - f_{x_{i}}(x_{1}, ..., x_{n}) \\sum_{i=1}^{n} w_{i}x_{i} = 0 \\ \\ \\Rightarrow \\ \\ w_{i}f(x_{1}, ..., x_{n}) = f_{x_{i}}(x_{1}, ..., x_{n}) \\sum_{i=1}^{n} w_{i}x_{i} \\]
+                            <span class="hidden_phone">
+                                \\[ w_{i}f(x_{1}, ..., x_{n}) - f_{x_{i}}(x_{1}, ..., x_{n}) \\sum_{i=1}^{n} w_{i}x_{i} = 0 \\ \\ \\Rightarrow \\ \\ w_{i}f(x_{1}, ..., x_{n}) = f_{x_{i}}(x_{1}, ..., x_{n}) \\sum_{i=1}^{n} w_{i}x_{i} \\]
+                            </span>
+                            <span class="hidden_pc">
+                                \\[w_{i}f(x_{1}, ..., x_{n}) - f_{x_{i}}(x_{1}, ..., x_{n}) \\sum_{i=1}^{n} w_{i}x_{i} = 0 \\]
+                                \\[\\Rightarrow w_{i}f(x_{1}, ..., x_{n}) = f_{x_{i}}(x_{1}, ..., x_{n}) \\sum_{i=1}^{n} w_{i}x_{i} \\]
+                            </span>
 
                             para \\(i = 1, ..., n\\). Ahora bien , fijemos \\(i\\) y tomemos el cociente entre las expresiones correspondientes. Al simplificar, obtenemos que:
+                            
+                            <span class="hidden_phone">
+                                \\[\\frac{w_{i}}{w_{1}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{1}}(x_{1}, ..., x_{n})}, \ \\cdots, \ \\frac{w_{i}}{w_{i-1}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i-1}}(x_{1}, ..., x_{n})}, \ \\frac{w_{i}}{w_{i+1}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i+1}}(x_{1}, ..., x_{n})}, \ \\cdots, \ \\frac{w_{i}}{w_{n}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{n}}(x_{1}, ..., x_{n})}\\]
+                            </span>
+                            <span class="hidden_pc">
+                                \\[\\frac{w_{i}}{w_{1}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{1}}(x_{1}, ..., x_{n})},\\]
+                                \\[\\cdots \\]
+                                \\[\\frac{w_{i}}{w_{i-1}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i-1}}(x_{1}, ..., x_{n})}, \\]
+                                \\[\\frac{w_{i}}{w_{i+1}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i+1}}(x_{1}, ..., x_{n})}, \\]
+                                \\[\\cdots\\]
+                                \\[\\frac{w_{i}}{w_{n}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{n}}(x_{1}, ..., x_{n})}\\]
+                            </span>
 
-                            \\[\\frac{w_{i}}{w_{1}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{1}}(x_{1}, ..., x_{n})}, \ \\cdots, \ \\frac{w_{i}}{w_{i-1}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i-1}}(x_{1}, ..., x_{n})}, \ \\frac{w_{i}}{w_{i+1}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i+1}}(x_{1}, ..., x_{n})}, \ \\cdots, \ \\frac{w_{i}}{w_{n}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{n}}(x_{1}, ..., x_{n})}\\]
-
-                            para cada $i = 1, ..., n$. Entonces, las cantidades de insumos que el productor debe usar para minimizar su costo promedio son aquellas para las cuales la relación entre las productividades marginales es igual a la relación entre los precios de los insumos de producción. Así, si el productor vende su producto a P por unidad, los beneficios están dados por:
+                            para cada \\(i = 1, ..., n\\). Entonces, las cantidades de insumos que el productor debe usar para minimizar su costo promedio son aquellas para las cuales la relación entre las productividades marginales es igual a la relación entre los precios de los insumos de producción. Así, si el productor vende su producto a P por unidad, los beneficios están dados por:
 
                             \\[ \\Pi(x_{1}, ..., x_{n}) = Pf(x_{1}, ..., x_{n}) - \\sum_{i=1}^{n} w_{i}x_{i} \\]
 
                             Si la función de producción no es homogénea de grado uno, la combinación de insumos que produce el mayor beneficio son las soluciones del sistema de ecuaciones, 
                             
-                            \\[\\frac{\\partial{\\Pi}}{\\partial x_{i}} = Pf_{x_{i}}(x_{1}, ..., x_{n})-w_{i} = 0 \\text{ para todo } i=1, ...,n\\]
+                            <span class="hidden_phone">
+                                \\[\\frac{\\partial{\\Pi}}{\\partial x_{i}} = Pf_{x_{i}}(x_{1}, ..., x_{n})-w_{i} = 0 \\text{ para todo } i=1, ...,n\\]
+                            </span>
+                            <span class="hidden_pc">
+                                \\[\\frac{\\partial{\\Pi}}{\\partial x_{i}} = Pf_{x_{i}}(x_{1}, ..., x_{n})-w_{i} = 0\\]
+                                \\[\\text{ para todo } i=1, ...,n\\]
+                            </span>
     
                             Entonces, el valor de la productividad marginal de cada insumo de producción debe ser igual a su precio.  Ahora bien , fijemos \\(i\\) y realicemos el cociente entre las expresiones. Entonces, al simplificar términos obtenemos que:
 
-                            \\[\\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{1}}, \ \\cdots, \ \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i-1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{i-1}}, \ \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i+1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{i+1}}, \ \\cdots, \ \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{n}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{n}}\\]
+                            <span class="hidden_phone">
+                                \\[\\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{1}}, \ \\cdots, \ \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i-1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{i-1}}, \ \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i+1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{i+1}}, \ \\cdots, \ \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{n}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{n}}\\]
+                            </span>
+                            <span class="hidden_pc">
+                                \\[\\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{1}},\\]
+                                \\[\\cdots\\]
+                                \\[\\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i-1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{i-1}},\\]
+                                \\[\\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i+1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{i+1}}\\]
+                                \\[\\cdots\\]
+                                \\[\\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{n}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{n}}\\]
+                            </span>
     
                             para todo \\(i = 1, ..., n\\). Esto es, las condiciones necesarias (de primer orden) para minimizar el costo promedio y para maximizar el beneficio son las mismas.
     
-                            Ahora bien, si la empresa produce n insumos con tecnología Cobb-Douglas (CD) \\[f(X_{1}, ..., X_{n}) = A\\prod_{i=1}^{n} X_{i}^{\\alpha_{i}}\\]
+                            Ahora bien, si la empresa produce n insumos con tecnología Cobb-Douglas (CD) \\[f(x_{1}, ..., x_{n}) = A\\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}\\]
                         
                             Derivando con respecto a cada variable, obtenemos que:
                         
-                            \\[f_{X_{1}}(X_{1}, ..., X_{n}) = \\alpha_{1} \\frac{f(X_{1}, ..., X_{n})}{X_{1}}, 
-                            \\cdots, f_{X_{n}}(X_{1}, ..., X_{n}) = \\alpha_{n} \\frac{f(X_{1}, ..., X_{n})}{X_{n}}\\]
+                            <span class="hidden_phone">
+                                \\[f_{x_{1}}(x_{1}, ..., x_{n}) = \\alpha_{1} \\frac{f(x_{1}, ..., x_{n})}{x_{1}}, 
+                                \\cdots, f_{x_{n}}(x_{1}, ..., x_{n}) = \\alpha_{n} \\frac{f(x_{1}, ..., x_{n})}{x_{n}}\\]
+                            </span>
+                            <span class="hidden_pc">
+                                \\[f_{x_{1}}(x_{1}, ..., x_{n}) = \\alpha_{1} \\frac{f(x_{1}, ..., x_{n})}{x_{1}}, \\]
+                                \\[\\cdots\\]
+                                \\[f_{x_{n}}(x_{1}, ..., x_{n}) = \\alpha_{n} \\frac{f(x_{1}, ..., x_{n})}{x_{n}}\\]
+                            </span>
                         
                             Ahora bien , fijemos \\( i \\) y sea \\( j=1, ..., n \\) con \\( i \\neq j \\). 
                             Reemplazando en el cociente de las condiciones necesarias, obtenemos que:
-                        
-                            \\[\\frac{w_{i}}{w_{j}} = \\frac{f_{X_{i}}(X_{1}, ..., X_{n})}{f_{X_{j}}(X_{1}, ..., X_{n})} 
-                            = \\frac{\\alpha_{i} \\frac{f(X_{1}, ..., X_{n})}{X_{i}}}{\\alpha_{j} \\frac{f(X_{1}, ..., X_{n})}{X_{j}}} 
-                            = \\frac{\\alpha_{i}X_{j}}{\\alpha_{j}X_{i}}\\]
 
+                            <span class="hidden_phone">
+                                \\[\\frac{w_{i}}{w_{j}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{j}}(x_{1}, ..., x_{n})} 
+                                = \\frac{\\alpha_{i} \\frac{f(x_{1}, ..., x_{n})}{x_{i}}}{\\alpha_{j} \\frac{f(x_{1}, ..., x_{n})}{x_{j}}} 
+                                = \\frac{\\alpha_{i}x_{j}}{\\alpha_{j}x_{i}}\\]
+                            </span>
+                            <span class="hidden_pc">
+                                \\[\\frac{w_{i}}{w_{j}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{j}}(x_{1}, ..., x_{n})} 
+                                    = \\frac{\\alpha_{i} \\frac{f(x_{1}, ..., x_{n})}{x_{i}}}{\\alpha_{j} \\frac{f(x_{1}, ..., x_{n})}{x_{j}}} \\]
+                                \\[\\Rightarrow \\frac{w_{i}}{w_{j}} = \\frac{\\alpha_{i}x_{j}}{\\alpha_{j}x_{i}}\\]
+                            </span>
+                            
                             lo cual es equivalente a,
 
-                            \\[\\frac{w_{i} \\alpha_{j}}{w_{j}\\alpha_{i}} = \\frac{X_{j}}{X_{i}}\\]
+                            \\[\\frac{w_{i} \\alpha_{j}}{w_{j}\\alpha_{i}} = \\frac{x_{j}}{x_{i}}\\]
 
                             de donde, 
 
-                            \\[ X_{j} = X_{i} \\frac{w_{i} \\alpha_{j}}{w_{j}\\alpha_{i}}\\]
+                            \\[ x_{j} = x_{i} \\frac{w_{i} \\alpha_{j}}{w_{j}\\alpha_{i}}\\]
 
                             para cada \\( j = 1, ..., n \\) con \\( i \\neq j \\). Esto es, 
 
-                            \\[X_{1} = X_{i} \\frac{w_{i} \\alpha_{1}}{w_{1}\\alpha_{i}}, \\ \\cdots, 
-                            \\ X_{n} = X_{i} \\frac{w_{i} \\alpha_{n}}{w_{n}\\alpha_{i}}\\]
+                            \\[x_{1} = x_{i} \\frac{w_{i} \\alpha_{1}}{w_{1}\\alpha_{i}}, \\ \\cdots, 
+                            \\ x_{n} = x_{i} \\frac{w_{i} \\alpha_{n}}{w_{n}\\alpha_{i}}\\]
 
                             Al reemplazar esta expresión en la condición 
-                            \\( Pf_{X_{i}}(X_{1}, ..., X_{n}) = w_{i} \\), obtenemos que:
+                            \\( Pf_{x_{i}}(x_{1}, ..., x_{n}) = w_{i} \\), obtenemos que:
 
-                            \\[P\\alpha_{i}A \\big[ \\big(X_{i} \\frac{w_{i} \\alpha_{1}}{w_{1}\\alpha_{i}} 
-                            \\big)^{\\alpha_{1}} \\ \\cdots \\ \\big(X_{i} \\frac{w_{i} \\alpha_{i-1}}{w_{i-1}
-                            \\alpha_{i}} \\big)^{\\alpha_{i-1}} \\ X_{i}^{\\alpha_{i} -1} \\ \\big(X_{i} 
-                            \\frac{w_{i} \\alpha_{i+1}}{w_{1}\\alpha_{i}} \\big)^{\\alpha_{i+1}} \\ \\cdots 
-                            \\ \\big(X_{i} \\frac{w_{i} \\alpha_{n}}{w_{n}\\alpha_{i}} \\big)^{\\alpha_{n}} 
-                            \\big] = w_{i}\\]
+                            <span class="hidden_phone">
+                                \\[P\\alpha_{i}A \\big[ \\big(x_{i} \\frac{w_{i} \\alpha_{1}}{w_{1}\\alpha_{i}} 
+                                \\big)^{\\alpha_{1}} \\ \\cdots \\ \\big(x_{i} \\frac{w_{i} \\alpha_{i-1}}{w_{i-1}
+                                \\alpha_{i}} \\big)^{\\alpha_{i-1}} \\ x_{i}^{\\alpha_{i} -1} \\ \\big(x_{i} 
+                                \\frac{w_{i} \\alpha_{i+1}}{w_{1}\\alpha_{i}} \\big)^{\\alpha_{i+1}} \\ \\cdots 
+                                \\ \\big(x_{i} \\frac{w_{i} \\alpha_{n}}{w_{n}\\alpha_{i}} \\big)^{\\alpha_{n}} 
+                                \\big] = w_{i}\\]
 
-                            Entonces, 
+                                Entonces,
+                            </span>
 
-                            \\[ PA \\big( \\frac{w_{i}}{\\alpha_{i}}X_{i} \\big)^{\\sum_{j=1}^{n} 
+                            \\[ PA \\big( \\frac{w_{i}}{\\alpha_{i}}x_{i} \\big)^{\\sum_{j=1}^{n} 
                             \\alpha_{j} - 1} \\prod_{j=1}^{n} \\big(\\frac{\\alpha_{j}}{w_{j}} 
                             \\big)^{\\alpha_{j}} = 1 \\]
 
                             Despejando \\( x_{i} \\), 
 
-                            \\[  \\big(X_{i} \\big)^{\\sum_{j=1}^{n} \\alpha_{j} - 1}   = 
+                            \\[  \\big(x_{i} \\big)^{\\sum_{j=1}^{n} \\alpha_{j} - 1}   = 
                             \\frac{1}{PA} \\big( \\frac{\\alpha_{i}}{w_{i}} \\big)^{\\sum_{j=1}^{n} \\alpha_{j} 
                             - 1}   \\prod_{j=1}^{n}\\big(\\frac{w_{j}}{\\alpha_{j}} \\big)^{\\alpha_{j}} \\]
 
                             Por lo cual, 
 
-                            \\[\\hat{X_{i}} = \\big[ \\frac{1}{PA} \\big( \\frac{\\alpha_{i}}{w_{i}} 
-                            \\big)^{\\sum_{j=1}^{n} \\alpha_{j} - 1}   \\prod_{j=1}^{n}\\big(\\frac{w_{j}}
-                            {\\alpha_{j}} \\big)^{\\alpha_{j}} \\big]^{\\frac{1}{\\sum_{j=1}^{n} 
-                            \\alpha_{j} - 1}} = \\frac{\\alpha_{i}}{w_{i}} \\big[\\frac{1}{PA}  
-                            \\prod_{j=1}^{n}\\big(\\frac{w_{j}}{\\alpha_{j}} \\big)^{\\alpha_{j}} 
-                            \\big]^{\\frac{1}{\\sum_{j=1}^{n} \\alpha_{j} - 1}}\\]
+                            <span class="hidden_phone">
+                                \\[\\hat{x_{i}} = \\big[ \\frac{1}{PA} \\big( \\frac{\\alpha_{i}}{w_{i}} 
+                                \\big)^{\\sum_{j=1}^{n} \\alpha_{j} - 1}   \\prod_{j=1}^{n}\\big(\\frac{w_{j}}
+                                {\\alpha_{j}} \\big)^{\\alpha_{j}} \\big]^{\\frac{1}{\\sum_{j=1}^{n} 
+                                \\alpha_{j} - 1}} = \\frac{\\alpha_{i}}{w_{i}} \\big[\\frac{1}{PA}  
+                                \\prod_{j=1}^{n}\\big(\\frac{w_{j}}{\\alpha_{j}} \\big)^{\\alpha_{j}} 
+                                \\big]^{\\frac{1}{\\sum_{j=1}^{n} \\alpha_{j} - 1}}\\]
+                            </span>
+                            <span class="hidden_pc">
+                                \\[\\hat{x_{i}} = \\big[ \\frac{1}{PA} \\big( \\frac{\\alpha_{i}}{w_{i}} 
+                                \\big)^{\\sum_{j=1}^{n} \\alpha_{j} - 1}   \\prod_{j=1}^{n}\\big(\\frac{w_{j}}
+                                {\\alpha_{j}} \\big)^{\\alpha_{j}} \\big]^{\\frac{1}{\\sum_{j=1}^{n} 
+                                \\alpha_{j} - 1}}\\]
 
-                            para cada \\( i=1, ..., n \\). Las funciones \\( \\widehat{X_{i}} \\) son las 
+                                \\[\\Rightarrow \\hat{x_{i}} = \\frac{\\alpha_{i}}{w_{i}} \\big[\\frac{1}{PA}  
+                                \\prod_{j=1}^{n}\\big(\\frac{w_{j}}{\\alpha_{j}} \\big)^{\\alpha_{j}} 
+                                \\big]^{\\frac{1}{\\sum_{j=1}^{n} \\alpha_{j} - 1}}\\]
+                            </span>
+
+                            para cada \\( i=1, ..., n \\). Las funciones \\( \\widehat{x_{i}} \\) son las 
                             funciones de demanda de factores de la empresa, ellas determinan las cantidades de 
                             factores que se han de usar para maximizar el beneficio. Así, , las cantidades que 
                             se deben producir para maximizar el beneficio son: 
 
-                            \\[\\hat{f} = \\hat{f}(X_{1}, \\cdots, X_{n}) = f(\\hat{X_{1}}, \\cdots, 
-                            \\hat{X_{n}}) \\]
+                            \\[\\hat{f}(x) = \\hat{f}(x_{1}, \\cdots, x_{n}) = f(\\hat{x_{1}}, \\cdots, 
+                            \\hat{x_{n}}) \\]
 
                             Entonces, <strong>la función de oferta</strong> es: 
 
-                            \\[\\hat{f}= \\big(\\frac{1}{P} \\big)^{\\frac{\\sum_{j=1}^{n} \\alpha_{j}}
+                            \\[\\hat{f}(x) = \\big(\\frac{1}{P} \\big)^{\\frac{\\sum_{j=1}^{n} \\alpha_{j}}
                             {\\sum_{j=1}^{n} \\alpha_{j} - 1}} \\big[\\frac{1}{A}  \\prod_{j=1}^{n}
                             \\big(\\frac{w_{j}}{\\alpha_{j}} \\big)^{\\alpha_{j}} \\big]^{\\frac{1}
                             {\\sum_{j=1}^{n} \\alpha_{j} - 1}}\\]
 
                             <strong>La función de beneficio</strong> está dada por:
 
-                            \\[ \\hat{\\Pi}(x_{1}, ..., x_{n}) = P\\hat{f} - \\sum_{i=1}^{n} w_{i}\\hat{X_{i}} \\]
+                            \\[ \\hat{\\Pi}(x) = \\hat{\\Pi}(x_{1}, ..., x_{n}) = P\\hat{f}(X) - \\sum_{i=1}^{n} w_{i}\\hat{X_{i}} \\]
 
-                            Así,
+                            <span class="hidden_phone">
+                                Así,
 
-                            \\[ \\hat{\\Pi}(x_{1}, ..., x_{n}) = \\big[\\frac{1}{PA}  \\prod_{j=1}^{n}
-                            \\big(\\frac{w_{j}}{\\alpha_{j}} \\big)^{\\alpha_{j}} \\big]^{\\frac{1}
-                            {\\sum_{j=1}^{n} \\alpha_{j} - 1}} - \\sum_{i=1}^{n} \\alpha_{i} \\big[\\frac{1}{PA}
-                            \\prod_{j=1}^{n}\\big(\\frac{w_{j}}{\\alpha_{j}} \\big)^{\\alpha_{j}} 
-                            \\big]^{\\frac{1}{\\sum_{j=1}^{n} \\alpha_{j} - 1}}\\]
+                                \\[ \\hat{\\Pi}(x) = \\hat{\\Pi}(x_{1}, ..., x_{n}) = \\big[\\frac{1}{PA}  \\prod_{j=1}^{n}
+                                \\big(\\frac{w_{j}}{\\alpha_{j}} \\big)^{\\alpha_{j}} \\big]^{\\frac{1}
+                                {\\sum_{j=1}^{n} \\alpha_{j} - 1}} - \\sum_{i=1}^{n} \\alpha_{i} \\big[\\frac{1}{PA}
+                                \\prod_{j=1}^{n}\\big(\\frac{w_{j}}{\\alpha_{j}} \\big)^{\\alpha_{j}} 
+                                \\big]^{\\frac{1}{\\sum_{j=1}^{n} \\alpha_{j} - 1}}\\]
+                            </span>
 
                             Por lo cual,
 
-                            \\[ \\hat{\\Pi}(x_{1}, ..., x_{n}) = \\big( 1 - \\sum_{i=1}^{n} \\alpha_{i} \\big)
+                            \\[ \\hat{\\Pi}(x) = \\big( 1 - \\sum_{i=1}^{n} \\alpha_{i} \\big)
                             \\big[\\frac{1}{PA}  \\prod_{j=1}^{n}\\big(\\frac{w_{j}}{\\alpha_{j}} 
                             \\big)^{\\alpha_{j}} \\big]^{\\frac{1}{\\sum_{j=1}^{n} \\alpha_{j} - 1}} \\]
                             Esto nos permite determinar cuánto beneficio genera la empresa bajo condiciones de maximización,
@@ -870,6 +1068,7 @@ function optimizacion_exp_sin(exponente) {
         default:
             funcion_optimizar_CD_sin.innerHTML = `\\(${inicio_var}\\)`;
             funcion_derivada_parcial_CD_sin.innerHTML = `\\(${inicio_deri_parc}\\)`;
+            funcion_derivada_parcial_CD_sin_phone.innerHTML = `${inicio_deri_parc_phone}`;
             inicio_hessiana += `
                 <br><div id="hessiana"></div><br>
                 <ul>
@@ -887,7 +1086,8 @@ function optimizacion_exp_sin(exponente) {
                     Ahora bien, los menores principales son claves para analizar la definitud de la matriz Hessiana, que a su vez ayuda a 
                     clasificar los puntos críticos de una función. Para una matriz \\(${exponente} x ${exponente}\\), los menores principales son: 
                 </p>
-                <div id="menoresPrincipales"></div>
+                <div id="menoresPrincipales" class="hidden_phone"></div>
+                <div id="menoresPrincipales_phone" class="hidden_pc"></div>
                 <p>Teniendo en cuenta que \\( H_{f} \\) es:</p>
                 <ul>
                     <li>
@@ -904,7 +1104,7 @@ function optimizacion_exp_sin(exponente) {
                     </li>
                 </ul>
                 <p>
-                    Luego de realizar un analísis a los valores que puede tener cada \\( \\alpha_{i} \\) y simplificando obtenemos que \\( H_{f} \\) es:
+                    Luego de realizar un analísis a los valores que puede tener cada \\( \\alpha_{i} \\) y simplificando, obtenemos que \\( H_{f} \\) es:
                 </p>
                 <ul>
                     <li>
@@ -940,7 +1140,7 @@ function optimizacion_exp_sin(exponente) {
                         <br>
                     </li>
                     <li>
-                        semidefinida negativa si si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\) \\( \\leq \\) 1
+                        semidefinida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\) \\( \\leq \\) 1
                     </li>
                     <br>
                 </ul>
@@ -1021,7 +1221,7 @@ function optimizacion_exp_sin(exponente) {
                     Ahora bien, los menores principales son claves para analizar la definitud de la matriz Hessiana, que a su vez ayuda a 
                     clasificar los puntos críticos de una función. Para una matriz \\(${exponente} x ${exponente}\\), los menores principales son: 
                 </p>
-                <br><div id="menores_principales_max_CD_sin"></div><br>
+                <br><div id="menores_principales_max_CD_sin"></div>
                 <p>
                     Entonces, resolviendo la ecuación obtenemos que no hay valores con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\)
                     donde se pueda definir la hessiana, lo que indica que no hay un máximo. Por lo tanto, la función no se puede maximizar.
@@ -1056,7 +1256,7 @@ function optimizacion_exp_sin(exponente) {
                     Ahora bien, los menores principales son claves para analizar la definitud de la matriz Hessiana, que a su vez ayuda a 
                     clasificar los puntos críticos de una función. Para una matriz \\(${exponente} x ${exponente}\\), los menores principales son: 
                 </p>
-                <br><div id="menores_principales_min_CD_sin"></div><br>
+                <br><div id="menores_principales_min_CD_sin"></div>
                 <p>
                     Entonces, resolviendo la ecuación obtenemos que no hay valores con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\)
                     donde se pueda definir la hessiana, lo que indica que no hay un mínimo. Por lo tanto, la función no se puede minimizar.

@@ -8,6 +8,22 @@ html {
     font-size: 0.75rem;
 }
 
+.navbar-toggler {
+    border-color: transparent; /* Opcional: para eliminar el borde */
+}
+
+.navbar-toggler-icon {
+    background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"%3E%3Cpath stroke="white" stroke-width="2" stroke-linecap="round" d="M7 11l16 16M7 27L23 11" /%3E%3C/svg%3E');
+}
+
+.navbar-toggler.collapsed .navbar-toggler-icon {
+    background-image: url('data:image/svg+xml;charset=utf8,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"%3E%3Cpath stroke="white" stroke-width="2" stroke-linecap="round" d="M5 7h20M5 15h20M5 23h20" /%3E%3C/svg%3E');
+}
+
+.navbar-toggler:focus{
+    box-shadow: none;
+}
+
 .letra_img{
     font-size: 12px;
 }
@@ -19,7 +35,7 @@ html {
 }
 .plot {
     flex: 1 1 50%;
-    max-width: 80%;
+    max-width: 70%;
 }
 .plot img {
     width: 100%;
@@ -38,7 +54,7 @@ html {
 }
 .figure {
     flex: 1 1 55%;
-    max-width: 65%;
+    max-width: 50%;
 }
 .figure img {
     width: 100%;
@@ -55,6 +71,11 @@ html {
 
 .hidden_phone{
     display: block;
+}
+
+.padding_form {
+    padding-right: 3rem;
+    padding-left: 3rem;
 }
 
 @media (max-width: 724px) {
@@ -81,6 +102,18 @@ html {
     }
     .hidden_phone{
         display: none;
+    }
+    .padding_form {
+        padding-right: 0rem;
+        padding-left: 0rem;
+    }
+    .padding_form .row{
+        margin-right: 0rem;
+        margin-left: 0rem;
+    }
+    .figure {
+        flex: 1 1 55%;
+        max-width: 80%;
     }
 }
 

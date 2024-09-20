@@ -96,7 +96,8 @@ def calcular_menores_principales(A, n, exponentes):
         for i in range(n - k + 1):
             submatriz = hessiana[i:i+k, i:i+k]
             menor = submatriz.det()
-            menor_latex = latex(menor)
+            menor_factorizado = sp.factor(menor)
+            menor_latex = latex(menor_factorizado)
             menores_k.append(menor_latex)
         menores.append(menores_k)
     return menores

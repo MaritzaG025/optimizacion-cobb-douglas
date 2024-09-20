@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, jsonify
 from static.python.hessiana_cobb_douglas import generar_hessiana
 from static.python.hessiana_cobb_douglas import generar_hessiana_con
+from static.python.bordeado_cobb_douglas import generar_matriz_bordeada
+from static.python.bordeado_cobb_douglas import calcular_determinante_bordeado
 from static.python.menores_principales_cobb_douglas import calcular_hessiana
 from static.python.menores_principales_cobb_douglas import menores_principales
 from static.python.cobb_douglas_sin import calcular_cobb_douglas
@@ -31,7 +33,16 @@ def calcular_hessiana_endpoint():
     n = int(request.args.get('n', 2))  # Obtener el número de variables desde el parámetro de la URL
     hessiana_latex = generar_hessiana(n)  # Llamar a la función generar_hessiana
     hessiana_latex_con = generar_hessiana_con(n)
-    return jsonify({'hessiana': hessiana_latex, 'hessiana_con': hessiana_latex_con})  # Devolver la Hessiana en formato LaTeX como JSON
+    return jsonify({'hessiana': hessiana_latex, 'hessiana_con': hessiana_latex_con}) 
+
+# Calcular el determinante bordeado en formato latex
+@app.route('/calcular_det_bordeado', methods=['GET'])
+def calcular_bordeado_endpoint():
+    n = int(request.args.get('n', 2))  # Obtener el número de variables desde el parámetro de la URL
+    hessiana_matriz_bordeada = generar_matriz_bordeada(n)
+    determinante_bordeado = calcular_determinante_bordeado(n)
+    return jsonify({'hessiana_bordeada': hessiana_matriz_bordeada, 'determinante_bordeado': determinante_bordeado}) 
+
 
 # Calcular los menores principales en formato latex
 @app.route('/calcular_menores_principales', methods=['GET'])

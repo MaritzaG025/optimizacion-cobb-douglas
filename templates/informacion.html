@@ -1,6 +1,6 @@
 {% extends './base.html' %} {% block title %} Información {% endblock %} {%
 block body %}
-<div class="mx-5">
+<div class="px-3">
   <h1>Funciones de tipo Cobb-Douglas</h1>
   <span class="my-10">
     Una función de tipo Cobb-Douglas (CD) es una función matemática multivariada comúnmente utilizada para
@@ -305,7 +305,13 @@ block body %}
         <div class="w-full d-flex justify-content-center" id="funcion_optimizar_CD"></div>
         <br>
         <div id="text_ini_deri_parc_CD"></div>
-        <div class="w-full d-flex justify-content-center" id="funcion_deri_parc_CD"></div>
+        <div class="hidden_phone">
+          <div class="w-full d-flex justify-content-center" id="funcion_deri_parc_CD"></div>
+        </div>
+        <div class="hidden_pc">
+          <div class="w-full d-flex align-items-center flex-column" id="funcion_deri_parc_CD_phone"></div>
+        </div>
+        <div class="w-full d-flex justify-content-center" id="funcion_deri_parc_CD_lambda"></div>
         <br>
         <p>Para \(A \neq 0 \) y cada \(\alpha_{i} \neq 0\).</p>
         <br>
