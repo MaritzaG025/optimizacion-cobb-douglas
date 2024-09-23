@@ -62,10 +62,3 @@ def calcular_determinante_bordeado(exponentes):
     factor_latex = sp.latex(factor_reemplazado)
     
     return f"\\[ |\\Delta_{{{exponentes}}}| = {factor_latex} \\left[ {determinante_latex} \\right] \\]"
-
-
-
-
-
-
-

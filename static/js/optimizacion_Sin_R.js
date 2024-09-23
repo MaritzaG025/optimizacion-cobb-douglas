@@ -55,7 +55,6 @@ function obtenerMenoresPrincipales(n) {
 }
 
 function mostrarCobbDouglasSin(cant_variables, tecnologia_A, valor_exponentes, calculos_CD_sin, operacion_CD) {
-    
     let derivadas_CD_sin = calculos_CD_sin.derivadas;
     let arr_derivadas_CD_sin_phone = String(derivadas_CD_sin).split(",");
     let derivadas_CD_sin_phone = ``;
@@ -448,6 +447,11 @@ function optimizacion_exp_sin(exponente) {
     let new_func_beneficio = `
         \\[ \\widehat{Q}(x) = (1 - ({${exponentes_suma}})) \\biggl[ \\frac{1}{PA} ${exp_func_oferta} \\biggr]  ^{\\frac{1}{${exponentes_suma} - 1}} \\]
     `;
+
+    const funcion_derivada_parcial_CD_sin_lambda = document.getElementById(
+        "funcion_deri_parc_CD_lambda"
+    );
+    funcion_derivada_parcial_CD_sin_lambda.innerHTML = ``;
 
     switch (exponente) {
         case 1:

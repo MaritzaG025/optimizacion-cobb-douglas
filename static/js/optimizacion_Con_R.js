@@ -3,7 +3,6 @@ function mostrarHessiana_Con(hessianaLatex) {
   hessianaDiv.innerHTML = `\\[ H_{\\psi} (x) = ${hessianaLatex.hessiana_con}\\]`;
 
   MathJax.typeset();
-  MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
 
 function obtenerHessiana_Con(n) {
@@ -25,7 +24,6 @@ function mostrarBordeado_Con(hessianaLatex) {
   detBordeadoDiv.innerHTML = hessianaLatex.determinante_bordeado;
 
   MathJax.typeset();
-  MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
 }
 
 function obtenerBordeado_Con(n) {
@@ -81,6 +79,269 @@ function obtenerMenoresPrincipales_Con(n) {
     .catch(error => {
       console.error("Error:", error);
     });
+}
+
+function mostrarCobbDouglasConPresupuesto(
+  cant_variables,
+  tecnologia_A,
+  valor_exponentes,
+  precios,
+  presupuesto,
+  calculos_CD_con,
+  operacion_CD
+) {
+  // Extraer datos del cálculo
+  let derivadas_CD_con = calculos_CD_con.derivadas;
+  let arr_derivadas_CD_con_phone = String(derivadas_CD_con).split(",");
+  let derivadas_CD_con_phone = ``;
+  arr_derivadas_CD_con_phone.forEach(element => {
+    derivadas_CD_con_phone += `<p>\\( ${element} \\)</p>`;
+  });
+  let punto_critico_CD_con = calculos_CD_con.puntos_criticos;
+  let det_bordeado_CD_con = calculos_CD_con.det_bordeado;
+  let det_bordeado_evaluado_CD_con = calculos_CD_con.det_bordeado_evaluado[0];
+  let clasificacion_CD_con = calculos_CD_con.det_bordeado_evaluado[1];
+
+  if (tecnologia_A == "1" || tecnologia_A == 1) {
+    tecnologia_A = "";
+  }
+
+  let lista_var_CD_con = ``;
+  let inicio_func = `${tecnologia_A} `;
+  let inicio_func_costo = ``;
+  for (let i = 1; i <= cant_variables; i++) {
+    lista_var_CD_con += `x_{${i}}`;
+    if (i < cant_variables) {
+      lista_var_CD_con += ", \\ ";
+    }
+
+    if (valor_exponentes[i - 1] == "1" || valor_exponentes[i - 1] == 1) {
+      inicio_func += `x_{${i}}`;
+    } else {
+      inicio_func += `x_{${i}}^{${valor_exponentes[i - 1]}}`;
+    }
+
+    if (precios[i - 1] == "1" || precios[i - 1] == 1) {
+      inicio_func_costo += `x_{${i}}`;
+    } else {
+      inicio_func_costo += `${precios[i - 1]}x_{${i}}`;
+    }
+
+    if (i < cant_variables) {
+      inicio_func_costo += " \\ + \\ ";
+    }
+  }
+
+  // const texto_resultante = ``;
+
+  // if (clasificacion_CD_con == " > 0 ") {
+  //     texto_resultante += `que hemos encontrado un punto de máximo local para la función CD bajo la 
+  //     restricción presupuestaria. Dado que la función CD es cóncava, este máximo es un máximo absoluto.`;
+  // }else if (clasificacion_CD_con == " < 0 ") {
+  //     texto_resultante += `el punto crítico no es ni un máximo ni un mínimo local.`;
+  // }else{
+  //     console.log('elef');
+  // }
+
+  if (operacion_CD === "maximizar") {
+    funcionDiv = document.getElementById("funcion_max_CD_con");
+    lagrangianoDiv = document.getElementById("func_lagrangiana_max_con");
+    derivadaDiv = document.getElementById("derivada_max_CD_con");
+    puntosCriticosDiv = document.getElementById("puntos_criticos_max_CD_con");
+    detBordeadoDiv = document.getElementById("det_bordeado_max_CD_con");
+    detBordeadoEvaluadoDiv = document.getElementById("det_bordeado_max_CD_con_evaluado");
+    // detBordeadoresultanteDiv = document.getElementById("det_bordeado_max_CD_con_result");
+  } else if (operacion_CD === "minimizar") {
+    funcionDiv = document.getElementById("funcion_min_CD_con");
+    lagrangianoDiv = document.getElementById("func_lagrangiana_min_con");
+    derivadaDiv = document.getElementById("derivada_min_CD_con");
+    puntosCriticosDiv = document.getElementById("puntos_criticos_min_CD_con");
+    detBordeadoDiv = document.getElementById("det_bordeado_min_CD_con");
+    detBordeadoEvaluadoDiv = document.getElementById("det_bordeado_min_CD_con_evaluado");
+    // detBordeadoresultanteDiv = document.getElementById("det_bordeado_min_CD_con_result");
+    // texto_resultante += `que hemos encontrado un punto de mínimo local para la función CD bajo la 
+    //   restricción presupuestaria. Dado que la función CD es convexa, este mínimo es un mínimo absoluto.`;
+  }
+
+  funcionDiv.innerHTML = `
+    <p class="hidden_phone">
+        \\[
+            \\begin{align*}
+                \\text{${operacion_CD}:} && f(x) = f(${lista_var_CD_con}) =  ${inicio_func} \\\\
+                \\text{Sujeto a:} && c(x) = c(${lista_var_CD_con}) = ${inicio_func_costo} = ${presupuesto} \\\\
+            \\end{align*}
+        \\]
+    </p>
+    <p class="hidden_pc">
+        \\[
+            \\begin{align*}
+                \\text{${operacion_CD.substring(
+                  0,
+                  3
+                )}:} && f(x) = ${inicio_func} \\\\
+                \\text{Sujeto a:} && c(x) = ${inicio_func_costo} = ${presupuesto} \\\\
+            \\end{align*}
+        \\]
+    </p>
+  `;
+
+  lagrangianoDiv.innerHTML = ` 
+    <p class="hidden_phone">
+      \\[
+          \\psi(x) = \\psi(${lista_var_CD_con}) = ${inicio_func} - \\lambda \\left( ${inicio_func_costo} - ${presupuesto} \\right)  
+      \\]
+    </p>
+    <p class="hidden_pc">
+      \\[
+        \\psi(x) = ${inicio_func} 
+      \\] 
+      \\[
+        - \\lambda \\left( ${inicio_func_costo} - ${presupuesto} \\right)  
+      \\]
+    </p>
+  `;
+
+  derivadaDiv.innerHTML = `<div class="d-flex align-items-center flex-column">
+                              ${derivadas_CD_con_phone}
+                          </div>`;
+  puntosCriticosDiv.innerHTML = `\\[ ${punto_critico_CD_con} \\]`;
+  detBordeadoDiv.innerHTML = `\\[ ${det_bordeado_CD_con} \\]`;
+  detBordeadoEvaluadoDiv.innerHTML = `\\[ ${det_bordeado_evaluado_CD_con} \\]`;
+  // detBordeadoresultanteDiv.innerHTML = `\\[ ${texto_resultante} \\]`;
+  
+  MathJax.typeset();
+}
+
+function obtenerCobbDouglasConPresupuesto(cant_var, operacion_CD) {
+  let tecno_A = generarParametroA();
+  let presupuesto = generarParametroPrecioTotal();
+  let valor_exp = generarNumerosAleatorios(cant_var, operacion_CD);
+  let precios = generarPrecios(cant_var);
+
+  const data = {
+    A: tecno_A,
+    n: parseInt(cant_var),
+    exponentes: valor_exp,
+    precios: precios,
+    presupuesto: presupuesto
+  };
+
+  // const data = {
+  //   A: 10,
+  //   n: 3,
+  //   exponentes: [0.5, 0.3, 0.2],
+  //   precios: [4,2,1],
+  //   presupuesto: 100
+  // };
+
+  fetch("/calcular_cobb_douglas_con_presupuesto", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Error del servidor: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      mostrarCobbDouglasConPresupuesto(
+        cant_var,
+        tecno_A,
+        valor_exp,
+        precios,
+        presupuesto,
+        data,
+        operacion_CD
+      );
+    })
+    .catch(error => {
+      console.error("Error:", error);
+    });
+}
+
+function generarNumerosAleatorios(cantidad, operacion_CD) {
+  let numeros = [];
+  let sumaTotal = 0;
+
+  if (operacion_CD === "maximizar") {
+    for (let i = 0; i < cantidad; i++) {
+      let numero;
+
+      do {
+        numero = Math.random() * (1 - sumaTotal);
+        numero = parseFloat(numero.toFixed(2));
+      } while (numero === 0);
+
+      // let numero = Math.random() * (1 - sumaTotal);
+      // numero = parseFloat(numero.toFixed(2));
+      numeros.push(numero);
+      sumaTotal += numero;
+
+      // Si es el último número, ajustamos para que la suma sea exactamente 1
+      if (i === cantidad - 1 && sumaTotal > 1) {
+        numeros[i] += parseFloat((1 - sumaTotal).toFixed(2));
+      }
+    }
+  } else if (operacion_CD === "minimizar") {
+    let cumpleCondicion = false;
+
+    while (!cumpleCondicion) {
+      numeros = [];
+      let mayorUno = false;
+
+      // Generar números
+      for (let i = 0; i < cantidad; i++) {
+        let numero;
+
+        // Generar números aleatorios en el intervalo [-10, 10]
+        numero = Math.random() * (10 - -10) + -10;
+        numero = parseFloat(numero.toFixed(2));
+
+        // Asegurar que la condición de números sea cumplida
+        if (numero > 1) {
+          if (mayorUno) {
+            numero = -Math.abs(numero); // Si ya hay un número mayor a 1, hacer este menor a 0
+          } else {
+            mayorUno = true; // Permitir solo un número mayor a 1
+          }
+        } else {
+          numero = -Math.abs(numero); // Hacer todos los números no mayores a 1 menores a 0
+        }
+
+        numeros.push(numero);
+      }
+
+      // Comprobar que la condición se cumple
+      cumpleCondicion = numeros.filter(num => num > 1).length <= 1; // A lo sumo 1 número mayor a 1
+    }
+  }
+
+  return numeros;
+}
+
+function generarParametroA(min = 1, max = 50) {
+  let A_var = Math.random() * (max - min) + min;
+  A_var = parseFloat(A_var.toFixed(2));
+  return A_var;
+}
+
+function generarPrecios(cantidad, minPrecio = 10, maxPrecio = 100) {
+  let precios = [];
+  for (let i = 0; i < cantidad; i++) {
+    let precio = Math.random() * (maxPrecio - minPrecio) + minPrecio;
+    precios.push(parseInt(precio));
+  }
+  return precios;
+}
+
+function generarParametroPrecioTotal(min = 110, max = 1000) {
+  let C_var = Math.random() * (max - min) + min;
+  C_var = parseInt(C_var);
+  return C_var;
 }
 
 function optimizacion_exp_con(exponente) {
@@ -146,7 +407,7 @@ function optimizacion_exp_con(exponente) {
             \\[
                 \\begin{align*}
                     \\text{Maximizar o Minimizar:} && f(x) = f(${lista_var_CD}) = A ${var_expo_func} \\\\
-                    \\text{Sujeto a:} && c(x) = c(${lista_var_CD}) = ${var_expo_costo} \\\\
+                    \\text{Sujeto a:} && c(x) = c(${lista_var_CD}) = ${var_expo_costo} = c \\\\
                 \\end{align*}
             \\]
         </p>
@@ -154,12 +415,11 @@ function optimizacion_exp_con(exponente) {
             \\[
                 \\begin{align*}
                     \\text{Max o Min:} && f(x) = A \\prod_{i=1}^{${exponente}} x_{i}^{\\alpha_{i}} \\\\
-                    \\text{Sujeto a:} && c(x) = \\sum_{i=1}^{${exponente}} w_{i}x_{i} \\\\
+                    \\text{Sujeto a:} && c(x) = \\sum_{i=1}^{${exponente}} w_{i}x_{i} = c \\\\
                 \\end{align*}
             \\]
         </p>
     `;
-
   const text_ini_deri_parc_CD_con = document.getElementById(
     "text_ini_deri_parc_CD"
   );
@@ -365,13 +625,13 @@ function optimizacion_exp_con(exponente) {
         \\[ \\hat{X_{i}} \\ = \\ \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}}, \\ \\ \\ \\ \\ 
         \\forall \\ i \\ = \\ 1, ..., n \\]
 
-        Por lo tanto, por el teorema de lagrange, este es el valor óptimo de cada variable \\(X_{i}\\) 
-        para maximizar la función CD bajo la restricción presupuestaria. Sí comprobamos que \\((-1)^{n} |\\Delta_n| > 0\\) y la matriz Hessiana es definida negativa,
-        esto garantiza que la función Cobb-Douglas tiene un máximo local bajo la restricción 
-        presupuestaria. Por lo tanto, este es el valor óptimo de cada variable \\(X_{i}\\) que maximiza 
-        la función CD bajo la restricción presupuestaria, es decir, el valor de \\(X\\) para el cual se 
-        alcanza el máximo es \\((\\hat{X_{1}}, ..., \\hat{X_{n}})\\). Así, las cantidades que se deben 
-        producir para maximizar la utilidad son:
+        Entonces, de acuerdo con el teorema de Lagrange, los valores óptimos de cada variable \\(X_{i}\\) 
+        para maximizar la función CD bajo la restricción presupuestaria. Sí verificamos que \\((-1)^{n} |\\Delta_n| > 0\\) 
+        y la matriz Hessiana es definida negativa, esto garantiza que la función CD tiene un máximo 
+        local bajo la restricción presupuestaria. Además, si la función es cóncava, este máximo se convierte 
+        en un máximo absoluto. Por lo tanto, los valores óptimos de cada variable \\(X_{i}\\) que maximizan 
+        la función son los que alcanzan el máximo, representados como \\((\\hat{X_{1}}, ..., \\hat{X_{n}})\\). 
+        Así, las cantidades que se deben producir para maximizar la utilidad son:
 
         <p>
             \\[\\hat{Q} = \\hat{Q}(X_{1}, \\cdots, X_{n}) = Q(\\hat{X_{1}}, \\cdots, \\hat{X_{n}}) \\]
@@ -421,14 +681,16 @@ function optimizacion_exp_con(exponente) {
         \\hat{X_{i}} = \\frac{\\beta_{i} c}{w_{i} \\sum_{j=1}^{n} \\beta_{j}}, \\quad \\forall i = 1, ..., n
         \\]
 
-        Por lo tanto, el valor óptimo de cada variable \\(X_{i}\\) para minimizar la función de costos Cobb-Douglas bajo la restricción presupuestaria es:
+        Por lo tanto, el valor óptimo de cada variable \\(X_{i}\\) para minimizar la función de costos CD bajo la restricción presupuestaria es:
 
         \\[
         \\hat{X_{i}} = \\frac{\\beta_{i} c}{w_{i} \\sum_{j=1}^{n} \\beta_{j}}, \\quad \\forall i = 1, ..., n
         \\]
 
-        Si comprobamos que \\((-1)^{n} |\\Delta_n| > 0\\) y la matriz Hessiana es definida positiva, esto garantiza que la función de costos tiene un mínimo local bajo la restricción presupuestaria.
-
+        Sí verificamos que \\((-1)^{n} |\\Delta_n| > 0\\) y la matriz Hessiana es definida positiva, esto garantiza que la función CD tiene un mínimo 
+        local bajo la restricción presupuestaria. Además, si la función es convexa, este mínimo se convierte 
+        en un mínimo absoluto. Por lo tanto, los valores óptimos de cada variable \\(X_{i}\\) que minimizan 
+        la función son los que alcanzan el mínimo, representados como \\((\\hat{X_{1}}, ..., \\hat{X_{n}})\\). 
         Así, las cantidades que se deben producir para minimizar los costos son:
 
         <p>
@@ -574,10 +836,89 @@ function optimizacion_exp_con(exponente) {
                     <li>Sí, \\((-1)^{${exponente}} |\\Delta_${exponente}| < 0\\) el punto crítico no es ni un máximo ni un mínimo local.</li>
                 </ul>
                 
-            `;
+      `;
+
+      inicio_maximizador += `
+            <p>
+                Una función CD se maximiza cuando el determinante bordeado es positivo y la matriz Hessiana es definida negativa. Sabemos que la matriz hessiana 
+                \\( H_{${exponente}} f(x) \\) es definida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\leq \\) 1
+            </p>
+            <p>
+                <u> Ejemplo </u>: Supongamos que queremos maximizar la función Cobb-Douglas \\( f(x) \\) sujeta a la restricción presupuestal \\( c(x) \\), de la siguiente forma:
+            </p>
+            <br><div id="funcion_max_CD_con"></div><br>
+            Por el método del multiplicador de Lagrange, definimos la función Lagrangiana como:
+            <br><div id="func_lagrangiana_max_con"></div><br>
+            <p>
+              Calculando la derivada de \\( \\psi(x) \\) con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\), obtenemos que:
+            </p>
+            <br><div id="derivada_max_CD_con"></div><br>
+            <p>
+              Entonces, igualando la derivada a cero y resolviendo la ecuación, por el teorema de Lagrange, obtenemos que el valor óptimo para cada variable, 
+              respectivamente, para maximizar la función CD bajo la restricción presupuestaria, es:
+            </p>
+            <br><div id="puntos_criticos_max_CD_con"></div><br>
+            Por el valor de los exponentes de la función de producción CD, podemos afirmar que la matriz Hessiana \\(H_{\\psi}(X)\\) de la función Lagrangiana es definida negativa.
+
+            Ahora bien, el determinante bordeado es:
+            <br><div id="det_bordeado_max_CD_con"></div><br>
+
+            Evaluando en el punto crítico, obtenemos que: 
+            <br><div id="det_bordeado_max_CD_con_evaluado"></div><br>
+
+      `;
+
+      inicio_minimizador += `
+        <p>
+            Una función CD se minimiza cuando el determinante bordeado es positivo y la matriz Hessiana es definida positiva. 
+            Sabemos que la matriz hessiana \\( H_{${exponente}} f(x) \\) es definida positiva si se cumple alguno de los siguientes casos:
+            <br><br>
+            <ul>
+              <li>
+                ${exponentes_list_0}
+              </li>
+              <li>
+                \\( ${exponentes_suma} \\) \\( \\geq \\) 1, \\( \\alpha_{i} < 0 \\) para cada \\( i \\) (\\( 1 \\leq i \\leq ${exponente} \\))
+                excepto para un único valor de \\( i \\), es decir, existe \\( j \\) tal que \\( j \\neq i \\) y \\( \\alpha_{j} > 1 \\)
+              </li>
+            </ul>
+            <br>
+        </p>
+        <p>
+            <u> Ejemplo </u>: Supongamos que queremos minimizar la función Cobb-Douglas \\( f(x) \\) sujeta a la restricción presupuestal \\( c(x) \\), de la siguiente forma:
+        </p>
+        <br><div id="funcion_min_CD_con"></div><br>
+        Por el método del multiplicador de Lagrange, definimos la función Lagrangiana como:
+        <br><div id="func_lagrangiana_min_con"></div><br>
+        <p>
+          Calculando la derivada de \\( \\psi(x) \\) con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\), obtenemos que:
+        </p>
+        <br><div id="derivada_min_CD_con"></div><br>
+        <p>
+          Entonces, igualando la derivada a cero y resolviendo la ecuación, por el teorema de Lagrange, obtenemos que el valor óptimo para cada variable, 
+          respectivamente, para minimizar la función CD bajo la restricción presupuestaria, es:
+        </p>
+        <br><div id="puntos_criticos_min_CD_con"></div><br>
+        Por el valor de los exponentes de la función de producción CD, podemos afirmar que la matriz Hessiana \\(H_{\\psi}(X)\\) de la función Lagrangiana es definida positiva.
+
+        Ahora bien, el determinante bordeado es:
+        <br><div id="det_bordeado_min_CD_con"></div><br>
+
+        Evaluando en el punto crítico, obtenemos que: 
+        <br><div id="det_bordeado_min_CD_con_evaluado"></div><br>
+
+        Concluyendo así que, 
+
+      `;
+
+      inicio_conclusion += ``;
+
       obtenerHessiana_Con(exponente);
       obtenerBordeado_Con(exponente);
       obtenerMenoresPrincipales_Con(exponente);
+      obtenerCobbDouglasConPresupuesto(exponente, "maximizar");
+      obtenerCobbDouglasConPresupuesto(exponente, "minimizar");
+      MathJax.typeset();
 
       break;
   }

@@ -6,6 +6,7 @@ from static.python.bordeado_cobb_douglas import calcular_determinante_bordeado
 from static.python.menores_principales_cobb_douglas import calcular_hessiana
 from static.python.menores_principales_cobb_douglas import menores_principales
 from static.python.cobb_douglas_sin import calcular_cobb_douglas
+from static.python.cobb_douglas_con import calcular_cobb_douglas_restriccion
 from static.python.generate_plots_example import generate_plots_example
 from static.python.generate_plots_example import generate_plots_example_derivadas
 
@@ -69,6 +70,23 @@ def calcular_cobb_douglas_endpoint():
         print(f"Error al calcular Cobb-Douglas: {e}")
         return jsonify({"error": "Error interno del servidor"}), 500
 
+@app.route('/calcular_cobb_douglas_con_presupuesto', methods=['POST'])
+def calcular_cobb_douglas_restriccion_endpoint():
+    try:
+        data = request.json
+        A = data['A']
+        n = data['n']
+        exponentes = data['exponentes']
+        precios = data['precios']
+        presupuesto = data['presupuesto']
+        resultados = calcular_cobb_douglas_restriccion(A, n, exponentes, precios, presupuesto)
+        
+        return jsonify(resultados)
+    
+
+    except Exception as e:
+        print(f"Error al calcular Cobb-Douglas: {e}")
+        return jsonify({"error": "Error interno del servidor"}), 500
 
 #Iniciar app
 
