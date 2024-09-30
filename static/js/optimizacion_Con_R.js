@@ -100,25 +100,33 @@ function mostrarCobbDouglasConPresupuesto(
   let punto_critico_CD_con = calculos_CD_con.puntos_criticos;
   let det_bordeado_CD_con = calculos_CD_con.det_bordeado;
   let det_bordeado_evaluado_CD_con = calculos_CD_con.det_bordeado_evaluado[0];
-  let clasificacion_CD_con = calculos_CD_con.det_bordeado_evaluado[1];
+  let clasificacion_CD_con = (calculos_CD_con.det_bordeado_evaluado)[1];
+  let valor_puntos_criticos = calculos_CD_con.valor_puntos_criticos;
 
   if (tecnologia_A == "1" || tecnologia_A == 1) {
     tecnologia_A = "";
   }
 
   let lista_var_CD_con = ``;
+  let lista_var_CD_con_opt = ``;
   let inicio_func = `${tecnologia_A} `;
   let inicio_func_costo = ``;
+  let inicio_func_opt = `${tecnologia_A} `;
+
   for (let i = 1; i <= cant_variables; i++) {
     lista_var_CD_con += `x_{${i}}`;
+    lista_var_CD_con_opt += `\\hat{x}_{${i}}`;
     if (i < cant_variables) {
       lista_var_CD_con += ", \\ ";
+      lista_var_CD_con_opt += ", \\ ";
     }
 
     if (valor_exponentes[i - 1] == "1" || valor_exponentes[i - 1] == 1) {
       inicio_func += `x_{${i}}`;
+      inicio_func_opt += `\\hat{x}_{${i}}`;
     } else {
       inicio_func += `x_{${i}}^{${valor_exponentes[i - 1]}}`;
+      inicio_func_opt += `\\hat{x}_{${i}}^{${valor_exponentes[i - 1]}}`;
     }
 
     if (precios[i - 1] == "1" || precios[i - 1] == 1) {
@@ -132,16 +140,51 @@ function mostrarCobbDouglasConPresupuesto(
     }
   }
 
-  // const texto_resultante = ``;
+  let texto_resultante_max_min = "";
 
-  // if (clasificacion_CD_con == " > 0 ") {
-  //     texto_resultante += `que hemos encontrado un punto de máximo local para la función CD bajo la 
-  //     restricción presupuestaria. Dado que la función CD es cóncava, este máximo es un máximo absoluto.`;
-  // }else if (clasificacion_CD_con == " < 0 ") {
-  //     texto_resultante += `el punto crítico no es ni un máximo ni un mínimo local.`;
-  // }else{
-  //     console.log('elef');
-  // }
+  switch (clasificacion_CD_con) {
+    case " > 0 ":
+      let parametro_optimizar = "mínimo";
+      let operacion_optimizar = "minimizan";
+      let funcion_optimizar_concava_convexa = "convexa";
+      
+      if (operacion_CD === "maximizar") {
+        parametro_optimizar = "máximo"
+        operacion_optimizar = "maximizan"
+        funcion_optimizar_concava_convexa = "cóncava"
+      }
+
+      texto_resultante_max_min += `
+        <p>
+          Concluyendo, hemos encontrado un punto ${parametro_optimizar} local para la función Cobb-Douglas bajo la 
+          restricción presupuestaria. Además, dado que la función Cobb-Douglas es ${funcion_optimizar_concava_convexa}, 
+          este punto ${parametro_optimizar} es un ${parametro_optimizar} absoluto. Por lo tanto, los valores óptimos de 
+          cada variable \\(${lista_var_CD_con}\\) que ${operacion_optimizar} la función son los que alcanzan el 
+          ${parametro_optimizar}. Así, el valor de la función objetivo evaluada en las soluciones óptimas es:
+
+          <span class="hidden_phone">
+            \\[
+              \\hat{f}(x) = f(\\hat{x}) = f(${lista_var_CD_con_opt}) = ${inicio_func_opt} = ${valor_puntos_criticos}
+            \\]
+          </span>
+          <span class="hidden_pc">
+            \\[
+              \\hat{f}(x) = f(\\hat{x}) = ${inicio_func_opt} = ${valor_puntos_criticos}
+            \\]
+          </span>
+
+          Concluyendo así que, la función en este punto opera de manera óptima, y no es posible mejorar 
+          su valor sin ajustar el presupuesto o los precios de los insumos.
+        </p>`;
+
+        break;
+  
+    default:
+      texto_resultante_max_min += `Concluyendo así que, el punto crítico no es ni un máximo ni un mínimo local. 
+      Este resultado sugiere que la función no alcanza un óptimo en el punto crítico evaluado, lo que podría indicar 
+      la presencia de un punto de silla o una falta de condiciones necesarias para la optimización con la restricción dada.`;
+      break;
+  }
 
   if (operacion_CD === "maximizar") {
     funcionDiv = document.getElementById("funcion_max_CD_con");
@@ -150,7 +193,7 @@ function mostrarCobbDouglasConPresupuesto(
     puntosCriticosDiv = document.getElementById("puntos_criticos_max_CD_con");
     detBordeadoDiv = document.getElementById("det_bordeado_max_CD_con");
     detBordeadoEvaluadoDiv = document.getElementById("det_bordeado_max_CD_con_evaluado");
-    // detBordeadoresultanteDiv = document.getElementById("det_bordeado_max_CD_con_result");
+    conclusionResultanteDiv = document.getElementById("conclusion_max_CD_con_evaluado");
   } else if (operacion_CD === "minimizar") {
     funcionDiv = document.getElementById("funcion_min_CD_con");
     lagrangianoDiv = document.getElementById("func_lagrangiana_min_con");
@@ -158,9 +201,7 @@ function mostrarCobbDouglasConPresupuesto(
     puntosCriticosDiv = document.getElementById("puntos_criticos_min_CD_con");
     detBordeadoDiv = document.getElementById("det_bordeado_min_CD_con");
     detBordeadoEvaluadoDiv = document.getElementById("det_bordeado_min_CD_con_evaluado");
-    // detBordeadoresultanteDiv = document.getElementById("det_bordeado_min_CD_con_result");
-    // texto_resultante += `que hemos encontrado un punto de mínimo local para la función CD bajo la 
-    //   restricción presupuestaria. Dado que la función CD es convexa, este mínimo es un mínimo absoluto.`;
+    conclusionResultanteDiv = document.getElementById("conclusion_min_CD_con_evaluado");
   }
 
   funcionDiv.innerHTML = `
@@ -207,6 +248,7 @@ function mostrarCobbDouglasConPresupuesto(
   puntosCriticosDiv.innerHTML = `\\[ ${punto_critico_CD_con} \\]`;
   detBordeadoDiv.innerHTML = `\\[ ${det_bordeado_CD_con} \\]`;
   detBordeadoEvaluadoDiv.innerHTML = `\\[ ${det_bordeado_evaluado_CD_con} \\]`;
+  conclusionResultanteDiv.innerHTML = texto_resultante_max_min;
   // detBordeadoresultanteDiv.innerHTML = `\\[ ${texto_resultante} \\]`;
   
   MathJax.typeset();
@@ -574,7 +616,8 @@ function optimizacion_exp_con(exponente) {
                 \\]
 
                 <p>Para verificar si el punto crítico maximiza o minimiza la función, calculamos el determinante de \\(\\Delta_${exponente}\\) como:</p>
-                \\[
+                <span class="hidden_phone">
+                  \\[
                     |\\Delta_n| = (-1)^{n} (f(X))^{n-1} 
                     \\prod_{i=1}^{n} \\frac{\\alpha_i}{X_{i}^{2}} 
                     \\left( 
@@ -589,7 +632,29 @@ function optimizacion_exp_con(exponente) {
                     \\right)^{2}
                     \\right] 
                     \\right) 
-                    \\]
+                  \\]
+                </span>
+                <span class="hidden_pc">
+                  \\[
+                    |\\Delta_n| = (-1)^{n} (f(X))^{n-1} 
+                    \\prod_{i=1}^{n} \\frac{\\alpha_i}{X_{i}^{2}} 
+                  \\]
+                  \\[
+                    \\left( 
+                    \\sum_{i=1}^{n} 
+                    \\left[ 
+                    \\frac{w_{i}^{2} X_{i}^{2}}{\\alpha_i}
+                    - \\sum_{\\substack{j = 2 \\\\ j > i}}^{n} 
+                    \\frac{X_{i}^{2} X_{j}^{2}}{\\alpha_i \\alpha_j} 
+                    \\left( 
+                    \\frac{w_i \\alpha_j}{X_j}
+                    - \\frac{w_j \\alpha_i}{X_i}
+                    \\right)^{2}
+                    \\right] 
+                    \\right) 
+                  \\]
+                </span>
+                
                 <p>
                     Entonces, al evaluar en el punto crítico, obtenemos que:
                 </p>
@@ -634,7 +699,7 @@ function optimizacion_exp_con(exponente) {
         Así, las cantidades que se deben producir para maximizar la utilidad son:
 
         <p>
-            \\[\\hat{Q} = \\hat{Q}(X_{1}, \\cdots, X_{n}) = Q(\\hat{X_{1}}, \\cdots, \\hat{X_{n}}) \\]
+            \\[\\hat{Q}(X) = \\hat{Q}(X_{1}, \\cdots, X_{n}) = Q(\\hat{X_{1}}, \\cdots, \\hat{X_{n}}) \\]
 
             Por lo cual, <strong>la función de oferta</strong> es: 
 
@@ -642,13 +707,26 @@ function optimizacion_exp_con(exponente) {
 
             Y <strong>la función de beneficio</strong> está dada por:
 
-            \\[ \\hat{\\Pi}(x_{1}, ..., x_{n}) = P\\hat{Q}(X) - \\sum_{i=1}^{n} w_{i}\\hat{X_{i}} 
-            = PA \\prod_{i=1}^{n} \\biggl( \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}} 
-            \\biggr)^{\\alpha_{i}} \\ - \\ \\sum_{i=1}^{n} w_{i} \\ \\biggl( 
-            \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}} \\biggr) \\]
+            <span class="hidden_phone">
+              \\[ \\hat{\\Pi}(X) = \\hat{\\Pi}(X_{1}, ..., X_{n}) = P\\hat{Q}(X) - \\sum_{i=1}^{n} w_{i}\\hat{X_{i}} 
+              = PA \\prod_{i=1}^{n} \\biggl( \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}} 
+              \\biggr)^{\\alpha_{i}} \\ - \\ \\sum_{i=1}^{n} w_{i} \\ \\biggl( 
+              \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}} \\biggr) \\]
+            </span>
+            <span class="hidden_pc">
+              \\[ 
+                \\hat{\\Pi}(X) = \\hat{\\Pi}(X_{1}, ..., X_{n}) = P\\hat{Q}(X) - \\sum_{i=1}^{n} w_{i}\\hat{X_{i}} 
+              \\]
+
+              \\[ 
+                \\hat{\\Pi}(X) = PA \\prod_{i=1}^{n} \\biggl( \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}} 
+                \\biggr)^{\\alpha_{i}} \\ - \\ \\sum_{i=1}^{n} w_{i} \\ \\biggl( 
+                \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}} \\biggr) 
+              \\]
+            </span>
 
             Por lo tanto,
-            \\[ \\hat{\\Pi}(x_{1}, ..., x_{n}) =  PA \\biggl( \\frac{c}{\\sum_{i=1}^{n} \\alpha_{i}} 
+            \\[ \\hat{\\Pi}(X) =  PA \\biggl( \\frac{c}{\\sum_{i=1}^{n} \\alpha_{i}} 
             \\biggr)^{\\sum_{i=1}^{n} \\alpha_{i}} \\prod_{i=1}^{n} \\biggl( \\frac{\\alpha_{i}}{w_{i}}
             \\biggr)^{\\alpha_{i}} \\ - \\ c \\]
             Esto nos permite determinar cuánto beneficio genera la empresa bajo condiciones de 
@@ -675,16 +753,10 @@ function optimizacion_exp_con(exponente) {
             \\mathcal{L}(X, \\lambda) = A \\prod_{i=1}^{n} X_{i}^{\\beta_{i}} + \\lambda \\left( c - \\sum_{i=1}^{n} w_{i} X_{i} \\right)
         \\]
 
-        Esto nos permite encontrar las cantidades óptimas de insumos \\(\\hat{X_{i}}\\):
-
-        \\[
-        \\hat{X_{i}} = \\frac{\\beta_{i} c}{w_{i} \\sum_{j=1}^{n} \\beta_{j}}, \\quad \\forall i = 1, ..., n
-        \\]
-
         Por lo tanto, el valor óptimo de cada variable \\(X_{i}\\) para minimizar la función de costos CD bajo la restricción presupuestaria es:
 
         \\[
-        \\hat{X_{i}} = \\frac{\\beta_{i} c}{w_{i} \\sum_{j=1}^{n} \\beta_{j}}, \\quad \\forall i = 1, ..., n
+          \\hat{X_{i}} = \\frac{\\beta_{i} c}{w_{i} \\sum_{j=1}^{n} \\beta_{j}}, \\quad \\forall i = 1, ..., n
         \\]
 
         Sí verificamos que \\((-1)^{n} |\\Delta_n| > 0\\) y la matriz Hessiana es definida positiva, esto garantiza que la función CD tiene un mínimo 
@@ -694,28 +766,38 @@ function optimizacion_exp_con(exponente) {
         Así, las cantidades que se deben producir para minimizar los costos son:
 
         <p>
-            \\[\\hat{Q} = \\hat{Q}(X_{1}, \\cdots, X_{n}) = A \\prod_{i=1}^{n} \\hat{X_{i}}^{\\beta_{i}}\\]
+            \\[
+              \\hat{C}(X) =  \\hat{C}(X_{1}, \\cdots, X_{n}) = C(\\hat{X_{1}}, \\cdots, \\hat{X_{n}})
+            \\]
 
             Por lo cual, <strong>la función de costos</strong> es:
 
-            \\[C(X) = A \\prod_{i=1}^{n} \\hat{X_{i}}^{\\beta_{i}}\\]
+            \\[
+              C(X) = A \\prod_{i=1}^{n} \\hat{X_{i}}^{\\beta_{i}}
+              = A \\prod_{i=1}^{n} \\left( \\frac{\\beta_{i} c}{w_{i} \\sum_{j=1}^{n} \\beta_{j}} \\right)^{\\beta_{i}}
+            \\]
 
-            Esto nos permite determinar cuánto costo incurre la empresa bajo condiciones de minimización, mostrando que los costos están directamente relacionados con los precios de los insumos y la estructura de producción, lo que subraya la importancia de la eficiencia en la gestión de costos.
+            Esto nos permite determinar cuánto costo incurre la empresa bajo condiciones de minimización, 
+            mostrando que los costos están directamente relacionados con los precios de los insumos y 
+            la estructura de producción, lo que resalta la importancia de la eficiencia en la gestión de costos.
         </p>
       `;
 
       inicio_conclusion += `
-        En este análisis hemos demostrado que la maximización de la utilidad y la minimización de los 
-        costos en una función Cobb-Douglas son procesos fundamentales para la toma de decisiones en la 
-        economía empresarial. A través del método del multiplicador de Lagrange, hemos encontrado las 
+        En este análisis, hemos demostrado que la maximización de la utilidad y la minimización de los 
+        costos en una función Cobb-Douglas son procesos esenciales para la toma de decisiones en la 
+        economía empresarial. A través del método del multiplicador de Lagrange, encontramos las 
         condiciones óptimas para las variables de producción y costos, asegurando que las decisiones 
-        tomadas estén alineadas con las restricciones presupuestarias.
-        La utilización de la matriz Hessiana y el determinante bordeado nos permite clasificar los 
-        puntos críticos obtenidos y garantizar que los resultados sean efectivamente máximos o mínimos 
-        locales. En particular, hemos verificado que bajo las condiciones adecuadas, la función 
-        Cobb-Douglas exhibe un máximo local en la maximización de utilidad y un mínimo local en la 
-        minimización de costos, destacando la importancia de las relaciones entre los coeficientes de 
-        producción, los precios de los insumos y la eficiencia en la gestión de recursos.
+        estén en concordancia con las restricciones presupuestarias impuestas.
+        La utilización de la matriz Hessiana, junto con el cálculo del determinante bordeado, nos permite 
+        clasificar los puntos críticos y determinar si estos corresponden a máximos o mínimos locales. 
+        Adicionalmente, la caracterización de la convexidad y la concavidad de la función es crucial para 
+        verificar la naturaleza de los extremos absolutos. Hemos comprobado que, bajo las condiciones 
+        adecuadas, la función Cobb-Douglas exhibe un máximo absoluto en la maximización de la utilidad y un 
+        mínimo absoluto en la minimización de los costos, lo que refuerza la importancia de las relaciones 
+        entre los coeficientes de producción, los precios de los insumos y la eficiencia en la asignación de 
+        recursos. Estos hallazgos señalan la relevancia de la optimización para una gestión eficiente y 
+        efectiva de los recursos empresariales.
       `;
 
       break;
@@ -857,7 +939,7 @@ function optimizacion_exp_con(exponente) {
               Entonces, igualando la derivada a cero y resolviendo la ecuación, por el teorema de Lagrange, obtenemos que el valor óptimo para cada variable, 
               respectivamente, para maximizar la función CD bajo la restricción presupuestaria, es:
             </p>
-            <br><div id="puntos_criticos_max_CD_con"></div><br>
+            <div id="puntos_criticos_max_CD_con"></div>
             Por el valor de los exponentes de la función de producción CD, podemos afirmar que la matriz Hessiana \\(H_{\\psi}(X)\\) de la función Lagrangiana es definida negativa.
 
             Ahora bien, el determinante bordeado es:
@@ -866,6 +948,7 @@ function optimizacion_exp_con(exponente) {
             Evaluando en el punto crítico, obtenemos que: 
             <br><div id="det_bordeado_max_CD_con_evaluado"></div><br>
 
+            <div id="conclusion_max_CD_con_evaluado"></div>
       `;
 
       inicio_minimizador += `
@@ -898,7 +981,7 @@ function optimizacion_exp_con(exponente) {
           Entonces, igualando la derivada a cero y resolviendo la ecuación, por el teorema de Lagrange, obtenemos que el valor óptimo para cada variable, 
           respectivamente, para minimizar la función CD bajo la restricción presupuestaria, es:
         </p>
-        <br><div id="puntos_criticos_min_CD_con"></div><br>
+        <div id="puntos_criticos_min_CD_con"></div>
         Por el valor de los exponentes de la función de producción CD, podemos afirmar que la matriz Hessiana \\(H_{\\psi}(X)\\) de la función Lagrangiana es definida positiva.
 
         Ahora bien, el determinante bordeado es:
@@ -907,11 +990,18 @@ function optimizacion_exp_con(exponente) {
         Evaluando en el punto crítico, obtenemos que: 
         <br><div id="det_bordeado_min_CD_con_evaluado"></div><br>
 
-        Concluyendo así que, 
-
+        <div id="conclusion_min_CD_con_evaluado"></div>
       `;
 
-      inicio_conclusion += ``;
+      inicio_conclusion += `
+        En conclusión, este análisis nos ha permitido determinar los puntos críticos y asegurar que el máximo o mínimo absoluto se ha logrado 
+        bajo las condiciones dadas. Estos resultados proporcionan una guía para optimizar la asignación de recursos en un escenario económico 
+        real, maximizando la utilidad o minimizando los costos, de manera eficiente. Además, estos procedimientos resaltan la importancia de realizar un análisis exhaustivo de los puntos críticos, así como de explorar posibles 
+        restricciones adicionales que puedan ser relevantes. Así, si un punto crítico no proporciona una solución óptima, entonces podemos considerar 
+        sobre la eficiencia en la utilización de recursos y la necesidad de ajustar las estrategias de optimización en el contexto económico. 
+        En futuras investigaciones, podría ser beneficioso considerar otros enfoques o técnicas que permitan identificar y alcanzar soluciones 
+        óptimas dentro de los límites impuestos por la restricción presupuestaria.
+      `;
 
       obtenerHessiana_Con(exponente);
       obtenerBordeado_Con(exponente);

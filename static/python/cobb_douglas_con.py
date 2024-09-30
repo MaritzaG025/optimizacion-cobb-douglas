@@ -102,7 +102,7 @@ def calcular_determinante_bordeado(A, n, exponentes, precios, presupuesto):
         determinante = determinante.subs(x[i], (exponentes[i] * presupuesto) / (precios[i] * suma_exponentes))
     
     # Formatear resultados en LaTeX
-    determinante_latex = sp.latex(determinante)
+    determinante_latex = sp.latex(round(determinante, 2))
     factor_latex = sp.latex(factor)
     
     # Crear el resultado en LaTeX
@@ -154,7 +154,7 @@ def calcular_determinante_bordeado_evaluado(tecno_var, n, exponentes, precios, p
 
     # Calcular (-1)^n
     signo = (-1) ** n
-    resultado_det_final = signo * resultado_final
+    resultado_det_final = signo * round(resultado_final, 2)
     # Clasificación
     clasificacion = ""
     if resultado_det_final.is_real:
@@ -168,23 +168,75 @@ def calcular_determinante_bordeado_evaluado(tecno_var, n, exponentes, precios, p
         clasificacion = " \\\\ \\text{  No se puede clasificar (resultado imaginario).} "
 
     det_evaluado = sp.latex(sp.N(resultado_det_final, 2))
-    evaluar_x_latex = sp.latex(sp.N(resultado_final, 2))
+    evaluar_x_latex = sp.latex(round(resultado_final, 2))
 
     # Crear el resultado en LaTeX
     resultado_latex = f"(-1)^{{{n}}} \\cdot |\\Delta_{{{n}}}| \\approx (-1)^{{{n}}} \\cdot \\left[ {evaluar_x_latex} \\right] \\approx {det_evaluado} {clasificacion} "
 
-
     return resultado_latex, clasificacion
 
+def evaluar_puntos_criticos(tecno_var, n, exponentes, precios, presupuesto):
+    # Definir variables
+    variables = sp.symbols(f'x1:{n+1}')
+    
+    # Definir lambda (multiplicador de Lagrange)
+    lambd = sp.symbols('lambda')
+    
+    # Función Cobb-Douglas
+    f = tecno_var * sp.prod([variables[i]**exponentes[i] for i in range(n)])
+
+    # Función de costos
+    c = sp.Add(*[precios[i]*variables[i] for i in range(n)]) 
+
+    # Función lagrangiana
+    g = f - lambd * (c - presupuesto)
+    
+    # Calcular la suma de exponentes
+    suma_alpha = sum(exponentes)
+
+    # Calcular X_i para cada i
+    X = []
+    for i in range(n):
+        X_i = (exponentes[i] * presupuesto) / (precios[i] * suma_alpha)
+        X.append(round(X_i, 2))  # Aproximar a 2 decimales
+    print(f"Puntos críticos (X): {X}")  # Debug
+
+    # Crear un diccionario de sustituciones
+    subs_dict = {variables[i]: X[i] for i in range(n)}
+
+    # Evaluar las funciones en los puntos críticos
+    try:
+        f_valor = f.subs(subs_dict).evalf()
+        print(f"f_evaluado: {round(f_valor, 2)}")  # Debug
+        g_valor = g.subs(subs_dict).evalf()
+        c_valor = c.subs(subs_dict).evalf()
+    except Exception as e:
+        print(f"Error al evaluar las funciones: {e}")
+        return None, None, None, None
+
+    # Verificar si el determinante es complejo
+    if sp.im(f_valor) != 0 or sp.re(f_valor) == 0:
+        return "No se puede evaluar el punto óptimo."
+    # Formatear resultados en LaTeX
+    # resultados_latex = r'\\begin{align*}'
+    resultados_latex = f'\\ {round(f_valor, 2)} \\'
+    # resultados_latex += f'g(\\hat{{x}}) & = {g_valor:.2f} \\'
+    # resultados_latex += f'c(\\hat{{x}}) & = {c_valor:.2f} \\'
+    # resultados_latex += r'\\end{align*}'
+
+    return resultados_latex
 
 def calcular_cobb_douglas_restriccion(A, n, exponentes, precios, presupuesto):
     derivadas = calcular_derivadas_parciales(A, n, exponentes, precios, presupuesto)
     puntos_criticos = encontrar_puntos_criticos(A, n, exponentes, precios, presupuesto)
     det_bordeado = calcular_determinante_bordeado(A, n, exponentes, precios, presupuesto)   
     det_bordeado_evaluado = calcular_determinante_bordeado_evaluado(A, n, exponentes, precios, presupuesto)   
+    valor_puntos_criticos = evaluar_puntos_criticos(A, n, exponentes, precios, presupuesto)
+    
     return {
         "derivadas": derivadas,
         "puntos_criticos": puntos_criticos,
         "det_bordeado": det_bordeado,
-        "det_bordeado_evaluado": det_bordeado_evaluado
+        "det_bordeado_evaluado": det_bordeado_evaluado,
+        "valor_puntos_criticos": valor_puntos_criticos
     }
