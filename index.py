@@ -16,8 +16,8 @@ app = Flask(__name__)
 def principal():
     return render_template('index.html')
 
-@app.route('/informacion')
-def informacion():
+@app.route('/teoria')
+def teoria():
     listaExponentes = (1, 2, 3, 4, 5)
     # Generar el gráfico
     img_str = generate_plots_example()

@@ -2,7 +2,7 @@
 body %}
 <div class="row gap-x-0 padding_form">
   <h3 class="py-3">Datos de la función a optimizar</h3>
-  <form class="row g-3">
+  <form id="formularioCD" class="row g-3">
     <div class="col-md-4">
       <label for="inputState" class="form-label">Maximizar o Minimizar?</label>
       <select id="inputState" class="form-select">
@@ -16,7 +16,8 @@ body %}
     </div>
     <div class="col-md-3">
       <label for="inputTecnologia" class="form-label">Tecnología</label>
-      <input type="text" class="form-control" id="inputTecnologia" onkeypress="return soloNumeros(event);" />
+      <input type="text" class="form-control" id="inputTecnologia" onkeypress="return soloNumeros(event);"
+        onpaste="return false" oncut="return false" oncopy="return false" />
     </div>
     <div class="col-12">
       <div class="form-check">
@@ -55,96 +56,41 @@ body %}
         </table>
       </div>
     </div>
-    <!-- <div class="col-md-6">
-              <label for="inputEmail4" class="form-label">Email</label>
-              <input type="email" class="form-control" id="inputEmail4">
-            </div>
-            <div class="col-md-6">
-              <label for="inputPassword4" class="form-label">Password</label>
-              <input type="password" class="form-control" id="inputPassword4">
-            </div>
-            <div class="col-12">
-              <label for="inputAddress" class="form-label">Address</label>
-              <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-            </div>
-            <div class="col-12">
-              <label for="inputAddress2" class="form-label">Address 2</label>
-              <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
-            </div>
-            <div class="col-md-6">
-              <label for="inputCity" class="form-label">City</label>
-              <input type="text" class="form-control" id="inputCity">
-            </div>
-            <div class="col-md-4">
-              <label for="inputState" class="form-label">State</label>
-              <select id="inputState" class="form-select">
-                <option selected>Choose...</option>
-                <option>...</option>
-              </select>
-            </div>
-            <div class="col-md-2">
-              <label for="inputZip" class="form-label">Zip</label>
-              <input type="text" class="form-control" id="inputZip">
-            </div> -->
-    <!-- <div class="col-12">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="gridCheck" required>
-                    <label class="form-check-label" for="gridCheck">
-                        Esta es la función a optimizar
-                    </label>
-                </div>
-            </div> -->
     <div class="col-12 d-flex justify-content-center">
-      <button type="button" class="btn btn-info btn-opacity-75" data-bs-toggle="modal" data-bs-target="#modalOptimizar"
+      <button type="button" class="btn btn-info btn-opacity-75 text-white font-weight-bold"
         id="formulario-optimizacion">
         Optimizar
       </button>
 
       <!-- Modal -->
-      <!-- <div
-          class="modal fade"
-          id="modalOptimizar"
-          aria-labelledby="modalOptimizarLabel"
-          aria-hidden="true"
-        >
-          <div
-            class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
-          >
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="modalOptimizarLabel">
-                  Función a optimizar
-                </h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <h1>Body</h1>
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  Cancelar
-                </button>
-                <button type="submit" class="btn btn-info btn-opacity-75">
-                  Confirmar optimización
-                </button>
-              </div>
+      <div class="modal fade" id="modalOptimizar" aria-labelledby="modalOptimizarLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" style="max-width: 50rem;">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalOptimizarLabel">Función a optimizar</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <h1>Body</h1>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" id="confirmarOptimizacion" class="btn btn-info btn-opacity-75 text-white font-weight-bold">
+                Confirmar optimización
+              </button>
             </div>
           </div>
-        </div> -->
+        </div>
+      </div>
+
     </div>
   </form>
-
+  <p id="mensajeError" class="mt-5" style="color:red; display:none;">
+    Por favor, completa todos los campos requeridos. Estos campos no pueden estar vacios ni nulos.
+  </p>
 </div>
 
 <script src="{{ url_for('static', filename='js/formulario.js') }}"></script>
+
 
 {% endblock %}

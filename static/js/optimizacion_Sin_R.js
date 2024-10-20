@@ -23,10 +23,10 @@ function mostrarMenoresPrincipales(menoresPrincipalesLatex) {
     menoresPrincipalesLatex.forEach((conjunto, idx) => {
         if (conjunto.length > 0) {
             let menores_principales_phone = ``;
-            contenido += `<u>Menores Principales de Orden ${idx + 1}</u>: <br>`;
-            contenido_phone += `<u>Menores Principales de Orden ${idx + 1}</u>: <br><br>`;
+            contenido += `<u>Menores Principales de Orden ${idx + 1}</u>:`;
+            contenido_phone += `<u>Menores Principales de Orden ${idx + 1}</u>:`;
             // Añadir \biggl y \biggr a los menores principales
-            contenido += `\\[ M_{${idx + 1}} = \\left\\{ ${conjunto.join(', ')} \\right\\} \\] <br><br>`;
+            contenido += `\\[ M_{${idx + 1}} = \\left\\{ ${conjunto.join(', ')} \\right\\} \\]`;
             conjunto.forEach(element => {
                 menores_principales_phone += `<p>\\( ${element}, \\)</p>`
             });
@@ -34,7 +34,7 @@ function mostrarMenoresPrincipales(menoresPrincipalesLatex) {
                                     <div class="w-full d-flex align-items-center flex-column">
                                         ${menores_principales_phone}
                                     </div> 
-                                } <br><br>`;
+                                }`;
         }
     });
 
@@ -77,8 +77,8 @@ function mostrarCobbDouglasSin(cant_variables, tecnologia_A, valor_exponentes, c
             menores_principales_CD_sin.forEach((conjunto, idx) => {
                 if (conjunto.length > 0) {
                     let contenido_men_eva = '';
-                    contenido_men_prin += `<u>Menores Principales de Orden ${idx + 1}</u>: <br>`;
-                    contenido_men_prin_phone += `<u>Menores Principales de Orden ${idx + 1}</u>: <br>`;
+                    contenido_men_prin += `<u>Menores Principales de Orden ${idx + 1}</u>: `;
+                    contenido_men_prin_phone += `<u>Menores Principales de Orden ${idx + 1}</u>: `;
                     conjunto.forEach(element => {
                         contenido_men_eva += `<p>\\( ${element}, \\)</p>`
                     });
@@ -87,11 +87,11 @@ function mostrarCobbDouglasSin(cant_variables, tecnologia_A, valor_exponentes, c
                             ${contenido_men_eva}
                         </div> 
                         }
-                        \\[ \\Rightarrow \\ M_{${idx + 1}}(x) = \\left\\{ ${conjunto_ev[idx].join(', ')} \\right\\} \\] <br><br>
+                        \\[ \\Rightarrow \\ M_{${idx + 1}}(x) = \\left\\{ ${conjunto_ev[idx].join(', ')} \\right\\} \\]
                     `;
                     contenido_men_prin += `
                         \\[ M_{${idx + 1}}(x) = \\left\\{ ${conjunto.join(', ')} \\right\\}  \\ \\Rightarrow 
-                        \\ M_{${idx + 1}}(x) = \\left\\{ ${conjunto_ev[idx].join(', ')} \\right\\} \\] <br><br>
+                        \\ M_{${idx + 1}}(x) = \\left\\{ ${conjunto_ev[idx].join(', ')} \\right\\} \\]
                     `;
                 }
             });
@@ -102,8 +102,8 @@ function mostrarCobbDouglasSin(cant_variables, tecnologia_A, valor_exponentes, c
         menores_principales_CD_sin.forEach((conjunto, idx) => {
             if (conjunto.length > 0) {
                 let contenido_men_eva = '';
-                contenido_men_prin += `<u>Menores Principales de Orden ${idx + 1}</u>: <br>`;
-                contenido_men_prin_phone += `<u>Menores Principales de Orden ${idx + 1}</u>: <br>`;
+                contenido_men_prin += `<u>Menores Principales de Orden ${idx + 1}</u>: `;
+                contenido_men_prin_phone += `<u>Menores Principales de Orden ${idx + 1}</u>: `;
                 conjunto.forEach(element => {
                     contenido_men_eva += `<p>\\( ${element}, \\)</p>`
                 });
@@ -112,11 +112,11 @@ function mostrarCobbDouglasSin(cant_variables, tecnologia_A, valor_exponentes, c
                         ${contenido_men_eva}
                     </div> 
                     }
-                    \\[ \\Rightarrow \\ M_{${idx + 1}}(x) = \\left\\{ \\text{N/A. No existen puntos críticos} \\right\\} \\] <br><br>
+                    \\[ \\Rightarrow \\ M_{${idx + 1}}(x) = \\left\\{ \\text{N/A. No existen puntos críticos} \\right\\} \\]
                 `;
                 contenido_men_prin += `
                     \\[ M_{${idx + 1}}(x) = \\left\\{ ${conjunto.join(', ')} \\right\\}  \\ \\Rightarrow 
-                    \\ M_{${idx + 1}}(x) = \\left\\{ \\text{N/A. No existen puntos críticos} \\right\\} \\] <br><br>
+                    \\ M_{${idx + 1}}(x) = \\left\\{ \\text{N/A. No existen puntos críticos} \\right\\} \\]
                 `;
             }
         });
@@ -166,7 +166,6 @@ function mostrarCobbDouglasSin(cant_variables, tecnologia_A, valor_exponentes, c
     hessianaDiv.innerHTML = `
                                 <p>
                                     \\[ H_{f}(x) = ${calculos_CD_sin.hessiana} \\]
-                                    <br>
                                     \\[ \\Rightarrow \\ H_{f}(x) = ${hessiana_evaluada_CD_sin} \\]
                                 </p>
                             `;
@@ -320,17 +319,17 @@ function optimizacion_exp_sin(exponente) {
     let inicio_deri_parc_phone = ``;
 
     const funcion_hessiana_CD_sin = document.getElementById("funcion_hessiana_CD");
-    let inicio_hessiana = `<strong>Matriz Hessiana - Analísis de convexidad y concavidad</strong> <br> <br><p>Para determinar 
+    let inicio_hessiana = `<strong>Matriz Hessiana - Analísis de convexidad y concavidad</strong><p>Para determinar 
     si los puntos críticos son máximos, mínimos o puntos de silla, se calcula la matriz Hessiana \\(H_{f} (x)\\):</p>`;
     
     const maximizar_CD_sin = document.getElementById("maximizar_CD");
-    let inicio_maximizador = '<strong>Maximización</strong> <br><br>';
+    let inicio_maximizador = '<strong>Maximización</strong>';
 
     const minimizar_CD_sin = document.getElementById("minimizar_CD");
-    let inicio_minimizador = '<strong>Minimización</strong> <br><br>';
+    let inicio_minimizador = '<strong>Minimización</strong>';
 
     const conclusion_CD_sin = document.getElementById("conclusion_CD");
-    let inicio_conclusion = '<strong>Conclusión</strong> <br><br>';
+    let inicio_conclusion = '<strong>Conclusión</strong>';
 
     const text_ini_deri_parc_CD_sin = document.getElementById("text_ini_deri_parc_CD");
     text_ini_deri_parc_CD_sin.innerHTML = `
@@ -460,7 +459,7 @@ function optimizacion_exp_sin(exponente) {
             funcion_derivada_parcial_CD_sin.innerHTML = `\\(${inicio_deri_parc}\\)`;
             funcion_derivada_parcial_CD_sin_phone.innerHTML = `${inicio_deri_parc_phone}`;
             inicio_hessiana += `
-                <br><div id="hessiana"></div><br>
+                <div id="hessiana"></div>
                 <p>
                     Para la función CD con una sola variable, esto generalmente no tiene soluciones para \\( x_{1} \\) a menos que \\( A \\) o \\( \\alpha_{1} \\) sean cero. 
                     Se puede calcular la segunda derivada para entender la curvatura de la función. La segunda derivada parcial de \\( f(x) \\) con respecto a \\( x_{1} \\) es:
@@ -1074,7 +1073,7 @@ function optimizacion_exp_sin(exponente) {
             funcion_derivada_parcial_CD_sin.innerHTML = `\\(${inicio_deri_parc}\\)`;
             funcion_derivada_parcial_CD_sin_phone.innerHTML = `${inicio_deri_parc_phone}`;
             inicio_hessiana += `
-                <br><div id="hessiana"></div><br>
+                <div id="hessiana"></div>
                 <ul>
                     <li>
                         Si la Hessiana es definida negativa, el punto crítico es un máximo local.
@@ -1113,7 +1112,6 @@ function optimizacion_exp_sin(exponente) {
                 <ul>
                     <li>
                         definida positiva si se da alguno de los siguientes casos: 
-                        <br><br>
                         <ul>
                             <li>
                                 ${exponentes_list_0}
@@ -1123,15 +1121,12 @@ function optimizacion_exp_sin(exponente) {
                                 es decir, existe \\( j \\) tal que \\( j \\neq i \\) y \\( \\alpha_{j} > 1 \\)
                             </li>
                         </ul>
-                        <br>
                     </li>
                     <li>
                         definida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\) < 1
                     </li>
-                    <br>
                     <li>
                         semidefinida positiva si se da alguno de los siguientes casos:
-                        <br><br>
                         <ul>
                             <li>
                                 ${exponentes_list_0}
@@ -1141,12 +1136,10 @@ function optimizacion_exp_sin(exponente) {
                                 excepto para un único valor de \\( i \\), es decir, existe \\( j \\) tal que \\( j \\neq i \\) y \\( \\alpha_{j} > 1 \\)
                             </li>
                         </ul>
-                        <br>
                     </li>
                     <li>
                         semidefinida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\) \\( \\leq \\) 1
                     </li>
-                    <br>
                 </ul>
                 <p>
                     Por lo tanto, 
@@ -1202,15 +1195,15 @@ function optimizacion_exp_sin(exponente) {
                 <p>
                     <u> Ejemplo </u>: Supongamos que queremos maximizar la función Cobb-Douglas de la siguiente forma:
                 </p>
-                <br><div id="funcion_max_CD_sin"></div><br>
+                <div id="funcion_max_CD_sin"></div>
                 <p>
                     Calculando la derivada de \\( f(x) \\) con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\), obtenemos que:
                 </p>
-                <br><div id="derivada_max_CD_sin"></div><br>
+                <div id="derivada_max_CD_sin"></div>
                 <p>
                     Ahora debemos encontrar los puntos críticos, esto se realiza igualando las derivadas parciales a cero. Así,
                 </p>
-                <br><div id="puntos_criticos_max_CD_sin"></div><br>
+                <div id="puntos_criticos_max_CD_sin"></div>
                 <p>
                     Entonces, igualando la derivada a cero y resolviendo la ecuación obtenemos que no hay valores con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\)
                     donde la derivada sea igual a cero, lo que indica que no hay un máximo para \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\)
@@ -1220,12 +1213,12 @@ function optimizacion_exp_sin(exponente) {
                 <p>
                     Para determinar si los puntos críticos son máximos, mínimos o puntos de silla, se calcula la matriz Hessiana:
                 </p>
-                <br><div id="hessiana_max_CD_sin"></div><br>
+                <div id="hessiana_max_CD_sin"></div>
                 <p>
                     Ahora bien, los menores principales son claves para analizar la definitud de la matriz Hessiana, que a su vez ayuda a 
                     clasificar los puntos críticos de una función. Para una matriz \\(${exponente} x ${exponente}\\), los menores principales son: 
                 </p>
-                <br><div id="menores_principales_max_CD_sin"></div>
+                <div id="menores_principales_max_CD_sin"></div>
                 <p>
                     Entonces, resolviendo la ecuación obtenemos que no hay valores con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\)
                     donde se pueda definir la hessiana, lo que indica que no hay un máximo. Por lo tanto, la función no se puede maximizar.
@@ -1243,24 +1236,24 @@ function optimizacion_exp_sin(exponente) {
                 <p>
                     <u> Ejemplo </u>: Supongamos que queremos minimizar la función Cobb-Douglas de la siguiente forma:
                 </p>
-                <br><div id="funcion_min_CD_sin"></div><br>
+                <div id="funcion_min_CD_sin"></div>
                 <p>
                     Calculando la derivada de \\( f(x) \\) con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\), obtenemos que:
                 </p>
-                <br><div id="derivada_min_CD_sin"></div><br>
+                <div id="derivada_min_CD_sin"></div>
                 <p>
                     Ahora debemos encontrar los puntos críticos, esto se realiza igualando las derivadas parciales a cero. Así,
                 </p>
-                <br><div id="puntos_criticos_min_CD_sin"></div><br>
+                <div id="puntos_criticos_min_CD_sin"></div>
                 <p>
                     Para determinar si los puntos críticos son máximos, mínimos o puntos de silla, se calcula la matriz Hessiana:
                 </p>
-                <br><div id="hessiana_min_CD_sin"></div><br>
+                <div id="hessiana_min_CD_sin"></div>
                 <p>
                     Ahora bien, los menores principales son claves para analizar la definitud de la matriz Hessiana, que a su vez ayuda a 
                     clasificar los puntos críticos de una función. Para una matriz \\(${exponente} x ${exponente}\\), los menores principales son: 
                 </p>
-                <br><div id="menores_principales_min_CD_sin"></div>
+                <div id="menores_principales_min_CD_sin"></div>
                 <p>
                     Entonces, resolviendo la ecuación obtenemos que no hay valores con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\)
                     donde se pueda definir la hessiana, lo que indica que no hay un mínimo. Por lo tanto, la función no se puede minimizar.

@@ -47,13 +47,13 @@ function mostrarMenoresPrincipales_Con(menoresPrincipalesLatex) {
   menoresPrincipalesLatex.forEach((conjunto, idx) => {
     if (conjunto.length > 0) {
       let menores_principales_phone = ``;
-      contenido += `<u>Menores Principales de Orden ${idx + 1}</u>: <br>`;
+      contenido += `<u>Menores Principales de Orden ${idx + 1}</u>: `;
       contenido_phone += `<u>Menores Principales de Orden ${idx +
-        1}</u>: <br><br>`;
+        1}</u>: `;
       // Añadir \biggl y \biggr a los menores principales
       contenido += `\\[ M_{${idx + 1}} = \\left\\{ ${conjunto.join(
         ", "
-      )} \\right\\} \\] <br><br>`;
+      )} \\right\\} \\] `;
       conjunto.forEach(element => {
         menores_principales_phone += `<p>\\( ${element}, \\)</p>`;
       });
@@ -61,7 +61,7 @@ function mostrarMenoresPrincipales_Con(menoresPrincipalesLatex) {
                                     <div class="w-full d-flex align-items-center flex-column">
                                         ${menores_principales_phone}
                                     </div> 
-                                } <br><br>`;
+                                } `;
     }
   });
 
@@ -479,15 +479,15 @@ function optimizacion_exp_con(exponente) {
   );
 
   const maximizar_CD_sin = document.getElementById("maximizar_CD");
-  let inicio_maximizador = "<strong>Maximización</strong> <br><br>";
+  let inicio_maximizador = "<strong>Maximización</strong> ";
 
   const minimizar_CD_sin = document.getElementById("minimizar_CD");
-  let inicio_minimizador = "<strong>Minimización</strong> <br><br>";
+  let inicio_minimizador = "<strong>Minimización</strong> ";
 
   const conclusion_CD_sin = document.getElementById("conclusion_CD");
-  let inicio_conclusion = "<strong>Conclusión</strong> <br><br>";
+  let inicio_conclusion = "<strong>Conclusión</strong> ";
 
-  let inicio_hessiana = `<strong>Determinante Bordeado: Uso de la Matriz Hessiana y Análisis de Puntos Críticos</strong> <br> <br>
+  let inicio_hessiana = `<strong>Determinante Bordeado: Uso de la Matriz Hessiana y Análisis de Puntos Críticos</strong> 
     <p>Para determinar si los puntos críticos son máximos, mínimos o puntos de silla, se calcula el determinante bordeado. 
     Para la construcción de este determinante, utilizamos la matriz Hessiana. En el contexto de funciones de tipo Cobb-Douglas, la matriz Hessiana se define como:</p>`;
 
@@ -824,7 +824,7 @@ function optimizacion_exp_con(exponente) {
       funcion_derivada_parcial_CD_con_lambda.innerHTML = `<p> \\[\\frac{\\partial{f}}{\\partial{\\lambda}} = \\sum_{i=1}^{${exponente}} w_{i}x_{i} \\ - \\ c = 0\\] </p>`;
 
       inicio_hessiana += `
-                <br><div id="hessiana_con"></div><br>
+                <div id="hessiana_con"></div>
                 <p>
                     Ahora bien, los menores principales son claves para analizar la definitud de la matriz Hessiana.
                     Para una matriz \\(${exponente} x ${exponente}\\), los menores principales son: 
@@ -852,7 +852,6 @@ function optimizacion_exp_con(exponente) {
                 <ul>
                     <li>
                         definida positiva si se da alguno de los siguientes casos: 
-                        <br><br>
                         <ul>
                             <li>
                                 ${exponentes_list_0}
@@ -862,15 +861,12 @@ function optimizacion_exp_con(exponente) {
                                 es decir, existe \\( j \\) tal que \\( j \\neq i \\) y \\( \\alpha_{j} > 1 \\)
                             </li>
                         </ul>
-                        <br>
                     </li>
                     <li>
                         definida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\) < 1
                     </li>
-                    <br>
                     <li>
                         semidefinida positiva si se da alguno de los siguientes casos:
-                        <br><br>
                         <ul>
                             <li>
                                 ${exponentes_list_0}
@@ -880,12 +876,10 @@ function optimizacion_exp_con(exponente) {
                                 excepto para un único valor de \\( i \\), es decir, existe \\( j \\) tal que \\( j \\neq i \\) y \\( \\alpha_{j} > 1 \\)
                             </li>
                         </ul>
-                        <br>
                     </li>
                     <li>
                         semidefinida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\) \\( \\leq \\) 1
                     </li>
-                    <br>
                 </ul>
                 <p>
                     Una vez que se tiene la matriz Hessiana, se evalúa el determinante bordeado, lo cual nos permite clasificar los puntos críticos:
@@ -906,9 +900,9 @@ function optimizacion_exp_con(exponente) {
         exponente
       ) + 1} \\times ${parseInt(exponente) + 1}\\):
                 </p>
-                <br><div id="hessiana_bordeada"></div><br>
+                <div id="hessiana_bordeada"></div>
                 <p>Para verificar si el punto crítico maximiza o minimiza la función, calculamos el determinante de \\(\\Delta_${exponente}\\) como:</p>
-                <br><div id="determinante_bordeado"></div><br>
+                <div id="determinante_bordeado"></div>
                 <p>
                     Entonces, al evaluar en el punto crítico, obtenemos que:
                 </p>
@@ -928,13 +922,13 @@ function optimizacion_exp_con(exponente) {
             <p>
                 <u> Ejemplo </u>: Supongamos que queremos maximizar la función Cobb-Douglas \\( f(x) \\) sujeta a la restricción presupuestal \\( c(x) \\), de la siguiente forma:
             </p>
-            <br><div id="funcion_max_CD_con"></div><br>
+            <div id="funcion_max_CD_con"></div>
             Por el método del multiplicador de Lagrange, definimos la función Lagrangiana como:
-            <br><div id="func_lagrangiana_max_con"></div><br>
+            <div id="func_lagrangiana_max_con"></div>
             <p>
               Calculando la derivada de \\( \\psi(x) \\) con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\), obtenemos que:
             </p>
-            <br><div id="derivada_max_CD_con"></div><br>
+            <div id="derivada_max_CD_con"></div>
             <p>
               Entonces, igualando la derivada a cero y resolviendo la ecuación, por el teorema de Lagrange, obtenemos que el valor óptimo para cada variable, 
               respectivamente, para maximizar la función CD bajo la restricción presupuestaria, es:
@@ -943,10 +937,10 @@ function optimizacion_exp_con(exponente) {
             Por el valor de los exponentes de la función de producción CD, podemos afirmar que la matriz Hessiana \\(H_{\\psi}(X)\\) de la función Lagrangiana es definida negativa.
 
             Ahora bien, el determinante bordeado es:
-            <br><div id="det_bordeado_max_CD_con"></div><br>
+            <div id="det_bordeado_max_CD_con"></div>
 
             Evaluando en el punto crítico, obtenemos que: 
-            <br><div id="det_bordeado_max_CD_con_evaluado"></div><br>
+            <div id="det_bordeado_max_CD_con_evaluado"></div>
 
             <div id="conclusion_max_CD_con_evaluado"></div>
       `;
@@ -955,7 +949,6 @@ function optimizacion_exp_con(exponente) {
         <p>
             Una función CD se minimiza cuando el determinante bordeado es positivo y la matriz Hessiana es definida positiva. 
             Sabemos que la matriz hessiana \\( H_{${exponente}} f(x) \\) es definida positiva si se cumple alguno de los siguientes casos:
-            <br><br>
             <ul>
               <li>
                 ${exponentes_list_0}
@@ -965,18 +958,17 @@ function optimizacion_exp_con(exponente) {
                 excepto para un único valor de \\( i \\), es decir, existe \\( j \\) tal que \\( j \\neq i \\) y \\( \\alpha_{j} > 1 \\)
               </li>
             </ul>
-            <br>
         </p>
         <p>
             <u> Ejemplo </u>: Supongamos que queremos minimizar la función Cobb-Douglas \\( f(x) \\) sujeta a la restricción presupuestal \\( c(x) \\), de la siguiente forma:
         </p>
-        <br><div id="funcion_min_CD_con"></div><br>
+        <div id="funcion_min_CD_con"></div>
         Por el método del multiplicador de Lagrange, definimos la función Lagrangiana como:
-        <br><div id="func_lagrangiana_min_con"></div><br>
+        <div id="func_lagrangiana_min_con"></div>
         <p>
           Calculando la derivada de \\( \\psi(x) \\) con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\), obtenemos que:
         </p>
-        <br><div id="derivada_min_CD_con"></div><br>
+        <div id="derivada_min_CD_con"></div>
         <p>
           Entonces, igualando la derivada a cero y resolviendo la ecuación, por el teorema de Lagrange, obtenemos que el valor óptimo para cada variable, 
           respectivamente, para minimizar la función CD bajo la restricción presupuestaria, es:
@@ -985,10 +977,10 @@ function optimizacion_exp_con(exponente) {
         Por el valor de los exponentes de la función de producción CD, podemos afirmar que la matriz Hessiana \\(H_{\\psi}(X)\\) de la función Lagrangiana es definida positiva.
 
         Ahora bien, el determinante bordeado es:
-        <br><div id="det_bordeado_min_CD_con"></div><br>
+        <div id="det_bordeado_min_CD_con"></div>
 
         Evaluando en el punto crítico, obtenemos que: 
-        <br><div id="det_bordeado_min_CD_con_evaluado"></div><br>
+        <div id="det_bordeado_min_CD_con_evaluado"></div>
 
         <div id="conclusion_min_CD_con_evaluado"></div>
       `;
