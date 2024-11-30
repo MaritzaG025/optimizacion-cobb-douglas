@@ -28,6 +28,10 @@ def teoria():
 def formulario():
     return render_template('formulario.html')
 
+@app.route('/referencias')
+def referencias():
+    return render_template('referencias.html')
+
 # Calcular la Hessiana en formato latex
 @app.route('/calcular_hessiana', methods=['GET'])
 def calcular_hessiana_endpoint():
