@@ -3,11 +3,15 @@ block body %}
 <div class="px-3">
   <h1>Funciones de tipo Cobb-Douglas</h1>
   <span class="my-10">
-    Una función de tipo Cobb-Douglas (CD) es una función matemática multivariada comúnmente utilizada para
-    expresar funciones de utilidad y/o producción, dado que cumple con las condiciones que se le exigen tanto
-    a las curvas de inferencia, de la teoría del consumo, como a las curvas isocuantas de la teoría de la
-    producción (convexidad, decrecimiento, continuidad, entre otros) . Una función de tipo CD está definida
-    por:
+    Una función de tipo Cobb-Douglas (CD) es una expresión matemática multivariada ampliamente utilizada en economía
+    para modelar fenómenos como la utilidad de los consumidores o la producción de bienes y servicios. En la teoría del
+    consumo, esta función representa curvas de indiferencia, las cuales son conjuntos de combinaciones de bienes que
+    proporcionan el mismo nivel de satisfacción al consumidor, mientras que en la teoría de la producción modela curvas
+    isocuantas, que muestran las combinaciones de factores productivos capaces de generar un nivel fijo de producción
+    <a href="referencias#ref9" target="_blank">[9]</a>. Estas aplicaciones económicas son posibles debido a que las
+    funciones CD cumplen con propiedades clave, tales
+    como la convexidad, el decrecimiento, la continuidad, entre otras. Matemáticamente, una función CD
+    <a href="referencias#ref5" target="_blank">[5]</a> se define como:
   </span>
   <p>
     \begin{equation*}
@@ -15,17 +19,27 @@ block body %}
     \end{equation*}
   </p>
   <span>
-    con A > 0, donde A representa la técnología de la función y los valores de f representan:
+    donde \( x = (x_1, \dots, x_n) \) es un vector de \(n\) variables independientes, \( A > 0 \) representa un
+    parámetro tecnológico que captura los efectos de factores externos o mejoras tecnológicas, y \( \alpha_i \) son
+    exponentes que indican la contribución relativa de cada variable \(x_i\). El valor de \( f(x) \) representa:
   </span>
   <ul class="my-3">
     <li>
-      cantidad producida, cuando se usan \(x_{i} \) unidades del i-ésimo insumo.
+      cantidad producida, cuando \(x_{i}\) representa las unidades utilizadas del \(i\)-ésimo insumo. En producción, un
+      insumo es un recurso utilizado en el proceso de fabricación de bienes o servicios, como materiales, trabajo,
+      capital, entre otros <a href="referencias#ref8" target="_blank">[8]</a>.
     </li>
     <li>
-      niveles de utilidad, cuando se usan \(x_{i} \) unidades de i-ésimo consumo de ciertos bienes.
+      nivel de utilidad, cuando \(x_{i}\) indica el consumo del \(i\)-ésimo bien. En economía, el nivel de utilidad se
+      refiere al grado de satisfacción o bienestar que un consumidor obtiene al consumir ciertos bienes
+      <a href="referencias#ref7" target="_blank">[7]</a> y un bien es un producto consumible o intercambiable en el
+      mercado, como alimentos,
+      ropa, tecnología, entre otros <a href="referencias#ref3" target="_blank">[3]</a>.
     </li>
     <li>
-      costos de producción, cuando \(x_{i} \) representa el precio del i-ésimo insumo de producción.
+      costos de producción, cuando \(x_{i}\) corresponde al precio del \(i\)-ésimo insumo. El costo de producción
+      representa el gasto total para producir una cantidad de bienes o servicios <a href="referencias#ref3"
+        target="_blank">[3]</a>.
     </li>
     <li>
       gasto, cuando \(x_{i} \) representa el precio del i-ésimo bien consumido.
@@ -36,20 +50,36 @@ block body %}
       <img src="data:image/png;base64,{{ plot_image }}" alt="Gráfico de Cobb-Douglas">
       <div class="plot-title">
         <p class="letra_img">
-          Figura 1: Gráficos de la función Cobb-Douglas \(f(x_1, x_2, x_3) = x_1^{0.3} \cdot x_2^{0.4} \cdot x_3^{0.3} \). A la
+          Figura 1: Gráficos de la función Cobb-Douglas \(f(x_1, x_2, x_3) = x_1^{0.3} \cdot x_2^{0.4} \cdot x_3^{0.3}
+          \). A la
           izquierda, con \( x_3 = 1 - x_1 - x_2 \); a la derecha, con \(x_3 = 2 \).
         </p>
       </div>
     </div>
   </div>
-  <span>Propiedades de una función de tipo CD:</span>
+
+  <span><strong>Propiedades de una función de tipo CD:</strong></span>
 
   <ul class="my-3">
     <li>
-      Dominio \(\mathbb{R}^{n}_{+}\)
+      Dominio: \(\mathbb{R}^{n}_{+}\)
     </li>
     <li>
-      <p class="hidden_pc">
+      Es homogénea de grado \(\sum_{i=1}^{n} \alpha_{i}\). Esto
+      quiere decir que el rendimiento a escala <a href="referencias#ref4" target="_blank">[4]</a> de la función
+      \(f(x)\) dependerá del comportamiento de los exponentes de cada variable \(x_{i}\), es decir,
+      <ul>
+        <li> Si \( \sum_{i=1}^{n} \alpha_{i} = 1 \), la función tiene rendimientos constantes a escala, lo que implica
+          que un aumento proporcional de los \(x_i\), \( \forall i = 1, \dots, n\), genera un aumento proporcional en
+          \(f(x)\).</li>
+        <li> Si \( \sum_{i=1}^{n} \alpha_{i} > 1 \), la función tiene rendimientos crecientes a escala, lo que implica
+          que un aumento proporcional de los \(x_i\), \( \forall i = 1, \dots, n\), genera un incremento mayor en
+          \(f(x)\). </li>
+        <li> Si \( \sum_{i=1}^{n} \alpha_{i} < 1 \), la función tiene rendimientos decrecientes a escala, lo que implica
+            que un aumento proporcional de los \(x_i\), \( \forall i=1, \dots, n\), genera un incremento menor en
+            \(f(x)\). </li>
+      </ul>
+      <!-- <p class="hidden_pc">
         Es homogénea de grado \(\sum_{i=1}^{n} \alpha_{i}\). En efecto,
         \[
         f(\lambda x_{1}, ..., \lambda x_{n})
@@ -78,9 +108,9 @@ block body %}
         = \lambda^{\sum_{i=1}^{n} \alpha_{i}} \biggl( A\prod_{i=1}^{n} x_{i}^{\alpha_{i}} \biggr)
         = \lambda^{\sum_{i=1}^{n} \alpha_{i}} f(x)
         \]
-      </p>
+      </p> -->
     </li>
-    <li>
+    <!-- <li>
       <p class="hidden_pc">
         Su comportamiento marginal se deduce de sus derivadas parciales.
         \[
@@ -122,21 +152,21 @@ block body %}
         = \frac{f(x)}{x_{i}^{k}} \prod_{j = 1}^{k}(\alpha_{i} - j + 1)
         \]
       </p>
-      <div class="figure-container">
-        <div class="figure">
-          <img src="data:image/png;base64,{{ plot_image_derv }}" alt="Curvas de nivel y derivadas parciales">
-          <div class="figure-title">
-            <p class="letra_img">Figura 2: Curvas de nivel y derivadas parciales de la función Cobb-Douglas</p>
-          </div>
-        </div>
-      </div>
-    </li>
+    </li> -->
     <li>
+      Las derivadas parciales en las funciones CD no solo representan el comportamiento marginal, sino que también están
+      estrechamente relacionadas con la elasticidad de los factores, una propiedad distintiva de este tipo de funciones.
+      En términos económicos, el comportamiento marginal describe la tasa de cambio de \(f(x)\) con respecto a \(x_i \
+      (\forall i = 1, \dots, n)\), manteniendo constantes las demás variables. Por su parte, la elasticidad mide el
+      cambio porcentual de \(f(x)\) debido a un cambio porcentual en una de sus variables independientes \(x_i \
+      (\forall
+      i = 1, \dots, n)\) <a href="referencias#ref3" target="_blank">[3]</a>. La elasticidad de \(f(x)\) respecto a la
+      \(i\)-ésima variable es:
       <p class="hidden_phone">
-        Los exponentes de cada variable representan la elasticidad de la función respectivamente. En efecto, la
-        aproximación de la elasticidad de una función de tipo CD con respecto a la i-ésima variable es:
+        <!-- Los exponentes de cada variable representan la elasticidad de la función respectivamente. En efecto, la
+        aproximación de la elasticidad de una función de tipo CD con respecto a la i-ésima variable es: -->
         \[E_{f_{x_{i}}}
-        = \frac{\triangle \% f}{\triangle \% x_{i}}
+        <!-- = \frac{\triangle \% f}{\triangle \% x_{i}} -->
         = \frac{\frac{\triangle f}{f}}{\frac{\triangle x_{i}}{x_{i}}}
         = \frac{\triangle f}{\triangle x_{i}} \frac{x_{i}}{f} \approx \frac{\partial f}{\partial x_{i}} \frac{x_{i}}{f}
         = \alpha_{i} \frac{f}{x_{i}} \frac{x_{i}}{f}
@@ -144,11 +174,11 @@ block body %}
         \]
       </p>
       <p class="hidden_pc">
-        Los exponentes de cada variable representan la elasticidad de la función respectivamente. En efecto, la
-        aproximación de la elasticidad de una función de tipo CD con respecto a la i-ésima variable es:
-        \[E_{f_{x_{i}}}
+        <!-- Los exponentes de cada variable representan la elasticidad de la función respectivamente. En efecto, la
+        aproximación de la elasticidad de una función de tipo CD con respecto a la i-ésima variable es: -->
+        <!-- \[E_{f_{x_{i}}}
         = \frac{\triangle \% f}{\triangle \% x_{i}}
-        \]
+        \] -->
         \[E_{f_{x_{i}}}
         = \frac{\frac{\triangle f}{f}}{\frac{\triangle x_{i}}{x_{i}}}
         \]
@@ -157,8 +187,33 @@ block body %}
         = \alpha_{i}
         \]
       </p>
+      En las funciones CD, la elasticidad de la producción respecto al insumo \( x_i \) es igual al exponente \(
+      \alpha_i \). Esto significa que la sensibilidad de \(f(x)\) a los cambios en \( x_i \) está determinada por \(
+      \alpha_i \).
     </li>
   </ul>
+  <div class="figure-container">
+    <div class="figure">
+      <img src="data:image/png;base64,{{ plot_image_derv }}" alt="Curvas de nivel y derivadas parciales">
+      <div class="figure-title">
+        <p class="letra_img">Figura 2: Curvas de nivel y derivadas parciales de la función Cobb-Douglas</p>
+      </div>
+    </div>
+  </div>
+
+  <span><strong>Optimización Estática:</strong></span>
+
+  <p>
+    La optimización estática es el proceso mediante el cual una empresa o individuo identifica cómo maximizar o
+    minimizar una función objetivo, sujeta a ciertas condiciones. Este tipo de optimización tiene aplicaciones directas
+    en la toma de decisiones estratégicas, como maximizar la producción con recursos limitados o minimizar los costos
+    bajo restricciones específicas.
+
+    Matemáticamente, el objetivo es determinar los puntos donde una función \(\Phi\), definida en un subconjunto \(S\) de
+    \(\mathbb{R}^{n}\), alcanza sus valores óptimos (mínimos o máximos). Este análisis se divide en dos categorías:
+    optimización sin restricciones y optimización con restricciones. Ambos enfoques son esenciales para modelar y
+    entender cómo los agentes económicos toman decisiones bajo diferentes escenarios.
+  </p>
 
   <!-- A TENER EN CUENTA DESCOMENTAR PERO LUEGO DE EVALUAR QUE COLOCAR -->
   <!-- <div class="col-md-12">
