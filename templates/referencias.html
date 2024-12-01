@@ -1,56 +1,78 @@
-{% extends './base.html' %} {% block title %} Referencias {% endblock %}
-{%block body %}
-<body>
-    <h1>Referencias</h1>
-    <ol class="referencias">
-        <li id="ref1">
-            Cobb C.W. and P.H. Douglas. Are there laws of production? 
-            <span class="titulo">The American Economic Review</span> 38, pages 1–41, 1948.
-        </li>
-        <li id="ref2">
-            Jan R. Magnus and Heinz Neudecker. 
-            <span class="titulo">Matrix Differential Calculus with Applications in Statistics and Econometrics.</span> 
-            John Wiley & Sons Ltd, third edition edition, 2007.
-        </li>
-        <li id="ref3">
-            Walter Nicholson. 
-            <span class="titulo">Teoría Microeconómica. Principios Básicos y Ampliaciones.</span> 
-            Cengage Learning Editores, S.A. de C.V., 9ª edición edition, 2008. Traducido de: 
-            <span class="titulo">Microeconomic Theory: Basic Principles and Extensions</span>, 9th ed. URL: 
-            <a href="http://latinoamerica.cengage.com" target="_blank">http://latinoamerica.cengage.com</a>.
-        </li>
-        <li id="ref4">
-            A. Pecha Castiblanco. 
-            <span class="titulo">Optimización estática y dinámica en economía.</span> 
-            Pro-Offset Editorial S.A, Universidad Nacional de Colombia, Facultad de Ciencias, Departamento de Matemáticas, 2005.
-        </li>
-        <li id="ref5">
-            A. Pecha Castiblanco. 
-            <span class="titulo">Optimización estática y dinámica en economía.</span> 
-            Pro-Offset Editorial S.A, Universidad Nacional de Colombia, Facultad de Ciencias, Departamento de Matemáticas, 2012.
-        </li>
-        <li id="ref6">
-            Robert S. Pindyck and Daniel L. Rubinfeld. 
-            <span class="titulo">Microeconomía.</span> Pearson, México, 8ª edición edition, 2013.
-        </li>
-        <li id="ref7">
-            Robert S. Pindyck and Daniel L. Rubinfeld. 
-            <span class="titulo">Microeconomía.</span> Pearson Educación, México, 8ª edición edition, 2017.
-        </li>
-        <li id="ref8">
-            Julián Pérez Porto and Ana Gardey. 
-            <span class="titulo">Insumo - qué es, definición y concepto,</span> 2021. 
-            Accedido: Noviembre, 2024. URL: 
-            <a href="https://definicion.de/insumo/" target="_blank">https://definicion.de/insumo/</a>.
-        </li>
-        <li id="ref9">
-            Hal R. Varian. 
-            <span class="titulo">Intermediate Microeconomics: A Modern Approach.</span> 
-            W.W. Norton & Company, New York, 9 edition, 2014.
-        </li>
-    </ol>
-</body>
-</html>
+{% extends './base.html' %}
+
+{% block title %} Referencias {% endblock %}
+
+{% block body %}
+<h1>Referencias</h1>
+<ol class="referencias">
+    <li id="ref1">
+        Cobb C.W. and P.H. Douglas. Are there laws of production?
+        <span class="titulo">The American Economic Review</span> 38, pages 1–41, 1948.
+    </li>
+    <li id="ref2">
+        Jan R. Magnus and Heinz Neudecker.
+        <span class="titulo">Matrix Differential Calculus with Applications in Statistics and Econometrics.</span>
+        John Wiley & Sons Ltd, third edition edition, 2007.
+    </li>
+    <li id="ref3">
+        Walter Nicholson.
+        <span class="titulo">Teoría Microeconómica. Principios Básicos y Ampliaciones.</span>
+        Cengage Learning Editores, S.A. de C.V., 9ª edición edition, 2008. Traducido de:
+        <span class="titulo">Microeconomic Theory: Basic Principles and Extensions</span>, 9th ed. URL:
+        <a href="http://latinoamerica.cengage.com" target="_blank">http://latinoamerica.cengage.com</a>.
+    </li>
+    <li id="ref4">
+        A. Pecha Castiblanco.
+        <span class="titulo">Optimización estática y dinámica en economía.</span>
+        Pro-Offset Editorial S.A, Universidad Nacional de Colombia, Facultad de Ciencias, Departamento de Matemáticas,
+        2005.
+    </li>
+    <li id="ref5">
+        A. Pecha Castiblanco.
+        <span class="titulo">Optimización estática y dinámica en economía.</span>
+        Pro-Offset Editorial S.A, Universidad Nacional de Colombia, Facultad de Ciencias, Departamento de Matemáticas,
+        2012.
+    </li>
+    <li id="ref6">
+        Robert S. Pindyck and Daniel L. Rubinfeld.
+        <span class="titulo">Microeconomía.</span> Pearson, México, 8ª edición edition, 2013.
+    </li>
+    <li id="ref7">
+        Robert S. Pindyck and Daniel L. Rubinfeld.
+        <span class="titulo">Microeconomía.</span> Pearson Educación, México, 8ª edición edition, 2017.
+    </li>
+    <li id="ref8">
+        Julián Pérez Porto and Ana Gardey.
+        <span class="titulo">Insumo - qué es, definición y concepto,</span> 2021.
+        Accedido: Noviembre, 2024. URL:
+        <a href="https://definicion.de/insumo/" target="_blank">https://definicion.de/insumo/</a>.
+    </li>
+    <li id="ref9">
+        Hal R. Varian.
+        <span class="titulo">Intermediate Microeconomics: A Modern Approach.</span>
+        W.W. Norton & Company, New York, 9 edition, 2014.
+    </li>
+</ol>
+
+<script>
+    // Script para actualizar el año en el pie de página
+    // document.getElementById('year').textContent = new Date().getFullYear();
+    const currentUrl = window.location.href;
+    const refId = currentUrl.split('#')[1];
+    if (refId && document.getElementById(refId)) {
+        const refElement = document.getElementById(refId);
+        console.log(refId);
 
 
+        // Aplica el estilo al <li> completo, incluyendo su contenido.
+        refElement.style.fontWeight = 'bold';  // Pone en negrita todo el <li>
+        refElement.style.backgroundColor = '#ffff99';  // Resalta con un color de fondo
+
+        // Aseguramos que el contenido dentro de <span> también esté en negrita
+        const spanElements = refElement.getElementsByTagName('span');
+        for (let span of spanElements) {
+            span.style.fontWeight = 'bold';  // Pone en negrita los <span> dentro del <li>
+        }
+    }
+</script>
 {% endblock %}
