@@ -904,7 +904,7 @@ function optimizacion_exp_sin(exponente) {
                             nivel de recursos necesarios para producir una unidad de producto, y su reducción permite identificar la combinación más eficiente 
                             de insumos para maximizar la producción al menor costo posible <a href="referencias#ref3" target="_blank">[3]</a>. 
                             Matemáticamente, el costo promedio se expresa como:
-                            \\[ C = \\frac{\\sum_{i=1}^{n} w_{i}x_{i} }{f(x)}\\]
+                            \\[ C(x) = \\frac{\\sum_{i=1}^{n} w_{i}x_{i} }{f(x)}\\]
 
                             donde \\(f = f(x_{1}, ..., x_{n})\\)  es la función de producción, la cual describe la relación matemática entre los insumos utilizados 
                             y la cantidad de producto final producido <a href="referencias#ref3" target="_blank">[3]</a>. Para minimizar el costo promedio \\(C\\), 
@@ -1326,7 +1326,7 @@ function optimizacion_exp_sin(exponente) {
                     nivel de recursos necesarios para producir una unidad de producto, y su reducción permite identificar la combinación más eficiente 
                     de insumos para maximizar la producción al menor costo posible <a href="referencias#ref3" target="_blank">[3]</a>. 
                     Matemáticamente, el costo promedio se expresa como:
-                    \\[ C =  \\frac{${costo_suma}}{f(x)} \\]
+                    \\[ C(x) =  \\frac{${costo_suma}}{f(x)} \\]
                     donde \\(x =(${var_list})\\) es un vector de ${exponente} variables independientes y \\(f(x)\\) es la función de producción, 
                     la cual describe la relación matemática entre los insumos utilizados y la cantidad de producto final producido 
                     <a href="referencias#ref3" target="_blank">[3]</a>. Para minimizar el costo promedio \\(C\\), debemos calcular las derivadas 

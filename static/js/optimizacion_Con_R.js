@@ -164,17 +164,18 @@ function mostrarCobbDouglasConPresupuesto(
 
           <span class="hidden_phone">
             \\[
-              \\hat{f}(x) = f(\\hat{x}) = f(${lista_var_CD_con_opt}) = ${inicio_func_opt} = ${valor_puntos_criticos}
+                f(\\hat{x}) = f(${lista_var_CD_con_opt}) = ${inicio_func_opt} = ${valor_puntos_criticos}
             \\]
           </span>
           <span class="hidden_pc">
             \\[
-              \\hat{f}(x) = f(\\hat{x}) = ${inicio_func_opt} = ${valor_puntos_criticos}
+                f(\\hat{x}) = ${inicio_func_opt} = ${valor_puntos_criticos}
             \\]
           </span>
 
-          Concluyendo así que, la función en este punto opera de manera óptima, y no es posible mejorar 
-          su valor sin ajustar el presupuesto o los precios de los insumos.
+          Este resultado refleja el nivel máximo de satisfacción que el consumidor puede alcanzar al asignar su presupuesto 
+          de manera óptima entre los tres bienes. De este modo, se destaca la importancia de la optimización en funciones de 
+          utilidad CD, pues muestra cómo la combinación eficiente de recursos permite maximizar los beneficios para el consumidor. 
         </p>`;
 
         break;
@@ -402,6 +403,7 @@ function optimizacion_exp_con(exponente) {
     presupuestal \\( c(x) \\). Esto se puede formular como:</p>`;
 
   let lista_var_CD = ``;
+  let lista_var_CD_con = ``;
   let lista_exp_CD = ``;
   let var_expo_func = ``;
   let var_expo_costo = ``;
@@ -410,35 +412,64 @@ function optimizacion_exp_con(exponente) {
   let exponentes_list_0 = ``;
   let exponentes_list_0_1 = ``;
   let exponentes_suma = ``;
+  let cant_beneficio_costo = ``;
+  let sumatoria_x_j = ``;
+  let soluciones_optimas = ``;
 
   for (let i = 1; i <= exponente; i++) {
     lista_var_CD += `x_{${i}}`;
+    lista_var_CD_con += `\\hat{x}_{${i}}`;
     lista_exp_CD += `${i}`;
     var_expo_func += `x_{${i}}^{\\alpha_{${i}}}`;
     var_expo_costo += `w_{${i}}x_{${i}}`;
+    cant_beneficio_costo += `\\[`;
     inicio_deri_parc += `
             <p>
-                \\( \\frac{\\partial f}{\\partial x_{${i}}} = \\alpha_{${i}} \\frac{f(x)}{x_{${i}}} \\ - \\ \\lambda w_{${i}} = 0 \\)
+                \\( \\frac{\\partial f}{\\partial x_{${i}}} = \\alpha_{${i}} \\frac{f(x)}{x_{${i}}} \\ - \\ \\lambda w_{${i}} = 0 \\ \\ \\Rightarrow \\ \\ \\lambda = \\frac{\\alpha_{${i}} f(x)}{w_{${i}} x_{${i}}} \\)
             </p>
         `;
     inicio_deri_parc_phone += `
             <p>
-                \\( \\frac{\\partial f}{\\partial x_{${i}}} = \\alpha_{${i}} \\frac{f(x)}{x_{${i}}} \\ - \\ \\lambda w_{${i}} = 0 \\)
+                \\( \\frac{\\partial f}{\\partial x_{${i}}} = \\alpha_{${i}} \\frac{f(x)}{x_{${i}}} \\ - \\ \\lambda w_{${i}} = 0 \\ \\ \\Rightarrow \\ \\ \\lambda = \\frac{\\alpha_{${i}} f(x)}{w_{${i}} x_{${i}}} \\)
             </p>
         `;
     exponentes_list_0 += `\\( \\alpha_{${i}}  < 0 \\)`;
     exponentes_list_0_1 += `\\( 0 < \\alpha_{${i}}  < 1 \\)`;
     exponentes_suma += `\\alpha_{${i}}`;
+    sumatoria_x_j += `\\frac{w_{${i}}}{\\alpha_{${i}}} x_{${i}} \\sum_{j=1}^{${exponente}} \\alpha_{j} = c`;
+    soluciones_optimas += `
+      \\[
+        \\hat{x_{${i}}} = \\frac{\\alpha_{${i}} c}{w_{${i}} \\sum_{j=1}^{${exponente}} \\alpha_{j}}
+      \\]
+    `;
+
 
     if (i < exponente) {
       lista_var_CD += ", \\ ";
+      lista_var_CD_con += ", \\ ";
       lista_exp_CD += ", \\ ";
       var_expo_costo += " + ";
       inicio_deri_parc += ", ";
       exponentes_list_0 += " , ";
       exponentes_list_0_1 += " , ";
       exponentes_suma += " + ";
+      sumatoria_x_j += " , \\ \\ ";
     }
+
+    for (let index = 1; index <= exponente; index++) {
+      if (i != index) {
+          if (i == exponente & index == exponente - 1) {
+              cant_beneficio_costo += `
+              x_${i} = \\frac{ \\alpha_{${i}} w_{${index}}x_{${index}}}{ \\alpha_{${index}} w_{${i}}} \\ \\ \\ \\ 
+              `;
+          }else{
+              cant_beneficio_costo += `
+              x_${i} = \\frac{ \\alpha_{${i}} w_{${index}}x_{${index}}}{ \\alpha_{${index}} w_{${i}}}, \\ \\ \\ \\ 
+              `;
+          }
+      }
+    }
+    cant_beneficio_costo += ` \\]`;
   }
 
   const funcion_optimizar_CD_con = document.getElementById(
@@ -485,12 +516,14 @@ function optimizacion_exp_con(exponente) {
   let inicio_minimizador = "<strong>Minimización</strong> ";
 
   const conclusion_CD_sin = document.getElementById("conclusion_CD");
-  let inicio_conclusion = "<strong>Conclusión</strong> ";
+  let inicio_conclusion = "<strong>Conclusión</strong> <br>";
 
   let inicio_hessiana = `<strong>Determinante Bordeado: Uso de la Matriz Hessiana y Análisis de Puntos Críticos</strong> 
     <p>Para determinar si los puntos críticos son máximos, mínimos o puntos de silla, se calcula el determinante bordeado. 
-    Para la construcción de este determinante, utilizamos la matriz Hessiana. En el contexto de funciones de tipo Cobb-Douglas, la matriz Hessiana se define como:</p>`;
+    Para la construcción de este determinante, utilizamos la matriz Hessiana. En el contexto de funciones de tipo Cobb-Douglas, 
+    la matriz Hessiana se define como:</p>`;
 
+  let inicio_lagrange = `<p> \\[\\frac{\\partial{f}}{\\partial{\\lambda}} = \\sum_{i=1}^{${exponente}} w_{i}x_{i} \\ - \\ c = 0 \\ \\ \\Rightarrow \\ \\ \\sum_{i=1}^{${exponente}} w_{i}x_{i} \\ = \\ c \\] </p>`;
   switch (exponente) {
     case "n":
       text_ini_deri_parc_CD_con.innerHTML = ``;
@@ -503,8 +536,8 @@ function optimizacion_exp_con(exponente) {
                             \\text{Sujeto a:} && c(x) = c(c_{1}, ..., c_{n}) = \\sum_{i=1}^{n} w_{i}x_{i}  = c\\\\
                         \\end{align*}
                     \\]
-                    Por el método del multiplicador de Lagrange, primero definimos la función lagrangiana por:
-                    \\[ \\psi(X) \\ = \\ \\psi(X_{1}, ..., X_{n}) \\ = \\ A \\prod_{i=1}^{n} X_{i}^{\\alpha_{i}} \\ - \\ \\lambda \\ \\biggl( \\sum_{i=1}^{n} w_{i}X_{i} \\ - \\ c \\biggl) \\]
+                    donde \\( x = (x_1, \\dots, x_n) \\) es un vector de \\(n\\) variables independientes. Para resolverlo, utilizamos el método de Lagrange, definiendo la función lagrangiana:
+                    \\[ \\psi(x) \\ = \\ \\psi(x_{1}, ..., x_{n}) \\ = \\ A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} \\ - \\ \\lambda \\ \\biggl( \\sum_{i=1}^{n} w_{i}x_{i} \\ - \\ c \\biggl) \\]
                 </span>
                 <span class="hidden_pc">
                     \\[
@@ -514,121 +547,137 @@ function optimizacion_exp_con(exponente) {
                         \\end{align*}
                     \\]
                     Por el método del multiplicador de Lagrange, primero definimos la función lagrangiana por:
-                    \\[ \\psi(X) \\ = \\ A \\prod_{i=1}^{n} X_{i}^{\\alpha_{i}} \\ - \\ \\lambda \\ \\biggl( \\sum_{i=1}^{n} w_{i}X_{i} \\ - \\ c \\biggl) \\]
+                    \\[ \\psi(x) \\ = \\ A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} \\ - \\ \\lambda \\ \\biggl( \\sum_{i=1}^{n} w_{i}x_{i} \\ - \\ c \\biggl) \\]
                 </span>
                 
-                Donde \\(\\lambda\\) es el multiplicador de Lagrange asociado a la restricción presupuestaria. Así, calculando las derivadas parciales de \\(\\psi\\) con respecto 
-                a cada \\(X_{i} \\ \\ \\forall \\ i = 1, ..., n\\), e igualando a cero, obtenemos que: 
+                donde \\(\\lambda\\) es el multiplicador de Lagrange que nos permite manejar la restricción del presupuesto, este refleja el cambio en 
+                \\(f(x)\\) cuando se ajusta el presupuesto disponible. A continuación, calculamos las derivadas parciales de \\(\\psi(x)\\) con respecto a 
+                cada \\(x_{i}\\) para \\(i = 1, \\ldots, n\\) e igualamos a cero para encontrar los puntos críticos. Las derivadas parciales son: 
             </p>
             `;
-
       funcion_derivada_parcial_CD_con.innerHTML = `
         \\[
-            \\frac{\\partial \\psi }{\\partial X_{i}} \\
-                = \\ A \\frac{\\alpha_{i}} {X_{i}}\\prod_{k=1}^{n} X_{k}^{\\alpha_{k}} \\ - \\ \\lambda w_{i} \\ 
-                = \\ 0, \\ \\ \\ \\ \\forall \\ i = 1, .., n 
+            \\frac{\\partial \\psi }{\\partial x_{i}} \\
+                = \\ A \\frac{\\alpha_{i}} {x_{i}}\\prod_{k=1}^{n} x_{k}^{\\alpha_{k}} \\ - \\ \\lambda w_{i} \\ 
+                = \\ 0, \\quad
+              \\Rightarrow \\lambda = A \\frac{\\alpha_{i}}{x_{i} w_{i}} \\prod_{k=1}^{n} x_{k}^{\\alpha_{k}}, 
+              \\quad \\forall \\ i = 1, .., n 
         \\]
       `;
       funcion_derivada_parcial_CD_con_phone.innerHTML = `
-      \\[
-          \\frac{\\partial \\psi }{\\partial X_{i}} \\
-              = \\ A \\frac{\\alpha_{i}} {X_{i}}\\prod_{k=1}^{n} X_{k}^{\\alpha_{k}} \\ - \\ \\lambda w_{i} \\ 
-              = \\ 0, \\ \\ \\ \\ \\forall \\ i = 1, .., n 
-      \\]
-    `;
-      funcion_derivada_parcial_CD_con_lambda.innerHTML = `<p> \\[\\frac{\\partial{f}}{\\partial{\\lambda}} = \\sum_{i=1}^{${exponente}} w_{i}x_{i} \\ - \\ c = 0\\] </p>`;
+        \\[
+            \\frac{\\partial \\psi }{\\partial x_{i}} \\
+                = \\ A \\frac{\\alpha_{i}} {x_{i}}\\prod_{k=1}^{n} x_{k}^{\\alpha_{k}} \\ - \\ \\lambda w_{i} \\ 
+                = \\ 0, \\quad
+                \\Rightarrow \\lambda = \\frac{\\alpha_{i} f(x)}{x_{i} w_{i}}, 
+                \\quad \\forall \\ i = 1, .., n 
+        \\]
+      `;
+      inicio_lagrange = `
+        <p> \\[\\frac{\\partial{f}}{\\partial{\\lambda}} = \\sum_{i=1}^{${exponente}} w_{i}x_{i} \\ - \\ c = 0\\] </p>
+        <p> 
+          Dado que \\(\\lambda\\) debe ser el mismo para todos los \\(x_{i}\\), igualamos las expresiones de \\(\\lambda\\) para 
+          \\(x_i\\) y \\(x_j\\), con \\(i,j = 1, ..., n \\text{ y } i \\neq j\\): 
+          \\[
+              \\frac{\\alpha_{i}}{x_{i} w_{i}} = \\frac{\\alpha_{j}}{x_{j} w_{j}} \\quad 
+              \\Rightarrow \\quad x_{j} = \\frac{\\alpha_{j} w_{i}}{\\alpha_{i} w_{j}} x_{i}
+          \\]
+          Sustituyendo esta relación en la restricción presupuestaria $c(x)$ se demuestra que la asignación óptima respeta la 
+          restricción presupuestaria, distribuyendo los recursos entre los bienes en función de sus precios y sus contribuciones 
+          relativas a la utilidad. Así obtenemos la siguiente expresión:
+          \\[
+            \\frac{w_{i}}{\\alpha_{i}} x_{i} \\sum_{j=1}^{n} \\alpha_{j} = c, \\quad \\forall i = 1, \\ldots, n
+          \\]
+          Finalmente, despejando \\(x_{i}\\) y denominándola como \\(\\hat{x}_{i}\\), se tiene:
+          \\[
+            \\hat{x_{i}} = \\frac{\\alpha_{i} c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}}, \\quad \\forall i = 1, \\ldots, n
+          \\]
+          Por el teorema de Lagrange, las cantidades \\(\\hat{x_{i}}\\) obtenidas son las soluciones óptimas para el problema 
+          de optimización bajo la restricción presupuestaria. En este contexto, la expresión vectorial de las soluciones óptimas es:
+          \\( \\hat{x} = (\\hat{x}_{1}, \\dots, \\hat{x}_{n}) \\)
+        </p>
+      `;
 
       inicio_hessiana += `
                 Primero, las derivadas parciales de segundo orden de la función Lagrangiana son:
+                <p class="hidden_phone">
+                  \\[
+                      H_{\\psi}(x) = \\begin{pmatrix}
+                        \\frac{\\alpha_{1} (\\alpha_{1} - 1)}{x_{i}^2}
+                        & \\frac{\\alpha_{1} \\alpha_{2}}{x_{1} x_{2}}
+                        & \\cdots & \\frac{\\alpha_{1} \\alpha_{n}}{x_{1} x_{n}} \\\\
+                        \\frac{\\alpha_{2} \\alpha_{1}}{x_{2} x_{1}}
+                        & \\frac{\\alpha_{2} (\\alpha_{2} - 1)}{x_{i}^2}
+                        & \\cdots & \\frac{\\alpha_{2} \\alpha_{n}}{x_{2} x_{n}} \\\\
+                        \\vdots & \\vdots & \\ddots & \\vdots \\\\
+                        \\frac{\\alpha_{n} \\alpha_{1}}{x_{n} x_{1}} 
+                        & \\frac{\\alpha_{n} \\alpha_{2}}{x_{n} x_{2}}  
+                        &\\cdots & \\frac{\\alpha_{n} (\\alpha_{n} - 1)}{x_{i}^2}
+                      \\end{pmatrix}
+                      f(x)
+                  \\]
+                </p>
+                <p>
+                  La cual es:
+                  <ul>
+                    <li>
+                      Definida positiva sí, para todo \\(i = 1, ..., n\\) tenemos que \\(\\alpha_{i} < 0\\) o, \\(\\alpha_{i} < 0\\) 
+                      y a lo más existe un \\(\\alpha_{j} > 1\\) con \\(j\\neq i\\), tal que \\(\\sum \\alpha_{i} > 1\\).
+                    </li>
+                    <li>
+                      Semidefinida positiva sí, para todo \\(i = 1, ..., n\\) tenemos que \\(\\alpha_{i} < 0\\) o, \\(\\alpha_{i} < 0\\)
+                      y a lo más existe un \\(\\alpha_{j} > 1\\) con \\(j\\neq i\\), tal que \\(\\sum \\alpha_{i} \\geq 1\\).
+                    </li>
+                    <li>
+                      Definida negativa sí \\(0 < \\alpha_{i} < 1\\) para todo \\(i = 1, ..., n\\) y \\(\\sum \\alpha_{i} < 1\\).
+                    </li>
+                    <li>
+                      Semidefinida negativa sí \\(0 < \\alpha_{i} < 1\\) para todo \\(i = 1, ..., n\\) y \\(\\sum \\alpha_{i} \\leq 1\\).
+                    </li>
+                  </ul>
+                </p>
 
-                \\[
-                    \\frac{\\partial^2 \\psi}{\\partial X_{i}^2} = A \\frac{\\alpha_{i} (\\alpha_{i} - 1)}{X_{i}^2} \\prod_{k=1}^{n} X_{k}^{\\alpha_{k}}
-                \\]
-
-                Para las derivadas cruzadas con \\(i \\neq j\\):
-
-                \\[ \\frac{\\partial^2 \\psi}{\\partial X_{i} \\partial X_{j}} = A \\frac{\\alpha_{i} \\alpha_{j}}{X_{i} X_{j}} \\prod_{k=1}^{n} X_{k}^{\\alpha_{k}} \\]
-
-                Así, la matriz Hessiana \\(H_{\\psi}(X) \\) es:
-
-                <p class="hidden_pc">
-                            \\[
-                                H_{f}(x) = A 
-                                \\begin{pmatrix}
-                                    \\frac{\\alpha_1 (\\alpha_1 - 1) }{x_1^{2}}
-                                    & \\cdots & \\frac{\\alpha_1 \\alpha_n}{x_1 x_n} \\\\
-                                    \\frac{\\alpha_2 \\alpha_1}{x_2 x_1}
-                                    & \\cdots & \\frac{\\alpha_2 \\alpha_n}{x_2 x_n} \\\\
-                                    \\vdots & \\ddots & \\vdots \\\\
-                                    \\frac{\\alpha_n \\alpha_1}{x_n x_1}
-                                    & \\cdots & \\frac{\\alpha_n (\\alpha_n - 1)}{x_n^{2}}
-                                \\end{pmatrix}
-                                f(x)
-                            \\]
-                        </p>
-                        <p class="hidden_phone">
-                            \\[
-                                H_{f}(x) = \\begin{pmatrix}
-                                \\alpha_1 (\\alpha_1 - 1) 
-                                & \\alpha_1 \\alpha_2 A \\cdot x_1^{\\alpha_1 - 1} \\cdot x_2^{\\alpha_2 - 1} \\cdots x_n^{\\alpha_n} 
-                                & \\cdots & \\alpha_1 \\alpha_n A \\cdot x_1^{\\alpha_1 - 1} \\cdot x_2^{\\alpha_2} \\cdots x_n^{\\alpha_n - 1} \\\\
-                                \\alpha_2 \\alpha_1 A \\cdot x_1^{\\alpha_1 - 1} \\cdot x_2^{\\alpha_2 - 1} \\cdots x_n^{\\alpha_n} 
-                                & \\alpha_2 (\\alpha_2 - 1) A \\cdot x_1^{\\alpha_1} \\cdot x_2^{\\alpha_2 - 2} \\cdots x_n^{\\alpha_n} 
-                                & \\cdots & \\alpha_2 \\alpha_n A \\cdot x_1^{\\alpha_1} \\cdot x_2^{\\alpha_2 - 1} \\cdots x_n^{\\alpha_n - 1} \\\\
-                                \\vdots & \\vdots & \\ddots & \\vdots \\\\
-                                \\alpha_n \\alpha_1 A \\cdot x_1^{\\alpha_1 - 1} \\cdot x_2^{\\alpha_2} \\cdots 
-                                x_n^{\\alpha_n - 1} & \\alpha_n \\alpha_2 A \\cdot x_1^{\\alpha_1} \\cdot x_2^{\\alpha_2 - 1} 
-                                \\cdots x_n^{\\alpha_n - 1} & \\cdots & \\alpha_n (\\alpha_n - 1) A \\cdot x_1^{\\alpha_1} 
-                                \\cdot x_2^{\\alpha_2} \\cdots x_n^{\\alpha_n - 2}
-                                \\end{pmatrix}
-                            \\]
-                        </p>
-                        <p>
-                            La cual es:
-                            <ul>
-                                <li>
-                                    Definida positiva sí, para todo \\(i = 1, ..., n\\) tenemos que \\(\\alpha_{i} < 0\\) o, \\(\\alpha_{i} < 0\\) 
-                                    y a lo más existe un \\(\\alpha_{j} > 1\\) con \\(j\\neq i\\), tal que \\(\\sum \\alpha_{i} > 1\\).
-                                </li>
-                                <li>
-                                    Semidefinida positiva sí, para todo \\(i = 1, ..., n\\) tenemos que \\(\\alpha_{i} < 0\\) o, \\(\\alpha_{i} < 0\\)
-                                    y a lo más existe un \\(\\alpha_{j} > 1\\) con \\(j\\neq i\\), tal que \\(\\sum \\alpha_{i} \\geq 1\\).
-                                </li>
-                                <li>
-                                    Definida negativa sí \\(0 < \\alpha_{i} < 1\\) para todo \\(i = 1, ..., n\\) y \\(\\sum \\alpha_{i} < 1\\).
-                                </li>
-                                <li>
-                                    Semidefinida negativa sí \\(0 < \\alpha_{i} < 1\\) para todo \\(i = 1, ..., n\\) y \\(\\sum \\alpha_{i} \\leq 1\\).
-                                </li>
-                            </ul>
-                        </p>
+                <p>
+                    Una vez que se tiene la matriz Hessiana, se evalúa el determinante bordeado, lo cual nos permite clasificar los puntos críticos:
+                </p> 
+                <ul> 
+                    <li>
+                        <strong>Máximos Locales:</strong> Si el determinante bordeado es positivo y la matriz Hessiana es definida negativa.
+                    </li> 
+                    <li>
+                        <strong>Mínimos Locales:</strong> Si el determinante bordeado es positivo y la matriz Hessiana es definida positiva.
+                    </li> 
+                    <li>
+                        <strong>Puntos de Silla:</strong> Si el determinante bordeado es negativo, indicando que el punto crítico no es ni un máximo ni un mínimo local.
+                    </li> 
+                </ul> 
 
                 Para el criterio del determinante bordeado, definimos la matriz \\(\\Delta_n\\) como una matriz simétrica \\((n+1) \\times (n+1)\\):
                 \\[
                     \\Delta_n = \\begin{pmatrix}
                     0 & -w_1 & \\cdots & -w_n \\\\
-                    -w_1 & A \\frac{\\alpha_{1} (\\alpha_{1} - 1)}{X_{1}^2} \\prod_{k=1}^{n} X_{k}^{\\alpha_{k}}
-                    & \\cdots & A \\frac{\\alpha_{1} \\alpha_{n}}{X_{1} X_{n}} \\prod_{k=1}^{n} X_{k}^{\\alpha_{k}} \\\\
+                    -w_1 & A \\frac{\\alpha_{1} (\\alpha_{1} - 1)}{x_{1}^2} \\prod_{k=1}^{n} x_{k}^{\\alpha_{k}}
+                    & \\cdots & A \\frac{\\alpha_{1} \\alpha_{n}}{x_{1} x_{n}} \\prod_{k=1}^{n} x_{k}^{\\alpha_{k}} \\\\
                     \\vdots & \\vdots & \\ddots & \\vdots \\\\
-                    -w_n & A \\frac{\\alpha_{n} \\alpha_{1}}{X_{n} X_{1}} \\prod_{k=1}^{n} X_{k}^{\\alpha_{k}}  
-                    & \\cdots & A \\frac{\\alpha_{n} (\\alpha_{n} - 1)}{X_{n}^2} \\prod_{k=1}^{n} X_{k}^{\\alpha_{k}} 
+                    -w_n & A \\frac{\\alpha_{n} \\alpha_{1}}{x_{n} x_{1}} \\prod_{k=1}^{n} x_{k}^{\\alpha_{k}}  
+                    & \\cdots & A \\frac{\\alpha_{n} (\\alpha_{n} - 1)}{x_{n}^2} \\prod_{k=1}^{n} x_{k}^{\\alpha_{k}} 
                     \\end{pmatrix}
                 \\]
 
                 <p>Para verificar si el punto crítico maximiza o minimiza la función, calculamos el determinante de \\(\\Delta_${exponente}\\) como:</p>
                 <span class="hidden_phone">
                   \\[
-                    |\\Delta_n| = (-1)^{n} (f(X))^{n-1} 
-                    \\prod_{i=1}^{n} \\frac{\\alpha_i}{X_{i}^{2}} 
+                    |\\Delta_n| = (-1)^{n} (f(x))^{n-1} 
+                    \\prod_{i=1}^{n} \\frac{\\alpha_i}{x_{i}^{2}} 
                     \\left( 
                     \\sum_{i=1}^{n} 
                     \\left[ 
-                    \\frac{w_{i}^{2} X_{i}^{2}}{\\alpha_i}
+                    \\frac{w_{i}^{2} x_{i}^{2}}{\\alpha_i}
                     - \\sum_{\\substack{j = 2 \\\\ j > i}}^{n} 
-                    \\frac{X_{i}^{2} X_{j}^{2}}{\\alpha_i \\alpha_j} 
+                    \\frac{x_{i}^{2} x_{j}^{2}}{\\alpha_i \\alpha_j} 
                     \\left( 
-                    \\frac{w_i \\alpha_j}{X_j}
-                    - \\frac{w_j \\alpha_i}{X_i}
+                    \\frac{w_i \\alpha_j}{x_j}
+                    - \\frac{w_j \\alpha_i}{x_i}
                     \\right)^{2}
                     \\right] 
                     \\right) 
@@ -636,19 +685,19 @@ function optimizacion_exp_con(exponente) {
                 </span>
                 <span class="hidden_pc">
                   \\[
-                    |\\Delta_n| = (-1)^{n} (f(X))^{n-1} 
-                    \\prod_{i=1}^{n} \\frac{\\alpha_i}{X_{i}^{2}} 
+                    |\\Delta_n| = (-1)^{n} (f(x))^{n-1} 
+                    \\prod_{i=1}^{n} \\frac{\\alpha_i}{x_{i}^{2}} 
                   \\]
                   \\[
                     \\left( 
                     \\sum_{i=1}^{n} 
                     \\left[ 
-                    \\frac{w_{i}^{2} X_{i}^{2}}{\\alpha_i}
+                    \\frac{w_{i}^{2} x_{i}^{2}}{\\alpha_i}
                     - \\sum_{\\substack{j = 2 \\\\ j > i}}^{n} 
-                    \\frac{X_{i}^{2} X_{j}^{2}}{\\alpha_i \\alpha_j} 
+                    \\frac{x_{i}^{2} x_{j}^{2}}{\\alpha_i \\alpha_j} 
                     \\left( 
-                    \\frac{w_i \\alpha_j}{X_j}
-                    - \\frac{w_j \\alpha_i}{X_i}
+                    \\frac{w_i \\alpha_j}{x_j}
+                    - \\frac{w_j \\alpha_i}{x_i}
                     \\right)^{2}
                     \\right] 
                     \\right) 
@@ -666,162 +715,204 @@ function optimizacion_exp_con(exponente) {
             `;
 
       inicio_maximizador += `
-        Para maximizar la utilidad de una empresa que modela una función (CD) de \\(q\\) unidades 
-        utilizando insumos \\(X_{1}, \\ldots, X_{n}\\) a precios \\(w_{1}, \\ldots, w_{n}\\) por unidad 
-        respectivamente, y sujeto a una restricción presupuestaria, se debe solucionar el siguiente 
-        problema de optimización:
+        <p>
+          Consideremos un consumidor que busca maximizar su utilidad \\(f(x)\\), representada mediante una 
+          función de utilidad CD, al asignar un presupuesto \\(c\\) entre \\(n\\) bienes \\(x_{1}, \\ldots, x_{n}\\). 
+          Cada bien tiene un precio por unidad dado por \\(w_{1}, \\ldots, w_{n}\\) respectivamente. 
+          El problema de optimización se plantea como:
+        </p>
 
         \\[
-            \\text{Maximizar } Q(X) = A \\prod_{i=1}^{n} X_{i}^{\\alpha_{i}}
+            \\text{Maximizar } f(x) = f(x_{1}, \\ldots, x_{n}) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}
         \\]
         \\[
-            \\text{Sujeto a } C(X) = \\sum_{i=1}^{n} w_{i} X_{i} = c
+            \\text{Sujeto a } c(x) = c(x_{1}, \\ldots, x_{n}) = \\sum_{i=1}^{n} w_{i} x_{i} = c
         \\]
 
-        Por el método del multiplicador de Lagrange, definimos la función Lagrangiana como:
+        El objetivo es determinar cómo el consumidor asigna su presupuesto de manera óptima para maximizar la utilidad total, respetando la restricción económica. 
+        Para resolverlo, utilizamos el método de Lagrange, definiendo la función lagrangiana:
 
         \\[
-            \\psi(X) = A \\prod_{i=1}^{n} X_{i}^{\\alpha_{i}} - \\lambda \\left( 
-            \\sum_{i=1}^{n} w_{i} X_{i} - c \\right)
+            \\psi(x) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} - \\lambda \\left( 
+            \\sum_{i=1}^{n} w_{i} x_{i} - c \\right)
         \\]
 
         Concluyendo así que,
 
-        \\[ \\hat{X_{i}} \\ = \\ \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}}, \\ \\ \\ \\ \\ 
+        \\[ \\hat{x_{i}} \\ = \\ \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}}, \\ \\ \\ \\ \\ 
         \\forall \\ i \\ = \\ 1, ..., n \\]
 
-        Entonces, de acuerdo con el teorema de Lagrange, los valores óptimos de cada variable \\(X_{i}\\) 
-        para maximizar la función CD bajo la restricción presupuestaria. Sí verificamos que \\((-1)^{n} |\\Delta_n| > 0\\) 
-        y la matriz Hessiana es definida negativa, esto garantiza que la función CD tiene un máximo 
-        local bajo la restricción presupuestaria. Además, si la función es cóncava, este máximo se convierte 
-        en un máximo absoluto. Por lo tanto, los valores óptimos de cada variable \\(X_{i}\\) que maximizan 
-        la función son los que alcanzan el máximo, representados como \\((\\hat{X_{1}}, ..., \\hat{X_{n}})\\). 
-        Así, las cantidades que se deben producir para maximizar la utilidad son:
+        Por el teorema de Lagrange, las cantidades \\(\\hat{x_{i}}\\) obtenidas son las soluciones óptimas para 
+        el problema de maximización de la utilidad bajo la restricción presupuestaria. De este modo, el presupuesto 
+        se distribuye proporcionalmente entre los bienes, de acuerdo con sus parámetros \\(\\alpha_{i}\\) y precios \\(w_{i}\\),
+        \\(\\forall i = 1, ..., n\\). En consecuencia, el consumidor asigna su presupuesto de manera que se maximizan sus 
+        niveles de satisfacción (utilidad), teniendo en cuenta tanto la importancia relativa de los bienes como sus precios.
 
+        Sí verificamos que \\( (-1)^n |\\Delta_n| > 0 \\) y la matriz Hessiana es definida negativa, podemos concluir que el punto crítico 
+        \\(\\hat{x} = (\\hat{x}_1, \\dots, \\hat{x}_n)\\) corresponde al punto donde el consumidor maximiza su utilidad bajo la restricción 
+        presupuestaria. Este resultado es crucial para asegurar que la asignación óptima de los bienes en función de la utilidad, de acuerdo 
+        con los precios y las importancias relativas de cada bien, lleva al valor máximo de la utilidad total.
+        En este sentido, las cantidades de cada bien que deben consumirse para maximizar la utilidad son:
         <p>
-            \\[\\hat{Q}(X) = \\hat{Q}(X_{1}, \\cdots, X_{n}) = Q(\\hat{X_{1}}, \\cdots, \\hat{X_{n}}) \\]
+            \\[
+                f(\\hat{x}) = f(\\hat{x_{1}}, \\cdots, \\hat{x_{n}}) 
+                            = \\ A \\prod_{i=1}^{n} \\biggl( \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}} \\biggr)^{\\alpha_{i}} 
+            \\]
 
-            Por lo cual, <strong>la función de oferta</strong> es: 
-
-            \\[\\hat{Q}(X) \\ = \\ A \\prod_{i=1}^{n} \\biggl( \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}} \\biggr)^{\\alpha_{i}} \\]
-
-            Y <strong>la función de beneficio</strong> está dada por:
+            Y el beneficio que el consumidor obtiene de esta asignación, considerando el gasto total en los bienes, se expresa como:
 
             <span class="hidden_phone">
-              \\[ \\hat{\\Pi}(X) = \\hat{\\Pi}(X_{1}, ..., X_{n}) = P\\hat{Q}(X) - \\sum_{i=1}^{n} w_{i}\\hat{X_{i}} 
+              \\[ \\Pi(\\hat{x}) = Pf(\\hat{x}) - \\sum_{i=1}^{n} w_{i}\\hat{x_{i}} 
               = PA \\prod_{i=1}^{n} \\biggl( \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}} 
               \\biggr)^{\\alpha_{i}} \\ - \\ \\sum_{i=1}^{n} w_{i} \\ \\biggl( 
               \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}} \\biggr) \\]
             </span>
             <span class="hidden_pc">
               \\[ 
-                \\hat{\\Pi}(X) = \\hat{\\Pi}(X_{1}, ..., X_{n}) = P\\hat{Q}(X) - \\sum_{i=1}^{n} w_{i}\\hat{X_{i}} 
+                  \\Pi(\\hat{x}) = Pf(\\hat{x}) - \\sum_{i=1}^{n} w_{i}\\hat{x_{i}} 
               \\]
 
               \\[ 
-                \\hat{\\Pi}(X) = PA \\prod_{i=1}^{n} \\biggl( \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}} 
+                \\Pi(\\hat{x}) = PA \\prod_{i=1}^{n} \\biggl( \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}} 
                 \\biggr)^{\\alpha_{i}} \\ - \\ \\sum_{i=1}^{n} w_{i} \\ \\biggl( 
                 \\frac{\\alpha_{i} \\ c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}} \\biggr) 
               \\]
             </span>
 
             Por lo tanto,
-            \\[ \\hat{\\Pi}(X) =  PA \\biggl( \\frac{c}{\\sum_{i=1}^{n} \\alpha_{i}} 
+            \\[ \\Pi(\\hat{x}) =  PA \\biggl( \\frac{c}{\\sum_{i=1}^{n} \\alpha_{i}} 
             \\biggr)^{\\sum_{i=1}^{n} \\alpha_{i}} \\prod_{i=1}^{n} \\biggl( \\frac{\\alpha_{i}}{w_{i}}
             \\biggr)^{\\alpha_{i}} \\ - \\ c \\]
             Esto nos permite determinar cuánto beneficio genera la empresa bajo condiciones de 
             maximización, y como resultado final muestra que el beneficio está directamente relacionado 
             con los coeficientes \\(\\alpha_{i}\\) y los precios de los insumos, lo que subraya la 
             importancia de la estructura de costos y la eficiencia de la producción en la maximización 
-            del beneficio.
+            del beneficio. Este resultado refleja el nivel máximo de satisfacción que el consumidor puede 
+            alcanzar al asignar su presupuesto de manera óptima entre los bienes. De este modo, se destaca 
+            la importancia de la optimización en funciones de utilidad CD, pues muestra cómo la combinación 
+            eficiente de recursos permite maximizar los beneficios para el consumidor.
         </p>
       `;
 
       inicio_minimizador += `
-        Para minimizar los costos de producción de una empresa que modela una función de costos Cobb-Douglas, \\(C(X)\\), utilizando insumos \\(X_{1}, \\ldots, X_{n}\\) a precios \\(w_{1}, \\ldots, w_{n}\\) por unidad respectivamente, y sujeto a una restricción presupuestaria, se debe solucionar el siguiente problema de optimización:
+        <p>
+          Consideremos una empresa que busca minimizar sus costos de producción \\(f(x)\\), modelados mediante una 
+          función de costos Cobb-Douglas. Los insumos \\(x_{1}, \\ldots, x_{n}\\) tienen precios por unidad \\(w_{1}, \\ldots, w_{n}\\), 
+          respectivamente. El objetivo es encontrar la combinación óptima de insumos que minimice el costo total, 
+          respetando una restricción presupuestaria \\(c\\). El problema de optimización se plantea como:
+        </p>
 
         \\[
-            \\text{Minimizar } C(X) = A \\prod_{i=1}^{n} X_{i}^{\\beta_{i}}
+            \\text{Minimizar } f(X) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}
         \\]
         \\[
-            \\text{Sujeto a } \\sum_{i=1}^{n} w_{i} X_{i} = c
+            \\text{Sujeto a } c(x) = \\sum_{i=1}^{n} w_{i} x_{i} = c
         \\]
-
-        Por el método del multiplicador de Lagrange, definimos la función Lagrangiana como:
-
-        \\[
-            \\mathcal{L}(X, \\lambda) = A \\prod_{i=1}^{n} X_{i}^{\\beta_{i}} + \\lambda \\left( c - \\sum_{i=1}^{n} w_{i} X_{i} \\right)
-        \\]
-
-        Por lo tanto, el valor óptimo de cada variable \\(X_{i}\\) para minimizar la función de costos CD bajo la restricción presupuestaria es:
-
-        \\[
-          \\hat{X_{i}} = \\frac{\\beta_{i} c}{w_{i} \\sum_{j=1}^{n} \\beta_{j}}, \\quad \\forall i = 1, ..., n
-        \\]
-
-        Sí verificamos que \\((-1)^{n} |\\Delta_n| > 0\\) y la matriz Hessiana es definida positiva, esto garantiza que la función CD tiene un mínimo 
-        local bajo la restricción presupuestaria. Además, si la función es convexa, este mínimo se convierte 
-        en un mínimo absoluto. Por lo tanto, los valores óptimos de cada variable \\(X_{i}\\) que minimizan 
-        la función son los que alcanzan el mínimo, representados como \\((\\hat{X_{1}}, ..., \\hat{X_{n}})\\). 
-        Así, las cantidades que se deben producir para minimizar los costos son:
 
         <p>
-            \\[
-              \\hat{C}(X) =  \\hat{C}(X_{1}, \\cdots, X_{n}) = C(\\hat{X_{1}}, \\cdots, \\hat{X_{n}})
-            \\]
+          Este problema refleja una situación típica en la que la empresa debe decidir cuánto invertir en cada insumo para 
+          alcanzar una producción eficiente, reduciendo costos y maximizando la rentabilidad de su operación. Para resolverlo, 
+          utilizamos el método del multiplicador de Lagrange, definiendo la función lagrangiana:
+        </p>
 
-            Por lo cual, <strong>la función de costos</strong> es:
+        \\[
+            \\Psi(x) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} + \\lambda \\left( c - \\sum_{i=1}^{n} w_{i} x_{i} \\right)
+        \\]
 
-            \\[
-              C(X) = A \\prod_{i=1}^{n} \\hat{X_{i}}^{\\beta_{i}}
-              = A \\prod_{i=1}^{n} \\left( \\frac{\\beta_{i} c}{w_{i} \\sum_{j=1}^{n} \\beta_{j}} \\right)^{\\beta_{i}}
-            \\]
+        <p>
+          Resolviendo el sistema de ecuaciones derivado de las condiciones de primer orden, encontramos que los valores óptimos 
+          de los insumos son:
+        </p>
 
-            Esto nos permite determinar cuánto costo incurre la empresa bajo condiciones de minimización, 
-            mostrando que los costos están directamente relacionados con los precios de los insumos y 
-            la estructura de producción, lo que resalta la importancia de la eficiencia en la gestión de costos.
+        \\[
+          \\hat{x_{i}} = \\frac{\\alpha_{i} c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}}, \\quad \\forall i = 1, ..., n
+        \\]
+
+        <p>
+          Desde un punto de vista económico, estos valores indican cómo distribuir el presupuesto \\(c\\) entre los diferentes 
+          insumos de manera proporcional a sus parámetros \\(\\alpha_{i}\\) (que reflejan la importancia relativa de cada insumo en la producción) 
+          y sus precios \\(w_{i}\\). Esto garantiza que el costo total se minimiza al tiempo que se alcanza un nivel de producción deseado. 
+        </p>
+
+        <p>
+          Si verificamos que \\((-1)^{n} |\\Delta_n| > 0\\) y que la matriz Hessiana es definida positiva, podemos concluir que los valores \\(\\hat{x_{i}}\\) 
+          corresponden a un mínimo local. Además, si la función Cobb-Douglas es convexa, este mínimo local se convierte en un mínimo absoluto, 
+          asegurando que la asignación de recursos es óptima.
+        </p>
+
+        <p>
+          La función de costos resultante bajo estas condiciones es:
+        </p>
+
+        \\[
+            f(\\hat{x}) = A \\prod_{i=1}^{n} \\hat{x_{i}}^{\\alpha_{i}} = A \\prod_{i=1}^{n} \\left( \\frac{\\alpha_{i} c}{w_{i} \\sum_{j=1}^{n} \\alpha_{j}} \\right)^{\\alpha_{i}}
+        \\]
+
+        <p>
+          Esto nos permite calcular cuánto le cuesta a la empresa producir de manera eficiente, dado un presupuesto \\(c\\). Este análisis destaca 
+          la importancia de una gestión eficiente de los insumos y de la estructura de costos en la operación empresarial. Además, permite evaluar 
+          cómo las variaciones en los precios \\(w_{i}\\) o en los parámetros \\(\\alpha_{i}\\) afectan el costo total, lo que es clave para diseñar 
+          estrategias de reducción de costos o de optimización operativa.
         </p>
       `;
 
       inicio_conclusion += `
-        En este análisis, hemos demostrado que la maximización de la utilidad y la minimización de los 
-        costos en una función Cobb-Douglas son procesos esenciales para la toma de decisiones en la 
-        economía empresarial. A través del método del multiplicador de Lagrange, encontramos las 
-        condiciones óptimas para las variables de producción y costos, asegurando que las decisiones 
-        estén en concordancia con las restricciones presupuestarias impuestas.
-        La utilización de la matriz Hessiana, junto con el cálculo del determinante bordeado, nos permite 
-        clasificar los puntos críticos y determinar si estos corresponden a máximos o mínimos locales. 
-        Adicionalmente, la caracterización de la convexidad y la concavidad de la función es crucial para 
-        verificar la naturaleza de los extremos absolutos. Hemos comprobado que, bajo las condiciones 
-        adecuadas, la función Cobb-Douglas exhibe un máximo absoluto en la maximización de la utilidad y un 
-        mínimo absoluto en la minimización de los costos, lo que refuerza la importancia de las relaciones 
-        entre los coeficientes de producción, los precios de los insumos y la eficiencia en la asignación de 
-        recursos. Estos hallazgos señalan la relevancia de la optimización para una gestión eficiente y 
-        efectiva de los recursos empresariales.
+        <br> 
+        <p> 
+          En este análisis, hemos demostrado que la maximización de la utilidad y la minimización de los 
+          costos en una función Cobb-Douglas son procesos esenciales para la toma de decisiones en la 
+          economía empresarial. A través del método del multiplicador de Lagrange, encontramos las 
+          condiciones óptimas para las variables de producción y costos, asegurando que las decisiones 
+          estén en concordancia con las restricciones presupuestarias impuestas.
+          La utilización de la matriz Hessiana, junto con el cálculo del determinante bordeado, nos permite 
+          clasificar los puntos críticos y determinar si estos corresponden a máximos o mínimos locales. 
+          Adicionalmente, la caracterización de la convexidad y la concavidad de la función es crucial para 
+          verificar la naturaleza de los extremos absolutos. Hemos comprobado que, bajo las condiciones 
+          adecuadas, la función Cobb-Douglas exhibe un máximo absoluto en la maximización de la utilidad y un 
+          mínimo absoluto en la minimización de los costos, lo que refuerza la importancia de las relaciones 
+          entre los coeficientes de producción, los precios de los insumos y la eficiencia en la asignación de 
+          recursos. Estos hallazgos señalan la relevancia de la optimización para una gestión eficiente y 
+          efectiva de los recursos empresariales.
+        </p> 
       `;
 
       break;
 
     default:
       text_ini_deri_parc_CD_con.innerHTML = `<p>
-                La optimización de la función CD con restricciones implica encontrar los valores de \\(x_{i} \\ \\forall \\ i = ${lista_exp_CD} \\) que maximizan o
-                minimizan la función \\(f(x)\\) sujeta a una restrincción presupuestaria. Por el método del multiplicador de Lagrange, 
-                primero definimos la función lagrangiana por:
+                donde \\(x = (${lista_var_CD})\\) es un vector de ${exponente} variables independientes. La optimización de la función 
+                CD con restricciones implica encontrar los valores de \\(x_{i} \\ (\\forall \\ i = ${lista_exp_CD}) \\) que maximizan o
+                minimizan la función \\(f(x)\\) sujeta a una restrincción presupuestaria. Para resolverlo, utilizamos el método de Lagrange, 
+                definiendo la función lagrangiana:
 
                 <span class="hidden_phone">
-                    \\[ \\psi(X) \\ = \\ \\psi(${lista_var_CD}) \\ = \\ A ${var_expo_func} \\ - \\ \\lambda \\ \\biggl( ${var_expo_costo} \\ - \\ c \\biggl) \\]
+                    \\[ \\psi(x) \\ = \\ \\psi(${lista_var_CD}) \\ = \\ A ${var_expo_func} \\ - \\ \\lambda \\ \\biggl( ${var_expo_costo} \\ - \\ c \\biggl) \\]
                 </span>
                 <span class="hidden_pc">
-                    \\[ \\psi(X) \\ = \\ A \\prod_{i=1}^{${exponente}} x_{i}^{\\alpha_{i}} \\ - \\ \\lambda \\ \\biggl( \\sum_{i=1}^{${exponente}} w_{i}x_{i} \\ - \\ c \\biggl) \\]
+                    \\[ \\psi(x) \\ = \\ A \\prod_{i=1}^{${exponente}} x_{i}^{\\alpha_{i}} \\ - \\ \\lambda \\ \\biggl( \\sum_{i=1}^{${exponente}} w_{i}x_{i} \\ - \\ c \\biggl) \\]
                 </span>
-        
-                Donde \\(\\lambda\\) es el multiplicador de Lagrange asociado a la restricción presupuestaria. Así, calculando las derivadas parciales de \\(\\psi\\) con respecto 
-                a cada \\(X_{i} \\ \\ \\forall \\ \\ i = ${lista_exp_CD}\\), e igualando a cero, obtenemos que:
+
+                donde \\(\\lambda\\) es el multiplicador de Lagrange que nos permite manejar la restricción del presupuesto, este refleja 
+                el cambio en \\(f(x)\\) total cuando se ajusta el presupuesto disponible. A continuación, calculamos las derivadas parciales 
+                de \\(\\psi(x)\\) con respecto a cada \\(x_{i} (\\forall \\ i = ${lista_exp_CD}) \\) e igualamos a cero para encontrar los puntos críticos. 
+                Las derivadas parciales son:
             </p>`;
 
       funcion_derivada_parcial_CD_con.innerHTML = `${inicio_deri_parc} </div>`;
       funcion_derivada_parcial_CD_con_phone.innerHTML = `${inicio_deri_parc_phone} `;
-      funcion_derivada_parcial_CD_con_lambda.innerHTML = `<p> \\[\\frac{\\partial{f}}{\\partial{\\lambda}} = \\sum_{i=1}^{${exponente}} w_{i}x_{i} \\ - \\ c = 0\\] </p>`;
+
+      inicio_lagrange += `
+        <p>
+          Igualando las expresiones de \\(\\lambda\\) para \\(x_i\\) y \\(x_j\\), con \\(i, j = ${lista_exp_CD} \\ \\text{y} \\ i \\neq j\\), obtenemos que:
+          ${cant_beneficio_costo}
+          Sustituyendo esta relación en la restricción presupuestaria \\(c(x)\\) se demuestra que la asignación óptima respeta la restricción presupuestaria, 
+          distribuyendo los recursos entre los bienes en función de sus precios y sus contribuciones relativas a la utilidad. Así obtenemos la siguiente 
+          expresión: \\[${sumatoria_x_j}\\]
+          Finalmente, despejando \\(x_{i}\\) y denominándola como \\(\\hat{x}_{i}\\) para todo \\(i = ${lista_exp_CD}\\), se tiene: ${soluciones_optimas}
+          Por el teorema de Lagrange, las cantidades \\(\\hat{x_{i}}\\) obtenidas son las soluciones óptimas para el problema de optimización bajo la 
+          restricción presupuestaria. En este contexto, la expresión vectorial de las soluciones óptimas es: \\( \\hat{x} = (${lista_var_CD_con}) \\).
+        </p>
+      `;
 
       inicio_hessiana += `
                 <div id="hessiana_con"></div>
@@ -831,23 +922,8 @@ function optimizacion_exp_con(exponente) {
                 </p>
                 <div id="menoresPrincipales" class="hidden_phone"></div>
                 <div id="menoresPrincipales_phone" class="hidden_pc"></div>
-                <p>Teniendo en cuenta que \\( H_{f} \\) es:</p>
-                <ul>
-                    <li>
-                        definida positiva si \\( M_{i} > 0 \\) para \\( 1 \\leq i \\leq ${exponente} \\).
-                    </li>
-                    <li>
-                        definida negativa si \\( (-1)^{i} M_{i} > 0 \\) para \\( 1 \\leq i \\leq ${exponente} \\).
-                    </li>
-                    <li>
-                        semidefinida positiva si \\( M_{i} \\geq 0 \\) para \\( 1 \\leq i \\leq ${exponente} \\).
-                    </li>
-                    <li>
-                        semidefinida negativa si \\( (-1)^{i} M_{i} \\geq 0 \\) para \\( 1 \\leq i \\leq ${exponente} \\).
-                    </li>
-                </ul>
                 <p>
-                    Luego de realizar un analísis a los valores que puede tener cada \\( \\alpha_{i} \\) y simplificando, obtenemos que \\( H_{f} \\) es:
+                    Luego de realizar un analísis a los valores que puede tener cada \\( \\alpha_{i} \\) y simplificando, obtenemos que \\( H_{\\psi}(x) \\) es:
                 </p>
                 <ul>
                     <li>
@@ -896,9 +972,8 @@ function optimizacion_exp_con(exponente) {
                     </li> 
                 </ul> 
                 <p>
-                    Para el criterio del determinante bordeado, definimos la matriz \\(\\Delta_${exponente}\\) como una matriz simétrica \\(${parseInt(
-        exponente
-      ) + 1} \\times ${parseInt(exponente) + 1}\\):
+                    Para el criterio del determinante bordeado, definimos la matriz \\(\\Delta_${exponente}\\) como una matriz simétrica 
+                    \\(${parseInt(exponente) + 1} \\times ${parseInt(exponente) + 1}\\):
                 </p>
                 <div id="hessiana_bordeada"></div>
                 <p>Para verificar si el punto crítico maximiza o minimiza la función, calculamos el determinante de \\(\\Delta_${exponente}\\) como:</p>
@@ -917,16 +992,21 @@ function optimizacion_exp_con(exponente) {
       inicio_maximizador += `
             <p>
                 Una función CD se maximiza cuando el determinante bordeado es positivo y la matriz Hessiana es definida negativa. Sabemos que la matriz hessiana 
-                \\( H_{${exponente}} f(x) \\) es definida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\leq \\) 1
+                \\( H_{\\psi} f(x) \\) es definida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\leq \\) 1
             </p>
             <p>
-                <u> Ejemplo </u>: Supongamos que queremos maximizar la función Cobb-Douglas \\( f(x) \\) sujeta a la restricción presupuestal \\( c(x) \\), de la siguiente forma:
+                <u> Ejemplo </u>: 
+                Consideremos un consumidor que busca maximizar su utilidad \\( f(x) \\), representada mediante una función de utilidad CD, sujeta a la restricción 
+                presupuestal \\( c(x) \\), de la siguiente forma:
             </p>
             <div id="funcion_max_CD_con"></div>
-            Por el método del multiplicador de Lagrange, definimos la función Lagrangiana como:
+            El objetivo es determinar cómo el consumidor asigna su presupuesto de manera óptima para maximizar la utilidad total, respetando la restricción económica. 
+            Para resolverlo, utilizamos el método de Lagrange, definiendo la función lagrangiana:
             <div id="func_lagrangiana_max_con"></div>
             <p>
-              Calculando la derivada de \\( \\psi(x) \\) con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\), obtenemos que:
+              donde \\(\\lambda\\) es el multiplicador de Lagrange que nos permite manejar la restricción del presupuesto, este refleja el cambio en la utilidad total 
+              cuando se ajusta el presupuesto disponible. A continuación, calculamos las derivadas parciales de \\(\\psi\\) con respecto a cada 
+              \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\), e igualamos a cero para encontrar los puntos críticos. Las derivadas parciales son:
             </p>
             <div id="derivada_max_CD_con"></div>
             <p>
@@ -934,7 +1014,9 @@ function optimizacion_exp_con(exponente) {
               respectivamente, para maximizar la función CD bajo la restricción presupuestaria, es:
             </p>
             <div id="puntos_criticos_max_CD_con"></div>
-            Por el valor de los exponentes de la función de producción CD, podemos afirmar que la matriz Hessiana \\(H_{\\psi}(X)\\) de la función Lagrangiana es definida negativa.
+            En consecuencia, el consumidor asigna su presupuesto de manera que se maximizan sus niveles de satisfacción (utilidad), teniendo en cuenta tanto la 
+            importancia relativa de los bienes como sus precios. Por el valor de los exponentes de la función de producción CD, podemos afirmar que la matriz Hessiana 
+            \\(H_{\\psi}(x)\\) de la función Lagrangiana es definida negativa.
 
             Ahora bien, el determinante bordeado es:
             <div id="det_bordeado_max_CD_con"></div>
@@ -948,7 +1030,7 @@ function optimizacion_exp_con(exponente) {
       inicio_minimizador += `
         <p>
             Una función CD se minimiza cuando el determinante bordeado es positivo y la matriz Hessiana es definida positiva. 
-            Sabemos que la matriz hessiana \\( H_{${exponente}} f(x) \\) es definida positiva si se cumple alguno de los siguientes casos:
+            Sabemos que la matriz hessiana \\( H_{\\psi} f(x) \\) es definida positiva si se cumple alguno de los siguientes casos:
             <ul>
               <li>
                 ${exponentes_list_0}
@@ -974,7 +1056,7 @@ function optimizacion_exp_con(exponente) {
           respectivamente, para minimizar la función CD bajo la restricción presupuestaria, es:
         </p>
         <div id="puntos_criticos_min_CD_con"></div>
-        Por el valor de los exponentes de la función de producción CD, podemos afirmar que la matriz Hessiana \\(H_{\\psi}(X)\\) de la función Lagrangiana es definida positiva.
+        Por el valor de los exponentes de la función de producción CD, podemos afirmar que la matriz Hessiana \\(H_{\\psi}(x)\\) de la función Lagrangiana es definida positiva.
 
         Ahora bien, el determinante bordeado es:
         <div id="det_bordeado_min_CD_con"></div>
@@ -986,13 +1068,23 @@ function optimizacion_exp_con(exponente) {
       `;
 
       inicio_conclusion += `
-        En conclusión, este análisis nos ha permitido determinar los puntos críticos y asegurar que el máximo o mínimo absoluto se ha logrado 
-        bajo las condiciones dadas. Estos resultados proporcionan una guía para optimizar la asignación de recursos en un escenario económico 
-        real, maximizando la utilidad o minimizando los costos, de manera eficiente. Además, estos procedimientos resaltan la importancia de realizar un análisis exhaustivo de los puntos críticos, así como de explorar posibles 
-        restricciones adicionales que puedan ser relevantes. Así, si un punto crítico no proporciona una solución óptima, entonces podemos considerar 
-        sobre la eficiencia en la utilización de recursos y la necesidad de ajustar las estrategias de optimización en el contexto económico. 
-        En futuras investigaciones, podría ser beneficioso considerar otros enfoques o técnicas que permitan identificar y alcanzar soluciones 
-        óptimas dentro de los límites impuestos por la restricción presupuestaria.
+        <br> 
+        <ul>  
+          <li>  
+            Este análisis nos ha permitido determinar los puntos críticos y asegurar que el máximo o mínimo absoluto se ha logrado 
+            bajo las condiciones dadas. Estos resultados proporcionan una guía para optimizar la asignación de recursos en un escenario económico 
+            real, maximizando la utilidad o minimizando los costos, de manera eficiente. 
+          </li>
+          <li>  
+            Si un punto crítico no proporciona una solución óptima, entonces podemos considerar sobre la eficiencia en la utilización 
+            de recursos y la necesidad de ajustar las estrategias de optimización en el contexto económico. 
+          </li>
+          <li>
+            Los resultados obtenidos del análisis matemático ayudan a diseñar estrategias eficientes para la asignación de recursos. Esto significa que, 
+            al aplicar estos métodos, los agentes económicos (empresas, consumidores, gobiernos) pueden tomar decisiones informadas para maximizar 
+            beneficios (como utilidades o producción) o minimizar costos bajo condiciones específicas.
+          </li>
+        </ul>
       `;
 
       obtenerHessiana_Con(exponente);
@@ -1006,6 +1098,7 @@ function optimizacion_exp_con(exponente) {
   }
 
   funcion_hessiana_CD_sin.innerHTML = inicio_hessiana;
+  funcion_derivada_parcial_CD_con_lambda.innerHTML = inicio_lagrange;
   maximizar_CD_sin.innerHTML = inicio_maximizador;
   minimizar_CD_sin.innerHTML = inicio_minimizador;
   conclusion_CD_sin.innerHTML = inicio_conclusion;
