@@ -319,8 +319,12 @@ function optimizacion_exp_sin(exponente) {
     let inicio_deri_parc_phone = ``;
 
     const funcion_hessiana_CD_sin = document.getElementById("funcion_hessiana_CD");
-    let inicio_hessiana = `<strong>Matriz Hessiana - Analísis de convexidad y concavidad</strong><p>Para determinar 
-    si los puntos críticos son máximos, mínimos o puntos de silla, se calcula la matriz Hessiana \\(H_{f} (x)\\):</p>`;
+    let inicio_hessiana = `<strong>Matriz Hessiana - Analísis de convexidad y concavidad</strong>
+    <p>En el análisis de funciones económicas, las propiedades de convexidad y concavidad desempeñan 
+    un papel esencial, especialmente en el estudio de las funciones CD. Estas propiedades determinan 
+    el comportamiento de la función y, por ende, las decisiones óptimas relacionadas con la asignación 
+    de recursos y producción. Para evaluar dichas propiedades, la matriz Hessiana constituye una 
+    herramienta analítica fundamental. La matriz Hessiana de \\(f(x)\\) se expresa como:</p>`;
     
     const maximizar_CD_sin = document.getElementById("maximizar_CD");
     let inicio_maximizador = '<strong>Maximización</strong>';
@@ -330,14 +334,6 @@ function optimizacion_exp_sin(exponente) {
 
     const conclusion_CD_sin = document.getElementById("conclusion_CD");
     let inicio_conclusion = '<strong>Conclusión</strong>';
-
-    const text_ini_deri_parc_CD_sin = document.getElementById("text_ini_deri_parc_CD");
-    text_ini_deri_parc_CD_sin.innerHTML = `
-        <p>
-            La optimización de la función CD sin restricciones implica encontrar los valores de \\(x_{i} \\) que maximizan o
-            minimizan la función \\(f(x) \\). Derivando con respecto a cada variable \\(x_{i} \\) e igualando a cero, obtenemos que:
-        </p>
-    `;
 
     let indices_list = ``;
     let exponentes_list = ``;
@@ -351,8 +347,11 @@ function optimizacion_exp_sin(exponente) {
     let cant_beneficio_costo = ``;
     let new_var_CD = ``;
     let exp_func_oferta = ``;
-    let new_func_oferta = `\\[ \\widehat{f}(x) \\ = \\ \\biggl[ \\frac{1}{A} \\biggl( \\frac{1}{P} \\biggr) `;
+    let new_func_oferta = `\\[ f(\\widehat{x}) \\ = \\ \\biggl[ \\frac{1}{A} \\biggl( \\frac{1}{P} \\biggr) `;
 
+    if (exponente == 'n') {
+        indices_list = '1, ..., n';
+    }
     if (exponente  % 2 === 0) {
         signo_operacion = "-";
     }else{
@@ -370,10 +369,10 @@ function optimizacion_exp_sin(exponente) {
             </p>
         `;
         deri_parc_costo += ` 
-            \\[ \\frac{\\partial C}{\\partial x_{${i}}} = \\frac{w_{${i}}f(x) - f_{x_{${i}}}(${costo_suma})}{f^{2}(${var_list})} = 0 \\]
+            \\[ \\frac{\\partial C}{\\partial x_{${i}}} = \\frac{w_{${i}}f(x) - f_{x_{${i}}}(x)(${costo_suma})}{f^{2}(x)} = 0 \\]
         `;
         deri_parc_beneficio += ` 
-            \\[ \\frac{\\partial Q}{\\partial x_{${i}}} = Pf_{${i}} - w_{${i}} = 0 \\Rightarrow Pf_{${i}} = w_{${i}} \\]
+            \\[ \\frac{\\partial \\Pi}{\\partial x_{${i}}} = Pf_{x_${i}}(${var_list}) - w_{${i}} = 0 \\Rightarrow Pf_{x_${i}}(x) = w_{${i}} \\]
         `;
         
         indices_list += `${i}`;
@@ -387,15 +386,9 @@ function optimizacion_exp_sin(exponente) {
             exponentes_list_0_1 += ' , ';
             exponentes_suma += ' + ';
             inicio_deri_parc += ', \\ \\ \\ \\ \\';
-            cant_insumo_costo += `
-            \\frac{w_{${i}}}{w_{${i + 1}}} = \\frac{f_{x_${i}}}{f_{x_{${i + 1}}}}, \\ \\ \\ \\
-            `;
-        }else{
-            cant_insumo_costo += `
-            \\frac{w_{${i}}}{w_{${1}}} = \\frac{f_{x_${i}}}{f_{x_{${1}}}} 
-            `;
         }
         cant_beneficio_costo += `\\[`;
+        cant_insumo_costo += `\\[`;
         new_var_CD += ` 
             \\[ \\widehat{x_{${i}}} \\ = \\ \\biggl[ \\frac{1}{PA} 
         `;
@@ -406,9 +399,22 @@ function optimizacion_exp_sin(exponente) {
                 \\biggl( \\frac{w_{${index}}}{\\alpha_{${index}}} \\biggr)
             `;
             if (i != index) {
-                cant_beneficio_costo += `
-                x_${i} = \\frac{ \\alpha_{${i}} w_{${index}}x_{${index}}}{ \\alpha_{${index}} w_{${i}}}, \\ \\ \\ \\ 
-                `;
+                if (i == exponente & index == exponente - 1) {
+                    cant_beneficio_costo += `
+                    x_${i} = \\frac{ \\alpha_{${i}} w_{${index}}x_{${index}}}{ \\alpha_{${index}} w_{${i}}} \\ \\ \\ \\ 
+                    `;
+                    cant_insumo_costo += `
+                    \\frac{w_{${i}}}{w_{${index}}} = \\frac{f_{x_${i}}(x)}{f_{x_{${index}}}(x)} \\ \\ \\ \\
+                    `;
+                }else{
+                    cant_beneficio_costo += `
+                    x_${i} = \\frac{ \\alpha_{${i}} w_{${index}}x_{${index}}}{ \\alpha_{${index}} w_{${i}}}, \\ \\ \\ \\ 
+                    `;
+                    cant_insumo_costo += `
+                    \\frac{w_{${i}}}{w_{${index}}} = \\frac{f_{x_${i}}(x)}{f_{x_{${index}}}(x)}, \\ \\ \\ \\
+                    `;
+                }
+                
                 new_var_CD += ` 
                 ^{\\alpha_{${index}}}
                 `;
@@ -434,6 +440,7 @@ function optimizacion_exp_sin(exponente) {
             \\biggr] ^{ \\frac{1}{${suma_exp} - 1} } \\]
         `;
         cant_beneficio_costo += ` \\]`;
+        cant_insumo_costo += ` \\]`;
         exp_func_oferta += `
         \\biggl( \\frac{w_{${i}}}{\\alpha_{${i}}} \\biggr) ^{\\alpha_{${i}}}
         `;
@@ -444,9 +451,19 @@ function optimizacion_exp_sin(exponente) {
     `;
 
     let new_func_beneficio = `
-        \\[ \\widehat{Q}(x) = (1 - ({${exponentes_suma}})) \\biggl[ \\frac{1}{PA} ${exp_func_oferta} \\biggr]  ^{\\frac{1}{${exponentes_suma} - 1}} \\]
+        \\[ \\Pi(\\widehat{x}) = (1 - ({${exponentes_suma}})) \\biggl[ \\frac{1}{PA} ${exp_func_oferta} \\biggr]  ^{\\frac{1}{${exponentes_suma} - 1}} \\]
     `;
-
+    const text_ini_deri_parc_CD_sin = document.getElementById("text_ini_deri_parc_CD");
+    text_ini_deri_parc_CD_sin.innerHTML = `
+        <p>
+            En optimización, garantizar que una función alcance valores máximos y mínimos absolutos es esencial para 
+            asegurar la existencia de soluciones óptimas globales. Desde un punto de vista económico, esto permite 
+            determinar, por ejemplo, el nivel máximo de producción, la mayor utilidad alcanzable o el costo mínimo 
+            bajo ciertas condiciones.
+            A continuación, calculamos las derivadas parciales de \\(f(x)\\) con respecto a cada \\(x_{i}\\) para 
+            \\(i = ${indices_list} \\) e igualamos a cero para encontrar los puntos críticos. Las derivadas parciales son:
+        </p>
+    `;
     const funcion_derivada_parcial_CD_sin_lambda = document.getElementById(
         "funcion_deri_parc_CD_lambda"
     );
@@ -614,13 +631,14 @@ function optimizacion_exp_sin(exponente) {
             break;
         case "n":
                     funcion_optimizar_CD_sin.innerHTML = `\\[f(x) = f(x_{1}, ..., x_{n}) = A\\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}\\]`;
+                    
                     funcion_derivada_parcial_CD_sin.innerHTML = `
                         \\[
                             \\frac{\\partial f}{\\partial x_{i}}
                             = A x_{1}^{\\alpha_{1}} \\cdots \\alpha_{i}x_{i}^{\\alpha_{i} - 1} \\cdots x_{n}^{\\alpha_{n}}
                             = \\frac{\\alpha_{i}Ax_{1}^{\\alpha_{1}}\\cdots x_{i}^{\\alpha_{i}} \\cdots x_{n}^{\\alpha_{n}}}{x_{i}}
                             = \\alpha_{i} \\frac{f(x)}{x_{i}}
-                            = 0
+                            = 0, 
                             \\ \\ \\ \\forall \\ i = 1, ..., n
                         \\]
                         
@@ -628,18 +646,18 @@ function optimizacion_exp_sin(exponente) {
                     funcion_derivada_parcial_CD_sin_phone.innerHTML = `
                         \\[
                             \\frac{\\partial f}{\\partial x_{i}}
-                            = A x_{1}^{\\alpha_{1}} \\cdots \\alpha_{i}x_{i}^{\\alpha_{i} - 1} \\cdots x_{n}^{\\alpha_{n}}
+                            = A x_{1}^{\\alpha_{1}} \\cdots \\alpha_{i}x_{i}^{\\alpha_{i} - 1} \\cdots x_{n}^{\\alpha_{n}},
                             \\ \\ \\ \\forall \\ i = 1, ..., n
                             \\]
                         \\[ \\Rightarrow
                             \\frac{\\partial f}{\\partial x_{i}}
-                            = \\frac{\\alpha_{i}Ax_{1}^{\\alpha_{1}}\\cdots x_{i}^{\\alpha_{i}} \\cdots x_{n}^{\\alpha_{n}}}{x_{i}}
+                            = \\frac{\\alpha_{i}Ax_{1}^{\\alpha_{1}}\\cdots x_{i}^{\\alpha_{i}} \\cdots x_{n}^{\\alpha_{n}}}{x_{i}},
                             \\ \\ \\ \\forall \\ i = 1, ..., n
                         \\]
                         \\[ \\Rightarrow
                             \\frac{\\partial f}{\\partial x_{i}}
                             = \\alpha_{i} \\frac{f(x)}{x_{i}}
-                            = 0
+                            = 0,
                             \\ \\ \\ \\forall \\ i = 1, ..., n
                         \\]
                         
@@ -647,9 +665,11 @@ function optimizacion_exp_sin(exponente) {
                     inicio_hessiana = `<p><strong>Matriz Hessiana - Analísis de convexidad y concavidad</strong></p>`;
                     inicio_hessiana += `
                         <p>
-                            Para determinar si los puntos críticos son máximos, mínimos o puntos de silla, se calcula la matriz 
-                            Hessiana \\(H_{f}\\) de una función CD para \\(\\mathbb{R}^{n}\\), con \\(n \\in \\mathbb{N}\\) y 
-                            \\(n \\geq 2\\), así:
+                            En el análisis de funciones económicas, las propiedades de convexidad y concavidad desempeñan 
+                            un papel esencial, especialmente en el estudio de las funciones CD. Estas propiedades determinan 
+                            el comportamiento de la función y, por ende, las decisiones óptimas relacionadas con la asignación 
+                            de recursos y producción. Para evaluar dichas propiedades, la matriz Hessiana constituye una 
+                            herramienta analítica fundamental. La matriz Hessiana de \\(f(x)\\) se expresa como:
                         </p>
                         <p class="hidden_pc">
                             \\[
@@ -703,7 +723,9 @@ function optimizacion_exp_sin(exponente) {
                             </ul>
                         </p>
                         <p>
-                            Entonces, obtenemos que la función de tipo CD \\(f(x)\\), con \\(x \\in S \\subseteq \\mathbb{R}^{n}\\), es: 
+                            La estructura específica de la matriz Hessiana permite analizar cómo los valores de los parámetros \\(\\alpha_{i} (\\forall i = ${indices_list})\\) 
+                            determinan la curvatura de la función \\(f(x)\\), lo que permite clasificarla como convexa o cóncava en un conjunto determinado, lo que a su vez ayuda a 
+                            clasificar los puntos críticos de una función. Entonces, obtenemos que la función de tipo CD \\(f(x)\\), con \\(x \\in S \\subseteq \\mathbb{R}^{n}\\), es: 
                             <ul>
                                 <li>
                                     Convexa sí \\(\\alpha_{i} \\notin [0, 1]\\) para todo \\(i = 1, ..., n\\) y tenemos que:
@@ -736,7 +758,12 @@ function optimizacion_exp_sin(exponente) {
                             </ul>
                         <p>
                         <p>
-                            Por lo tanto, obtenemos que la función de tipo CD \\(f(x)\\), con \\(x \\in S \\subseteq \\mathbb{R}^{n}\\), tiene un:
+                            En términos generales, las propiedades de convexidad y concavidad en las funciones CD tienen implicaciones directas sobre el 
+                            comportamiento de la producción en relación con los insumos. La convexidad sugiere que, al aumentar los insumos, la producción 
+                            crece de manera más eficiente, lo que se traduce en una mejora en el rendimiento de los recursos. Por el contrario, la concavidad 
+                            implica que, a medida que se incrementan los insumos, la eficiencia de la producción o el rendimiento de los recursos disminuye, 
+                            reflejando un fenómeno de rendimientos decrecientes. De acuerdo con este resultado, concluimos que \\(f(x)\\), con 
+                            \\(x \\in S \\subseteq \\mathbb{R}^{${exponente}}\\), tiene un: 
                             <ul>
                                 <li>
                                     mínimo absoluto sí \\(\\alpha_{i} \\notin [0, 1]\\) para todo \\(i = 1, ..., n\\) y tenemos que:
@@ -768,7 +795,6 @@ function optimizacion_exp_sin(exponente) {
                                 </li>
                             </ul>
                         <p>
-                        
                     `;
         
                     inicio_maximizador += `
@@ -873,10 +899,17 @@ function optimizacion_exp_sin(exponente) {
                         </p>
                         <p>
                             <u>Ejemplo:</u> 
-                            Para una firma que usa n insumos \\(x_{1}, ..., x_{n}\\) a precios \\(w_{1}, ..., w_{n}\\) por unidad, respectivamente, el costo promedio es:
-                            \\[ C = \\frac{\\sum_{i=1}^{n} w_{i}x_{i} }{f(x_{1}, ..., x_{n})}\\]
+                            Para una firma que utiliza ${exponente} insumos \\(x_{1}, ..., x_{n}\\) a precios \\(w_{1}, ..., w_{n}\\) por unidad 
+                            respectivamente, el objetivo es minimizar el costo promedio, una medida clave de eficiencia económica. Este costo refleja el 
+                            nivel de recursos necesarios para producir una unidad de producto, y su reducción permite identificar la combinación más eficiente 
+                            de insumos para maximizar la producción al menor costo posible <a href="referencias#ref3" target="_blank">[3]</a>. 
+                            Matemáticamente, el costo promedio se expresa como:
+                            \\[ C = \\frac{\\sum_{i=1}^{n} w_{i}x_{i} }{f(x)}\\]
 
-                            donde \\(f = f(x_{1}, ..., x_{n})\\)  es la función de producción. Las condiciones que se deben satisfacer para minimizar el costo promedio son:
+                            donde \\(f = f(x_{1}, ..., x_{n})\\)  es la función de producción, la cual describe la relación matemática entre los insumos utilizados 
+                            y la cantidad de producto final producido <a href="referencias#ref3" target="_blank">[3]</a>. Para minimizar el costo promedio \\(C\\), 
+                            debemos calcular las derivadas parciales de \\(C\\) con respecto a cada insumo \\(x_{i} (\\forall i = ${indices_list})\\), y luego igualarlas 
+                            a cero para obtener las condiciones necesarias de optimización. Esto es:
 
                             <span class="hidden_phone">
                                 \\[ \\frac{\\partial C}{\\partial x_{i}} = \\frac{w_{i}f(x_{1}, ..., x_{n}) - f_{x_{i}}(x_{1}, ..., x_{n}) \\sum_{i=1}^{n} w_{i}x_{i}}{(f(x_{1}, ..., x_{n}))^{2}} = 0 \\]
@@ -896,8 +929,9 @@ function optimizacion_exp_sin(exponente) {
                                 \\[\\Rightarrow w_{i}f(x_{1}, ..., x_{n}) = f_{x_{i}}(x_{1}, ..., x_{n}) \\sum_{i=1}^{n} w_{i}x_{i} \\]
                             </span>
 
-                            para \\(i = 1, ..., n\\). Ahora bien , fijemos \\(i\\) y tomemos el cociente entre las expresiones correspondientes. Al simplificar, obtenemos que:
-                            
+                            para \\(i = 1, ..., n\\). Al fijar el índice \\(i\\), se busca comparar la relación entre el precio del insumo \\(x_i\\) y los precios de los otros insumos, 
+                            con el fin de establecer un sistema de igualdades que permita determinar las cantidades óptimas de insumos. Al tomar el cociente entre las expresiones 
+                            correspondientes a las derivadas parciales de la producción y los precios, obtenemos las siguientes relaciones:
                             <span class="hidden_phone">
                                 \\[\\frac{w_{i}}{w_{1}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{1}}(x_{1}, ..., x_{n})}, \ \\cdots, \ \\frac{w_{i}}{w_{i-1}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i-1}}(x_{1}, ..., x_{n})}, \ \\frac{w_{i}}{w_{i+1}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i+1}}(x_{1}, ..., x_{n})}, \ \\cdots, \ \\frac{w_{i}}{w_{n}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{n}}(x_{1}, ..., x_{n})}\\]
                             </span>
@@ -910,39 +944,53 @@ function optimizacion_exp_sin(exponente) {
                                 \\[\\frac{w_{i}}{w_{n}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{n}}(x_{1}, ..., x_{n})}\\]
                             </span>
 
-                            para cada \\(i = 1, ..., n\\). Entonces, las cantidades de insumos que el productor debe usar para minimizar su costo promedio son aquellas para las cuales la relación entre las productividades marginales es igual a la relación entre los precios de los insumos de producción. Así, si el productor vende su producto a P por unidad, los beneficios están dados por:
+                            para cada \\(i = 1, ..., n\\). Este conjunto de ecuaciones permite comparar las productividades marginales de los insumos, demostrando que, para minimizar el 
+                            costo promedio, la relación entre los precios de los insumos debe igualarse a la relación entre sus productividades marginales. Esta condición de optimización 
+                            es fundamental, ya que, al mantener dicha igualdad, la firma asigna sus recursos de manera eficiente, asegurando que el costo de cada insumo, ponderado por 
+                            su precio, sea proporcional a su contribución a la producción. 
+
+                            Ahora, el beneficio económico se define como la diferencia entre los ingresos totales generados por la venta de los productos y los costos totales 
+                            asociados a su producción <a href="referencias#ref3" target="_blank">[3]</a>. Entonces, si el productor vende su producto a \\( P \\) por unidad, 
+                            matemáticamente el beneficio, denominado por \\( \\Pi \\), está definido por:
 
                             \\[ \\Pi(x_{1}, ..., x_{n}) = Pf(x_{1}, ..., x_{n}) - \\sum_{i=1}^{n} w_{i}x_{i} \\]
 
-                            Si la función de producción no es homogénea de grado uno, la combinación de insumos que produce el mayor beneficio son las soluciones del sistema de ecuaciones, 
-                            
-                            <span class="hidden_phone">
-                                \\[\\frac{\\partial{\\Pi}}{\\partial x_{i}} = Pf_{x_{i}}(x_{1}, ..., x_{n})-w_{i} = 0 \\text{ para todo } i=1, ...,n\\]
-                            </span>
-                            <span class="hidden_pc">
-                                \\[\\frac{\\partial{\\Pi}}{\\partial x_{i}} = Pf_{x_{i}}(x_{1}, ..., x_{n})-w_{i} = 0\\]
-                                \\[\\text{ para todo } i=1, ...,n\\]
-                            </span>
-    
-                            Entonces, el valor de la productividad marginal de cada insumo de producción debe ser igual a su precio.  Ahora bien , fijemos \\(i\\) y realicemos el cociente entre las expresiones. Entonces, al simplificar términos obtenemos que:
+                            Este enfoque permite al productor analizar el impacto de las decisiones de asignación de recursos sobre la rentabilidad, considerando tanto los precios de los 
+                            insumos como la eficiencia en la producción. Entonces,
 
-                            <span class="hidden_phone">
-                                \\[\\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{1}}, \ \\cdots, \ \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i-1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{i-1}}, \ \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i+1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{i+1}}, \ \\cdots, \ \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{n}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{n}}\\]
-                            </span>
-                            <span class="hidden_pc">
-                                \\[\\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{1}},\\]
-                                \\[\\cdots\\]
-                                \\[\\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i-1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{i-1}},\\]
-                                \\[\\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{i+1}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{i+1}}\\]
-                                \\[\\cdots\\]
-                                \\[\\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{n}}(x_{1}, ..., x_{n})} = \\frac{w_{i}}{w_{n}}\\]
-                            </span>
-    
-                            para todo \\(i = 1, ..., n\\). Esto es, las condiciones necesarias (de primer orden) para minimizar el costo promedio y para maximizar el beneficio son las mismas.
-    
-                            Ahora bien, si la empresa produce n insumos con tecnología Cobb-Douglas (CD) \\[f(x_{1}, ..., x_{n}) = A\\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}\\]
+                            <ul>
+                                <li>
+                                    Si \\( f(x_{1}, ..., x_{n}) \\) es homogénea de grado 1, no existe un máximo de beneficio, ya que el beneficio puede seguir creciendo indefinidamente 
+                                    a medida que se aumenta la escala de producción.
+                                </li>
+                                <li>
+                                    Si \\( f(x_{1}, ..., x_{n}) \\) no es homogénea de grado 1, la combinación de insumos que produce el mayor beneficio corresponde a las soluciones 
+                                    del siguiente sistema de ecuaciones:
+                                    <span class="hidden_phone">
+                                        \\[
+                                            \\frac{\\partial{\\Pi}}{\\partial x_{i}} = Pf_{x_{i}}(x_{1}, ..., x_{n}) - w_{i} = 0 \\Rightarrow Pf_{x_{i}}(x_{1}, ..., x_{n}) = w_{i} \\ \\ \\ \\text{ para todo } i=1, ...,n
+                                        \\]
+                                    </span>
+                                    <span class="hidden_pc">
+                                        \\[\\frac{\\partial{\\Pi}}{\\partial x_{i}} = Pf_{x_{i}}(x_{1}, ..., x_{n})-w_{i} = 0\\]
+                                        \\[ \\Rightarrow \\frac{Pf_{x_{i}}(x_{1}, ..., x_{n}) = w_{i}\\]
+                                        \\[\\text{ para todo } i=1, ...,n\\]
+                                    </span>
+                                    De esta manera, para maximizar las ganancias, una empresa debe usar cada recurso hasta el punto en que el valor adicional que aporta a la 
+                                    producción sea igual al costo que implica su uso. Es decir, debe asegurarse de que lo que gana con cada recurso sea equivalente a lo que paga por él.
+                                </li>
+                            </ul>
+
+                            Como resultado, las condiciones necesarias de primer orden para minimizar el costo promedio y maximizar el beneficio son las mismas, lo que implica que 
+                            la eficiencia en la asignación de insumos para minimizar costos también asegura que el beneficio se maximice, bajo la condición de que la función de 
+                            producción no sea homogénea de grado 1.
+
+                            Ahora bien, consideremos que la firma emplea una tecnología de producción CD para maximizar su beneficio. La función de producción está dada por: 
+                            \\[f(x_{1}, ..., x_{n}) = A\\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}\\]
                         
-                            Derivando con respecto a cada variable, obtenemos que:
+                            \\(x_{i}\\) representa la cantidad del \\(i\\) - ésimo insumo, \\(\\alpha_{i}\\) son los parámetros de elasticidad de producción, y \\(A\\) es una 
+                            constante de escala. Para determinar las condiciones de maximización de producción o minimización de costos, calculamos las productividades marginales 
+                            de la siguiente forma:
                         
                             <span class="hidden_phone">
                                 \\[f_{x_{1}}(x_{1}, ..., x_{n}) = \\alpha_{1} \\frac{f(x_{1}, ..., x_{n})}{x_{1}}, 
@@ -953,9 +1001,9 @@ function optimizacion_exp_sin(exponente) {
                                 \\[\\cdots\\]
                                 \\[f_{x_{n}}(x_{1}, ..., x_{n}) = \\alpha_{n} \\frac{f(x_{1}, ..., x_{n})}{x_{n}}\\]
                             </span>
-                        
-                            Ahora bien , fijemos \\( i \\) y sea \\( j=1, ..., n \\) con \\( i \\neq j \\). 
-                            Reemplazando en el cociente de las condiciones necesarias, obtenemos que:
+                            
+                            Para analizar las condiciones necesarias de maximización de beneficio, consideremos el cociente de las productividades marginales entre dos insumos 
+                            \\(x_{i}\\) y \\(x_{j}\\), para \\(i, j = 1, ..., n\\) con \\(i \\neq j\\). Entonces,
 
                             <span class="hidden_phone">
                                 \\[\\frac{w_{i}}{w_{j}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{j}}(x_{1}, ..., x_{n})} 
@@ -970,100 +1018,93 @@ function optimizacion_exp_sin(exponente) {
                             
                             lo cual es equivalente a,
 
-                            \\[\\frac{w_{i} \\alpha_{j}}{w_{j}\\alpha_{i}} = \\frac{x_{j}}{x_{i}}\\]
+                            \\[ x_{j} = x_{i} \\frac{w_{i} \\alpha_{j}}{w_{j}\\alpha_{i}} \\ \\ \\ \\text{para cada \\( j = 1, ..., n \\) con \\( i \\neq j \\)}\\]
 
-                            de donde, 
-
-                            \\[ x_{j} = x_{i} \\frac{w_{i} \\alpha_{j}}{w_{j}\\alpha_{i}}\\]
-
-                            para cada \\( j = 1, ..., n \\) con \\( i \\neq j \\). Esto es, 
-
-                            \\[x_{1} = x_{i} \\frac{w_{i} \\alpha_{1}}{w_{1}\\alpha_{i}}, \\ \\cdots, 
-                            \\ x_{n} = x_{i} \\frac{w_{i} \\alpha_{n}}{w_{n}\\alpha_{i}}\\]
-
-                            Al reemplazar esta expresión en la condición 
-                            \\( Pf_{x_{i}}(x_{1}, ..., x_{n}) = w_{i} \\), obtenemos que:
+                            Este cociente genera una relación entre los precios y las cantidades óptimas de los insumos \\(x_{i}\\) y \\(x_{j}\\) 
+                            para cada \\(i, j = 1, ..., n\\) con \\(i \\neq j\\). Sustituyendo estas relaciones en la condición 
+                            \\(P f_{x_{i}}(x_{1}, \\ldots, x_{n}) = w_{i}\\), se obtiene:
 
                             <span class="hidden_phone">
-                                \\[P\\alpha_{i}A \\big[ \\big(x_{i} \\frac{w_{i} \\alpha_{1}}{w_{1}\\alpha_{i}} 
-                                \\big)^{\\alpha_{1}} \\ \\cdots \\ \\big(x_{i} \\frac{w_{i} \\alpha_{i-1}}{w_{i-1}
-                                \\alpha_{i}} \\big)^{\\alpha_{i-1}} \\ x_{i}^{\\alpha_{i} -1} \\ \\big(x_{i} 
-                                \\frac{w_{i} \\alpha_{i+1}}{w_{1}\\alpha_{i}} \\big)^{\\alpha_{i+1}} \\ \\cdots 
-                                \\ \\big(x_{i} \\frac{w_{i} \\alpha_{n}}{w_{n}\\alpha_{i}} \\big)^{\\alpha_{n}} 
-                                \\big] = w_{i}\\]
+                                \\[P\\alpha_{i}A \\left[ \\left(x_{i} \\frac{w_{i} \\alpha_{1}}{w_{1}\\alpha_{i}} 
+                                \\right)^{\\alpha_{1}} \\ \\cdots \\ \\left(x_{i} \\frac{w_{i} \\alpha_{i-1}}{w_{i-1}
+                                \\alpha_{i}} \\right)^{\\alpha_{i-1}} \\ x_{i}^{\\alpha_{i} -1} \\ \\left(x_{i} 
+                                \\frac{w_{i} \\alpha_{i+1}}{w_{1}\\alpha_{i}} \\right)^{\\alpha_{i+1}} \\ \\cdots 
+                                \\ \\left(x_{i} \\frac{w_{i} \\alpha_{n}}{w_{n}\\alpha_{i}} \\right)^{\\alpha_{n}} 
+                                \\right] = w_{i}\\]
 
-                                Entonces,
+                                Al simplificar esta expresión, se obtiene:
                             </span>
 
-                            \\[ PA \\big( \\frac{w_{i}}{\\alpha_{i}}x_{i} \\big)^{\\sum_{j=1}^{n} 
-                            \\alpha_{j} - 1} \\prod_{j=1}^{n} \\big(\\frac{\\alpha_{j}}{w_{j}} 
-                            \\big)^{\\alpha_{j}} = 1 \\]
+                            \\[ PA \\left( \\frac{w_{i}}{\\alpha_{i}}x_{i} \\right)^{\\sum_{j=1}^{n} 
+                            \\alpha_{j} - 1} \\prod_{j=1}^{n} \\left(\\frac{\\alpha_{j}}{w_{j}} 
+                            \\right)^{\\alpha_{j}} = 1 \\]
 
-                            Despejando \\( x_{i} \\), 
+                            Esta ecuación muestra cómo los precios de los insumos influyen directamente en la cantidad demandada de cada uno de ellos. 
+                            Específicamente, un aumento en \\(w_{i}\\) reduce la cantidad demandada del insumo \\(x_{i}\\) por parte de la firma, 
+                            mientras que un aumento en el precio \\(w_{j}\\) puede llevar a la firma a demandar una mayor cantidad del insumo \\(x_{j}\\), 
+                            resultado que conecta los precios relativos (\\(w_{i}\\), \\(w_{j}\\)), las elasticidades de producción (\\(\\alpha_{i}\\), 
+                            \\(\\alpha_{j}\\)) y las cantidades óptimas de insumos. Ahora, despejando \\(x_{i}\\) 
+                            se identifica la cantidad óptima de insumos que la firma debe utilizar para maximizar su beneficio. 
 
-                            \\[  \\big(x_{i} \\big)^{\\sum_{j=1}^{n} \\alpha_{j} - 1}   = 
-                            \\frac{1}{PA} \\big( \\frac{\\alpha_{i}}{w_{i}} \\big)^{\\sum_{j=1}^{n} \\alpha_{j} 
-                            - 1}   \\prod_{j=1}^{n}\\big(\\frac{w_{j}}{\\alpha_{j}} \\big)^{\\alpha_{j}} \\]
+                            \\[  \\left(x_{i} \\right)^{\\sum_{j=1}^{n} \\alpha_{j} - 1}   = 
+                            \\frac{1}{PA} \\left( \\frac{\\alpha_{i}}{w_{i}} \\right)^{\\sum_{j=1}^{n} \\alpha_{j} 
+                            - 1}   \\prod_{j=1}^{n}\\left(\\frac{w_{j}}{\\alpha_{j}} \\right)^{\\alpha_{j}} \\]
 
-                            Por lo cual, 
+                            Denominando \\(x_i\\) como \\(\\hat{x_i}\\), las cantidades de factores que se utilizan para maximizar el beneficio son: 
 
                             <span class="hidden_phone">
-                                \\[\\hat{x_{i}} = \\big[ \\frac{1}{PA} \\big( \\frac{\\alpha_{i}}{w_{i}} 
-                                \\big)^{\\sum_{j=1}^{n} \\alpha_{j} - 1}   \\prod_{j=1}^{n}\\big(\\frac{w_{j}}
-                                {\\alpha_{j}} \\big)^{\\alpha_{j}} \\big]^{\\frac{1}{\\sum_{j=1}^{n} 
-                                \\alpha_{j} - 1}} = \\frac{\\alpha_{i}}{w_{i}} \\big[\\frac{1}{PA}  
-                                \\prod_{j=1}^{n}\\big(\\frac{w_{j}}{\\alpha_{j}} \\big)^{\\alpha_{j}} 
-                                \\big]^{\\frac{1}{\\sum_{j=1}^{n} \\alpha_{j} - 1}}\\]
+                                \\[\\hat{x_{i}} = \\left[ \\frac{1}{PA} \\left( \\frac{\\alpha_{i}}{w_{i}} 
+                                \\right)^{\\sum_{j=1}^{n} \\alpha_{j} - 1}   \\prod_{j=1}^{n}\\left(\\frac{w_{j}}
+                                {\\alpha_{j}} \\right)^{\\alpha_{j}} \\right]^{\\frac{1}{\\sum_{j=1}^{n} 
+                                \\alpha_{j} - 1}} = \\frac{\\alpha_{i}}{w_{i}} \\left[\\frac{1}{PA}  
+                                \\prod_{j=1}^{n}\\left(\\frac{w_{j}}{\\alpha_{j}} \\right)^{\\alpha_{j}} 
+                                \\right]^{\\frac{1}{\\sum_{j=1}^{n} \\alpha_{j} - 1}}\\]
                             </span>
                             <span class="hidden_pc">
-                                \\[\\hat{x_{i}} = \\big[ \\frac{1}{PA} \\big( \\frac{\\alpha_{i}}{w_{i}} 
-                                \\big)^{\\sum_{j=1}^{n} \\alpha_{j} - 1}   \\prod_{j=1}^{n}\\big(\\frac{w_{j}}
-                                {\\alpha_{j}} \\big)^{\\alpha_{j}} \\big]^{\\frac{1}{\\sum_{j=1}^{n} 
+                                \\[\\hat{x_{i}} = \\left[ \\frac{1}{PA} \\left( \\frac{\\alpha_{i}}{w_{i}} 
+                                \\right)^{\\sum_{j=1}^{n} \\alpha_{j} - 1}   \\prod_{j=1}^{n}\\left(\\frac{w_{j}}
+                                {\\alpha_{j}} \\right)^{\\alpha_{j}} \\right]^{\\frac{1}{\\sum_{j=1}^{n} 
                                 \\alpha_{j} - 1}}\\]
 
-                                \\[\\Rightarrow \\hat{x_{i}} = \\frac{\\alpha_{i}}{w_{i}} \\big[\\frac{1}{PA}  
-                                \\prod_{j=1}^{n}\\big(\\frac{w_{j}}{\\alpha_{j}} \\big)^{\\alpha_{j}} 
-                                \\big]^{\\frac{1}{\\sum_{j=1}^{n} \\alpha_{j} - 1}}\\]
+                                \\[\\Rightarrow \\hat{x_{i}} = \\frac{\\alpha_{i}}{w_{i}} \\left[\\frac{1}{PA}  
+                                \\prod_{j=1}^{n}\\left(\\frac{w_{j}}{\\alpha_{j}} \\right)^{\\alpha_{j}} 
+                                \\right]^{\\frac{1}{\\sum_{j=1}^{n} \\alpha_{j} - 1}}\\]
                             </span>
 
-                            para cada \\( i=1, ..., n \\). Las funciones \\( \\widehat{x_{i}} \\) son las 
-                            funciones de demanda de factores de la empresa, ellas determinan las cantidades de 
-                            factores que se han de usar para maximizar el beneficio. Así, , las cantidades que 
-                            se deben producir para maximizar el beneficio son: 
+                            para cada \\( i=1, ..., n \\). De este modo, las cantidades óptimas que se producen para maximizar el beneficio son:
 
-                            \\[\\hat{f}(x) = \\hat{f}(x_{1}, \\cdots, x_{n}) = f(\\hat{x_{1}}, \\cdots, 
-                            \\hat{x_{n}}) \\]
+                            \\[f(\\hat{x}) = f(\\hat{x_{1}}, \\cdots, \\hat{x_{n}}) = \\left(\\frac{1}{P} 
+                            \\right)^{\\frac{\\sum_{j=1}^{n} \\alpha_{j}}
+                            {\\sum_{j=1}^{n} \\alpha_{j} - 1}} \\left[\\frac{1}{A}  \\prod_{j=1}^{n}
+                            \\left(\\frac{w_{j}}{\\alpha_{j}} \\right)^{\\alpha_{j}} \\right]^{\\frac{1}
+                            {\\sum_{j=1}^{n} \\alpha_{j} - 1}} \\]
+                            
+                            donde \\(\\widehat{x} = (\\hat{x_{1}}, \\cdots, \\hat{x_{n}}) \\). 
+                            Esta expresión representa <strong>la función de oferta</strong>, que determina la cantidad de producción posible dadas las condiciones del mercado y la eficiencia en el 
+                            uso de los insumos <a href="referencias#ref6" target="_blank">[6]</a>. Por otro lado, <strong>la función de beneficio</strong>, refleja el beneficio total 
+                            obtenido por la firma al considerar tanto los ingresos generados por la venta del producto como los costos de los insumos <a href="referencias#ref3" target="_blank">[3]</a>. 
+                            El beneficio máximo esta dado por:
 
-                            Entonces, <strong>la función de oferta</strong> es: 
-
-                            \\[\\hat{f}(x) = \\big(\\frac{1}{P} \\big)^{\\frac{\\sum_{j=1}^{n} \\alpha_{j}}
-                            {\\sum_{j=1}^{n} \\alpha_{j} - 1}} \\big[\\frac{1}{A}  \\prod_{j=1}^{n}
-                            \\big(\\frac{w_{j}}{\\alpha_{j}} \\big)^{\\alpha_{j}} \\big]^{\\frac{1}
-                            {\\sum_{j=1}^{n} \\alpha_{j} - 1}}\\]
-
-                            <strong>La función de beneficio</strong> está dada por:
-
-                            \\[ \\hat{\\Pi}(x) = \\hat{\\Pi}(x_{1}, ..., x_{n}) = P\\hat{f}(X) - \\sum_{i=1}^{n} w_{i}\\hat{X_{i}} \\]
+                            \\[ \\Pi (\\hat{x}) = Pf(\\hat{x}) - \\sum_{i=1}^{n} w_{i}\\hat{x_{i}} \\]
 
                             <span class="hidden_phone">
                                 Así,
 
-                                \\[ \\hat{\\Pi}(x) = \\hat{\\Pi}(x_{1}, ..., x_{n}) = \\big[\\frac{1}{PA}  \\prod_{j=1}^{n}
-                                \\big(\\frac{w_{j}}{\\alpha_{j}} \\big)^{\\alpha_{j}} \\big]^{\\frac{1}
-                                {\\sum_{j=1}^{n} \\alpha_{j} - 1}} - \\sum_{i=1}^{n} \\alpha_{i} \\big[\\frac{1}{PA}
-                                \\prod_{j=1}^{n}\\big(\\frac{w_{j}}{\\alpha_{j}} \\big)^{\\alpha_{j}} 
-                                \\big]^{\\frac{1}{\\sum_{j=1}^{n} \\alpha_{j} - 1}}\\]
+                                \\[ \\Pi (\\hat{x}) = \\left[\\frac{1}{PA}  \\prod_{j=1}^{n}
+                                \\left(\\frac{w_{j}}{\\alpha_{j}} \\right)^{\\alpha_{j}} \\right]^{\\frac{1}
+                                {\\sum_{j=1}^{n} \\alpha_{j} - 1}} - \\sum_{i=1}^{n} \\alpha_{i} \\left[\\frac{1}{PA}
+                                \\prod_{j=1}^{n}\\left(\\frac{w_{j}}{\\alpha_{j}} \\right)^{\\alpha_{j}} 
+                                \\right]^{\\frac{1}{\\sum_{j=1}^{n} \\alpha_{j} - 1}}\\]
                             </span>
 
                             Por lo cual,
 
-                            \\[ \\hat{\\Pi}(x) = \\big( 1 - \\sum_{i=1}^{n} \\alpha_{i} \\big)
-                            \\big[\\frac{1}{PA}  \\prod_{j=1}^{n}\\big(\\frac{w_{j}}{\\alpha_{j}} 
-                            \\big)^{\\alpha_{j}} \\big]^{\\frac{1}{\\sum_{j=1}^{n} \\alpha_{j} - 1}} \\]
-                            Esto nos permite determinar cuánto beneficio genera la empresa bajo condiciones de maximización,
-                            y como resultado final muestra que el beneficio está directamente relacionado con los coeficientes αi
-                            y los precios de los insumos, lo que subraya la importancia de la estructura de costos y la eficiencia
-                            de la producción en la maximización del beneficio.
+                            \\[ \\Pi (\\hat{x}) = \\left( 1 - \\sum_{i=1}^{n} \\alpha_{i} \\right)
+                            \\left[\\frac{1}{PA}  \\prod_{j=1}^{n}\\left(\\frac{w_{j}}{\\alpha_{j}} 
+                            \\right)^{\\alpha_{j}} \\right]^{\\frac{1}{\\sum_{j=1}^{n} \\alpha_{j} - 1}} \\]
+                            Esto nos permite determinar el beneficio generado por la firma bajo condiciones de maximización, mostrando que el beneficio está directamente relacionado con los precios 
+                            de los insumos \\(w_{i}\\), las cantidades de insumos utilizados \\(x_{i}\\) y los parámetros de elasticidad de producción \\(\\alpha_{i}\\), para todo \\(i = ${indices_list}\\). 
+                            Estos factores subrayan la importancia de una utilización eficiente de los insumos y una adecuada gestión de los costos para maximizar el beneficio. 
                         </p>
                     `;
         
@@ -1074,24 +1115,15 @@ function optimizacion_exp_sin(exponente) {
             funcion_derivada_parcial_CD_sin_phone.innerHTML = `${inicio_deri_parc_phone}`;
             inicio_hessiana += `
                 <div id="hessiana"></div>
-                <ul>
-                    <li>
-                        Si la Hessiana es definida negativa, el punto crítico es un máximo local.
-                    </li>
-                    <li>
-                        Si la Hessiana es definida positiva, el punto crítico es un mínimo local.
-                    </li>
-                    <li>
-                        Si la Hessiana tiene signos mixtos, entonces el punto crítico es un punto de silla.
-                    </li>
-                </ul>
                 <p>
-                    Ahora bien, los menores principales son claves para analizar la definitud de la matriz Hessiana, que a su vez ayuda a 
-                    clasificar los puntos críticos de una función. Para una matriz \\(${exponente} x ${exponente}\\), los menores principales son: 
+                    La estructura específica de la matriz Hessiana permite analizar cómo los valores de los parámetros \\(\\alpha_{i} (\\forall i = ${indices_list})\\) 
+                    determinan la curvatura de la función \\(f(x)\\), lo que permite clasificarla como convexa o cóncava en un conjunto determinado, lo que a su vez ayuda a 
+                    clasificar los puntos críticos de una función. Ahora bien, los menores principales son claves para analizar la definitud de la matriz Hessiana. 
+                    Para una matriz \\(${exponente} x ${exponente}\\), los menores principales son: 
                 </p>
                 <div id="menoresPrincipales" class="hidden_phone"></div>
                 <div id="menoresPrincipales_phone" class="hidden_pc"></div>
-                <p>Teniendo en cuenta que \\( H_{f} \\) es:</p>
+                <p>Teniendo en cuenta que \\( H_{f}(x) \\) es:</p>
                 <ul>
                     <li>
                         definida positiva si \\( M_{i} > 0 \\) para \\( 1 \\leq i \\leq ${exponente} \\).
@@ -1107,7 +1139,8 @@ function optimizacion_exp_sin(exponente) {
                     </li>
                 </ul>
                 <p>
-                    Luego de realizar un analísis a los valores que puede tener cada \\( \\alpha_{i} \\) y simplificando, obtenemos que \\( H_{f} \\) es:
+                    A través del análisis de los menores principales de la matriz Hessiana y las condiciones sobre los parámetros 
+                    \\(\\alpha_{i}  (\\forall i = ${indices_list})\\), se puede concluir que la matriz hessiana \\( H_{f}(x) \\) es:
                 </p>
                 <ul>
                     <li>
@@ -1163,7 +1196,12 @@ function optimizacion_exp_sin(exponente) {
                     </li>
                 </ul>
                 <p>
-                    Así, concluimos que una función CD \\(f(x)\\), con \\(x \\in S \\subseteq \\mathbb{R}^{${exponente}}\\), tiene un: 
+                    En términos generales, las propiedades de convexidad y concavidad en las funciones CD tienen implicaciones directas sobre el 
+                    comportamiento de la producción en relación con los insumos. La convexidad sugiere que, al aumentar los insumos, la producción 
+                    crece de manera más eficiente, lo que se traduce en una mejora en el rendimiento de los recursos. Por el contrario, la concavidad 
+                    implica que, a medida que se incrementan los insumos, la eficiencia de la producción o el rendimiento de los recursos disminuye, 
+                    reflejando un fenómeno de rendimientos decrecientes. De acuerdo con este resultado, concluimos que \\(f(x)\\), con 
+                    \\(x \\in S \\subseteq \\mathbb{R}^{${exponente}}\\), tiene un: 
                 </p>
                 <ul>
                     <li>
@@ -1283,38 +1321,69 @@ function optimizacion_exp_sin(exponente) {
                             o una función modificada que altere la forma estándar.
                         </p>
                 <p>
-                    <u> Ejemplo </u>: Una empresa que usa ${exponente} insumos \\(${var_list}\\) a precios \\(${precio_var}\\) por unidad 
-                    respectivamente, el costo promedio es
-                    \\[ C =  \\frac{${costo_suma}}{f(${var_list})} \\]
-                    donde f es la función de producción CD. Así, las ondiciones que se deben satisfacer para minimizar el costo promedio son:
+                    <u> Ejemplo </u>: Para una firma que utiliza ${exponente} insumos \\(${var_list}\\) a precios \\(${precio_var}\\) por unidad 
+                    respectivamente, el objetivo es minimizar el costo promedio, una medida clave de eficiencia económica. Este costo refleja el 
+                    nivel de recursos necesarios para producir una unidad de producto, y su reducción permite identificar la combinación más eficiente 
+                    de insumos para maximizar la producción al menor costo posible <a href="referencias#ref3" target="_blank">[3]</a>. 
+                    Matemáticamente, el costo promedio se expresa como:
+                    \\[ C =  \\frac{${costo_suma}}{f(x)} \\]
+                    donde \\(x =(${var_list})\\) es un vector de ${exponente} variables independientes y \\(f(x)\\) es la función de producción, 
+                    la cual describe la relación matemática entre los insumos utilizados y la cantidad de producto final producido 
+                    <a href="referencias#ref3" target="_blank">[3]</a>. Para minimizar el costo promedio \\(C\\), debemos calcular las derivadas 
+                    parciales de \\(C\\) con respecto a cada insumo \\(x_{i} (\\forall i = ${indices_list})\\), y luego igualarlas a cero para obtener las 
+                    condiciones necesarias de optimización. Esto es:
                     ${deri_parc_costo}
-                    Por lo cual, las cantidades de insumos que el productor debe usar para minimizar el costo promedio son aquellas para las 
-                    cuales la relación entre las productividades marginales es igual a la relación entre los precios de los insumos de producción.
-                    \\[ ${cant_insumo_costo} \\]
-                    Si la función de producción no es homogénea de grado uno y los beneficios están dados por:
-                    \\[ Q(${var_list}) = Pf(${var_list}) - (${costo_suma}) \\]
-                    Entonces, la combinación de insumos que produce el mayor beneficio son las soluciones del sistema de ecuaciones
-                    ${deri_parc_beneficio}
-                    Por lo tanto, el valor de productividad marginal de cada insumo de producción debe ser igual a su precio. Así, las condiciones
-                    necesarias de primer orden para maximizar el beneficio, son las mismas para minimizar el costo promedio.
-                    \\[ ${cant_insumo_costo} \\]  
-                    Ahora bien, la empresa produce con funciones CD de la forma 
+                    Al tomar el cociente entre las expresiones correspondientes a las derivadas parciales de la producción y los precios, para cada  
+                    \\(x_{i} (\\forall i = ${indices_list})\\), obtenemos las siguientes relaciones:
+                    ${cant_insumo_costo}
+                    Este conjunto de ecuaciones permite comparar las productividades marginales de los insumos, demostrando que, para minimizar el costo promedio, 
+                    la relación entre los precios de los insumos debe igualarse a la relación entre sus productividades marginales. Esta condición de optimización 
+                    es fundamental, ya que, al mantener dicha igualdad, la firma asigna sus recursos de manera eficiente, asegurando que el costo de cada insumo, 
+                    ponderado por su precio, sea proporcional a su contribución a la producción.
+                    Ahora, el beneficio económico se define como la diferencia entre los ingresos totales generados por la venta de los productos y los costos totales 
+                    asociados a su producción <a href="referencias#ref3" target="_blank">[3]</a>. Entonces, si el productor vende su producto a \\( P \\) por unidad, 
+                    matemáticamente el beneficio, denominado por \\( \\Pi \\), está definido por:
+                    \\[ \\Pi(${var_list}) = Pf(${var_list}) - (${costo_suma}) \\]
+                    Este enfoque permite al productor analizar el impacto de las decisiones de asignación de recursos sobre la rentabilidad, considerando tanto los precios 
+                    de los insumos como la eficiencia en la producción. Entonces,
+                    <ul>
+                        <li>
+                            Si \\( f(${var_list}) \\) es homogénea de grado 1, no existe un máximo de beneficio, ya que el beneficio puede seguir creciendo indefinidamente 
+                            a medida que se aumenta la escala de producción.
+                        </li>
+                        <li>
+                            Si \\( f(${var_list}) \\) no es homogénea de grado 1, la combinación de insumos que produce el mayor beneficio corresponde a las soluciones 
+                            del siguiente sistema de ecuaciones:
+                            ${deri_parc_beneficio}
+                            De esta manera, para maximizar las ganancias, una empresa debe usar cada recurso hasta el punto en que el valor adicional que aporta a la 
+                            producción sea igual al costo que implica su uso. Es decir, debe asegurarse de que lo que gana con cada recurso sea equivalente a lo que paga por él.
+                        </li>
+                    </ul>
+                    Como resultado, las condiciones necesarias de primer orden para minimizar el costo promedio y maximizar el beneficio son las mismas, lo que implica 
+                    que la eficiencia en la asignación de insumos para minimizar costos también asegura que el beneficio se maximice, bajo la condición de que la función 
+                    de producción no sea homogénea de grado 1.
+                    
+                    Ahora bien, consideremos que la firma emplea una tecnología de producción CD para maximizar su beneficio. La función de producción está dada por:
                     \\[ ${inicio_var} \\] 
-                    Entonces, derivando con respecto a cada variable y reemplazando en el cociente de las condiciones 
-                    necesarias, obtenemos que: ${cant_beneficio_costo} <br>
-                    Al reemplazar esta expresión en la condición \\( Pf_{i} = w_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\) y despejando \\( x_{i} \\) 
-                    obtenemos que: ${new_var_CD}
-                    Las funciones \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\ \\) son las funciones de demanda de factores de la empresa, ellas 
-                    determinan las cantidades de factores que se han de usar para maximizar el beneficio. Así, las cantidades que se deben producir para 
-                    maximizar el beneficio son:  \\[ \\widehat{f}(x) = \\widehat{f}(${var_list}) = f(${var_list_CD}) = f( \\widehat{x} ) \\] 
-                    Entonces, <strong>la función de oferta</strong> es: ${new_func_oferta}
-                    <strong>La función de beneficio</strong> está dada por:
-                    \\[ \\widehat{Q}(${var_list}) = PQ(\\widehat{x}) - (${new_costo_suma}) \\]
+                    donde \\(x_{i}\\) representa la cantidad del \\(i\\) - ésimo insumo, \\(\\alpha_{i}\\) son los parámetros de elasticidad de producción, y \\(A\\) 
+                    es una constante de escala, para todo \\( i = ${indices_list}\\). Para determinar las condiciones de maximización de producción o minimización de costos, 
+                    calculamos las productividades marginales y reemplazando en el cociente de las condiciones necesarias, obtenemos que: ${cant_beneficio_costo} <br>
+                    
+                    Esta ecuación muestra cómo los precios de los insumos influyen directamente en la cantidad demandada de cada uno de ellos. Sustituyendo estas relaciones 
+                    en la condición \\( Pf_{x_i} = w_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\) y, despejando \\(x_{i}\\) y denominándola como \\(\\hat{x_i}\\), 
+                    se identifica la <strong>cantidad óptima de insumos</strong> que la firma debe utilizar para maximizar su beneficio. 
+                    Las cantidades de factores que se utilizan para maximizar el beneficio son: ${new_var_CD}
+                    
+                    De este modo, las cantidades óptimas que se producen para maximizar el beneficio son:  ${new_func_oferta} donde \\(\\widehat{x} = (${var_list_CD}) \\). 
+                    Esta expresión representa <strong>la función de oferta</strong>, que determina la cantidad de producción posible dadas las condiciones del mercado y la eficiencia en el 
+                    uso de los insumos <a href="referencias#ref6" target="_blank">[6]</a>. Por otro lado, <strong>la función de beneficio</strong>, refleja el beneficio total 
+                    obtenido por la firma al considerar tanto los ingresos generados por la venta del producto como los costos de los insumos <a href="referencias#ref3" target="_blank">[3]</a>. 
+                    El beneficio máximo esta dado por:
+                    \\[ \\Pi(\\widehat{x}) = Pf(\\widehat{x}) - (${new_costo_suma}) \\]
                     Por lo tanto, ${new_func_beneficio}
-                    Esto nos permite determinar cuánto beneficio genera la empresa bajo condiciones de maximización,
-                    y como resultado final muestra que el beneficio está directamente relacionado con los coeficientes αi
-                    y los precios de los insumos, lo que subraya la importancia de la estructura de costos y la eficiencia
-                    de la producción en la maximización del beneficio.
+                    Esto nos permite determinar el beneficio generado por la firma bajo condiciones de maximización, mostrando que el beneficio está directamente relacionado con los precios 
+                    de los insumos \\(w_{i}\\), las cantidades de insumos utilizados \\(x_{i}\\) y los parámetros de elasticidad de producción \\(\\alpha_{i}\\), para todo \\(i = ${indices_list}\\). Estos factores subrayan la 
+                    importancia de una utilización eficiente de los insumos y una adecuada gestión de los costos para maximizar el beneficio. 
                 </p>
             `;
 

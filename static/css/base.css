@@ -35,7 +35,7 @@ html {
 }
 .plot {
     flex: 1 1 50%;
-    max-width: 70%;
+    max-width: 50%;
 }
 .plot img {
     width: 100%;
@@ -54,7 +54,7 @@ html {
 }
 .figure {
     flex: 1 1 55%;
-    max-width: 50%;
+    max-width: 40%;
 }
 .figure img {
     width: 100%;
@@ -95,7 +95,7 @@ html {
     }
     .plot {
         flex: 1 1 70%;
-        max-width: 70%;
+        max-width: 80%;
     }
     .hidden_pc{
         display: block;

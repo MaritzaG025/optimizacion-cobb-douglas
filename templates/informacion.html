@@ -209,11 +209,54 @@ block body %}
     en la toma de decisiones estratégicas, como maximizar la producción con recursos limitados o minimizar los costos
     bajo restricciones específicas.
 
-    Matemáticamente, el objetivo es determinar los puntos donde una función \(\Phi\), definida en un subconjunto \(S\) de
+    Matemáticamente, el objetivo es determinar los puntos donde una función \(\Phi\), definida en un subconjunto \(S\)
+    de
     \(\mathbb{R}^{n}\), alcanza sus valores óptimos (mínimos o máximos). Este análisis se divide en dos categorías:
     optimización sin restricciones y optimización con restricciones. Ambos enfoques son esenciales para modelar y
     entender cómo los agentes económicos toman decisiones bajo diferentes escenarios.
   </p>
+
+  <ul>
+    <li>
+      La optimización sin restricciones aborda problemas en los cuales se busca maximizar o minimizar una función
+      \(\Phi\)
+      en todo su dominio. Estos problemas son esenciales en contextos donde no existen limitaciones explícitas en las
+      decisiones a tomar.
+      Considere una función \(\Phi\) definida en un subconjunto S de \(\mathbb{R}^{n}\), con \(n \in \mathbb{N}\), la
+      optimización sin restricciones implica resolver problemas de la forma:
+
+      \[ min(max)_{x \in S} \ \Phi (x) \]
+      
+      Donde el punto extremo de ocurrencia es un punto interior de S <a href="referencias#ref2" target="_blank">[2]</a>.
+
+      En términos económicos, este tipo de optimización se interpreta como un escenario idealizado en el que una empresa
+      o un agente económico tiene total libertad para ajustar los factores de producción o consumo, con el objetivo de
+      maximizar su utilidad o producción. Aunque en la práctica estos escenarios son poco frecuentes debido a las
+      restricciones del mercado, la optimización sin restricciones constituye una base teórica esencial para entender
+      los problemas de optimización en condiciones más realistas, como aquellos con restricciones.
+    </li>
+    <li>
+      La optimización con restricciones se presenta cuando las decisiones están limitadas por factores externos, como un
+      presupuesto, nivel de tecnología o disponibilidad de insumos. Estas restricciones son fundamentales para modelar
+      situaciones económicas reales.
+
+      Sea \(\Phi\) una función a valor real definida en un subconjunto \(S\) de \(\mathbb{R}^{n}\) con \(n \in \mathbb{N}\). La
+      optimización con restricciones <a href="referencias#ref2" target="_blank">[2]</a> está relacionada con el problema de optimizar \(\Phi\) con \(m\)
+      restricciones de igualdad; por ejemplo, \(g_{1} = 0, \ldots, g_{m} = 0\). Siendo \(g = (g_{1}, g_{2}, \ldots,
+      g_{m})'\) y \(\Gamma = \{x : x \in S, g(x) = 0\}\), el problema se puede escribir como:
+
+      \[
+      \text{min(max)}_{x \in S} \ \ \ \ \ \ \Phi(x)
+      \]
+      \[
+      \ \ \ \ \ \ \ \ \ sujeto \ a \ \ \ \ \ \ \ g(x) = 0
+      \]
+      Para garantizar la existencia de un mínimo o máximo local en este contexto, es necesario cumplir con ciertas
+      condiciones requeridas. Estas condiciones aseguran que, bajo restricciones de igualdad, como en el caso de una
+      restricción presupuestaria, es posible identificar puntos que optimicen la función objetivo. De este modo, se
+      proporciona una interpretación económica más clara sobre la asignación de recursos en un entorno restringido.
+    </li>
+  </ul>
 
   <!-- A TENER EN CUENTA DESCOMENTAR PERO LUEGO DE EVALUAR QUE COLOCAR -->
   <!-- <div class="col-md-12">
@@ -368,7 +411,7 @@ block body %}
         </div>
         <div class="w-full d-flex justify-content-center" id="funcion_deri_parc_CD_lambda"></div>
         <br>
-        <p>Para \(A \neq 0 \) y cada \(\alpha_{i} \neq 0\).</p>
+        <!-- <p>Para \(A \neq 0 \) y cada \(\alpha_{i} \neq 0\).</p> -->
         <br>
         <div id="funcion_hessiana_CD"></div> <br>
         <div id="maximizar_CD"></div> <br>
