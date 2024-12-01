@@ -14,7 +14,7 @@
 <body>
   <nav class="navbar navbar-expand-lg bg-info p-2 bg-opacity-75">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">
+      <a class="navbar-brand" id="navbar-brand" href="/" onclick="resetActiveLinks();">
         <h3 style="color: white;">Optimización Cobb - Douglas</h3>
       </a>
       <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -24,24 +24,24 @@
       <div class="navbar-collapse collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{ url_for('teoria') }}"
-              style="color: white;">Teoría</a>
+            <a class="nav-link" id="teoria" href="{{ url_for('teoria') }}">Teoría</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('formulario') }}" style="color: white;">Formulario</a>
+            <a class="nav-link" id="formulario" href="{{ url_for('formulario') }}">Formulario</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="{{ url_for('referencias') }}"
-              style="color: white;">Referencias</a>
+            <a class="nav-link" id="referencias" href="{{ url_for('referencias') }}">Referencias</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
+
   <div class="m-4">
     {% block body %}
     {% endblock %}
   </div>
+
   <footer class="w-full d-flex justify-content-center mt-5">
     <p class="footer-text">&copy; <span id="year"></span> Maritza García. Todos los derechos reservados.</p>
   </footer>
@@ -49,11 +49,33 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
     crossorigin="anonymous"></script>
-  <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script> -->
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <script>
     // Script para actualizar el año en el pie de página
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Función para establecer el enlace activo basado en la URL actual
+    function setActiveLink() {
+      const currentPath = window.location.pathname;  // Obtiene la URL actual
+      const navLinks = document.querySelectorAll('.nav-link');
+
+      // Restablecer todos los enlaces a color blanco
+      navLinks.forEach(link => {
+        link.style.color = 'white';
+        link.style.backgroundColor = ''; // Resetear fondo
+      });
+
+      // Comparar cada enlace con la URL actual y aplicar el estilo activo
+      navLinks.forEach(link => {
+        if (link.href.includes(currentPath)) {
+          link.style.color = 'black';
+          link.style.backgroundColor = ''; // Opcional, resetear fondo
+        }
+      });
+    }
+
+    // Ejecutar la función cuando la página se carga
+    window.onload = setActiveLink;
   </script>
 </body>
 
