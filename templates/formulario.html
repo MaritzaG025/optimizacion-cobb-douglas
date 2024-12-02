@@ -1,5 +1,5 @@
-{% extends './base.html' %} {% block title %} Formulario {% endblock %} {% block
-body %}
+{% extends './base.html' %} {% block title %} Formulario {% endblock %} 
+{% block body %}
 <div class="row gap-x-0 padding_form">
   <h3 class="py-3">Datos de la función a optimizar</h3>
   <form id="formularioCD" class="row g-3">
@@ -82,15 +82,27 @@ body %}
           </div>
         </div>
       </div>
-
     </div>
   </form>
   <p id="mensajeError" class="mt-5" style="color:red; display:none;">
     Por favor, completa todos los campos requeridos. Estos campos no pueden estar vacios ni nulos.
   </p>
+  <!-- Modal RESULTADO-->
+  <div class="modal fade p-0" id="modalOptimizacionResult" aria-labelledby="modalOptimizacionResultLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalOptimizacionResultLabel">Resultados de optimización</h5>
+          <button id="modalOptimizacionResultClose" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h1>Body</h1>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="{{ url_for('static', filename='js/formulario.js') }}"></script>
-
 
 {% endblock %}

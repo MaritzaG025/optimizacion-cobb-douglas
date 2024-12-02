@@ -1243,7 +1243,7 @@ function optimizacion_exp_sin(exponente) {
                 </p>
                 <div id="puntos_criticos_max_CD_sin"></div>
                 <p>
-                    Entonces, igualando la derivada a cero y resolviendo la ecuación obtenemos que no hay valores con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\)
+                    Igualando la derivada a cero y resolviendo la ecuación obtenemos que no hay valores con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\)
                     donde la derivada sea igual a cero, lo que indica que no hay un máximo para \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\)
                     dado que \\( \\frac{\\partial f}{\\partial x_{i}} > 0 \\) para todo \\( x_{i} > 0 \\) la función esta siempre en crecimiento. 
                     Sin restricciones adicionales, la función continúa aumentando a medida que \\( x_{i} \\) crece. Por lo tanto, la función no se puede maximizar.

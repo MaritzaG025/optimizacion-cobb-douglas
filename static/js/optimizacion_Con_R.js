@@ -147,11 +147,21 @@ function mostrarCobbDouglasConPresupuesto(
       let parametro_optimizar = "mínimo";
       let operacion_optimizar = "minimizan";
       let funcion_optimizar_concava_convexa = "convexa";
+      let objetivo_CD = `Los resultados obtenidos evidencian que los puntos críticos representan el nivel óptimo al cual se pueden asignar 
+          los recursos para minimizar los costos o gastos. En el contexto económico, al minimizar se busca reducir los costos o gastos necesarios 
+          para alcanzar un nivel deseado de producción o nivel de utilidad, logrando una asignación eficiente del presupuesto. 
+          Por otro lado, si el objetivo es maximizar, el enfoque está en aumentar la utilidad o producción total bajo las limitaciones presupuestarias 
+          y de precios, destacando el impacto positivo de decisiones basadas en modelos matemáticos bien fundamentados.`;
       
       if (operacion_CD === "maximizar") {
-        parametro_optimizar = "máximo"
-        operacion_optimizar = "maximizan"
-        funcion_optimizar_concava_convexa = "cóncava"
+        parametro_optimizar = "máximo";
+        operacion_optimizar = "maximizan";
+        funcion_optimizar_concava_convexa = "cóncava";
+        funcion_optimizar_concava_convexa = "cóncava";
+        objetivo_CD = `Los resultados obtenidos evidencian que los puntos críticos representan el nivel óptimo al cual se pueden asignar 
+          los recursos para maximizar la producción o la utilidad. En el contexto económico, al maximizar, el enfoque está en aumentar la 
+          utilidad o producción total bajo las limitaciones presupuestarias y de precios, destacando el impacto positivo de 
+          decisiones basadas en definiciones y teoremas matemáticos fundamentados.`;
       }
 
       texto_resultante_max_min += `
@@ -172,18 +182,30 @@ function mostrarCobbDouglasConPresupuesto(
                 f(\\hat{x}) = ${inicio_func_opt} = ${valor_puntos_criticos}
             \\]
           </span>
-
-          Este resultado refleja el nivel máximo de satisfacción que el consumidor puede alcanzar al asignar su presupuesto 
-          de manera óptima entre los tres bienes. De este modo, se destaca la importancia de la optimización en funciones de 
-          utilidad CD, pues muestra cómo la combinación eficiente de recursos permite maximizar los beneficios para el consumidor. 
-        </p>`;
+          ${objetivo_CD}
+        </p>
+        <p>
+          El análisis realizado mediante la función Cobb-Douglas, complementado con la evaluación de la matriz Hessiana y el determinante bordeado, 
+          permite clasificar los puntos críticos y confirmar si corresponden a ${parametro_optimizar}s. Esto demuestra la importancia de utilizar la optimización 
+          matemática para determinar condiciones precisas bajo restricciones reales, como los precios de los bienes y un presupuesto limitado. 
+          Estos resultados no solo permiten identificar si se están maximizando beneficios o minimizando costos, sino que también resaltan la 
+          importancia de evaluar las propiedades de la función objetivo para garantizar decisiones consistentes y económicamente racionales.
+        </p>
+        `;
 
         break;
   
     default:
       texto_resultante_max_min += `Concluyendo así que, el punto crítico no es ni un máximo ni un mínimo local. 
       Este resultado sugiere que la función no alcanza un óptimo en el punto crítico evaluado, lo que podría indicar 
-      la presencia de un punto de silla o una falta de condiciones necesarias para la optimización con la restricción dada.`;
+      la presencia de un punto de silla o una falta de condiciones necesarias para la optimización con la restricción dada.
+      En términos económicos, esto refleja una ineficiencia en la asignación de recursos o la imposibilidad de alcanzar 
+      un óptimo económico bajo las condiciones dadas, como restricciones presupuestarias o relaciones específicas entre los insumos. 
+      La presencia de un punto de silla, por ejemplo, indica que ciertos cambios en las decisiones podrían mejorar el resultado 
+      en una dirección, pero empeorarlo en otra. Este análisis subraya la importancia de reevaluar las condiciones iniciales, 
+      como los precios, el presupuesto o la naturaleza de la función objetivo, para identificar si el sistema es realmente viable 
+      o necesita ajustes para alcanzar un resultado óptimo.
+      `;
       break;
   }
 
@@ -209,7 +231,7 @@ function mostrarCobbDouglasConPresupuesto(
     <p class="hidden_phone">
         \\[
             \\begin{align*}
-                \\text{${operacion_CD}:} && f(x) = f(${lista_var_CD_con}) =  ${inicio_func} \\\\
+                \\text{${operacion_CD.substring(0, 3)}:} && f(x) = f(${lista_var_CD_con}) =  ${inicio_func} \\\\
                 \\text{Sujeto a:} && c(x) = c(${lista_var_CD_con}) = ${inicio_func_costo} = ${presupuesto} \\\\
             \\end{align*}
         \\]
@@ -217,10 +239,7 @@ function mostrarCobbDouglasConPresupuesto(
     <p class="hidden_pc">
         \\[
             \\begin{align*}
-                \\text{${operacion_CD.substring(
-                  0,
-                  3
-                )}:} && f(x) = ${inicio_func} \\\\
+                \\text{${operacion_CD.substring(0, 3)}:} && f(x) = ${inicio_func} \\\\
                 \\text{Sujeto a:} && c(x) = ${inicio_func_costo} = ${presupuesto} \\\\
             \\end{align*}
         \\]
@@ -479,7 +498,7 @@ function optimizacion_exp_con(exponente) {
         <p class="hidden_phone">
             \\[
                 \\begin{align*}
-                    \\text{Maximizar o Minimizar:} && f(x) = f(${lista_var_CD}) = A ${var_expo_func} \\\\
+                    \\text{Max o Min:} && f(x) = f(${lista_var_CD}) = A ${var_expo_func} \\\\
                     \\text{Sujeto a:} && c(x) = c(${lista_var_CD}) = ${var_expo_costo} = c \\\\
                 \\end{align*}
             \\]
@@ -532,7 +551,7 @@ function optimizacion_exp_con(exponente) {
                 <span class="hidden_phone">
                     \\[
                         \\begin{align*}
-                            \\text{Maximizar o Minimizar:} && f(x) = f(x_{1}, ..., x_{n}) = A\\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} \\\\
+                            \\text{Max o Min:} && f(x) = f(x_{1}, ..., x_{n}) = A\\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} \\\\
                             \\text{Sujeto a:} && c(x) = c(c_{1}, ..., c_{n}) = \\sum_{i=1}^{n} w_{i}x_{i}  = c\\\\
                         \\end{align*}
                     \\]
@@ -723,7 +742,7 @@ function optimizacion_exp_con(exponente) {
         </p>
 
         \\[
-            \\text{Maximizar } f(x) = f(x_{1}, \\ldots, x_{n}) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}
+            \\text{Max } f(x) = f(x_{1}, \\ldots, x_{n}) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}
         \\]
         \\[
             \\text{Sujeto a } c(x) = c(x_{1}, \\ldots, x_{n}) = \\sum_{i=1}^{n} w_{i} x_{i} = c
@@ -803,7 +822,7 @@ function optimizacion_exp_con(exponente) {
         </p>
 
         \\[
-            \\text{Minimizar } f(X) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}
+            \\text{Min } f(X) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}
         \\]
         \\[
             \\text{Sujeto a } c(x) = \\sum_{i=1}^{n} w_{i} x_{i} = c
@@ -1010,7 +1029,7 @@ function optimizacion_exp_con(exponente) {
             </p>
             <div id="derivada_max_CD_con"></div>
             <p>
-              Entonces, igualando la derivada a cero y resolviendo la ecuación, por el teorema de Lagrange, obtenemos que el valor óptimo para cada variable, 
+              Igualando la derivada a cero y resolviendo la ecuación, por el teorema de Lagrange, obtenemos que el valor óptimo para cada variable, 
               respectivamente, para maximizar la función CD bajo la restricción presupuestaria, es:
             </p>
             <div id="puntos_criticos_max_CD_con"></div>
@@ -1052,7 +1071,7 @@ function optimizacion_exp_con(exponente) {
         </p>
         <div id="derivada_min_CD_con"></div>
         <p>
-          Entonces, igualando la derivada a cero y resolviendo la ecuación, por el teorema de Lagrange, obtenemos que el valor óptimo para cada variable, 
+          Igualando la derivada a cero y resolviendo la ecuación, por el teorema de Lagrange, obtenemos que el valor óptimo para cada variable, 
           respectivamente, para minimizar la función CD bajo la restricción presupuestaria, es:
         </p>
         <div id="puntos_criticos_min_CD_con"></div>
@@ -1071,7 +1090,7 @@ function optimizacion_exp_con(exponente) {
         <br> 
         <ul>  
           <li>  
-            Este análisis nos ha permitido determinar los puntos críticos y asegurar que el máximo o mínimo absoluto se ha logrado 
+            Este análisis permite determinar los puntos críticos y asegurar que el máximo o mínimo absoluto se ha logrado 
             bajo las condiciones dadas. Estos resultados proporcionan una guía para optimizar la asignación de recursos en un escenario económico 
             real, maximizando la utilidad o minimizando los costos, de manera eficiente. 
           </li>
