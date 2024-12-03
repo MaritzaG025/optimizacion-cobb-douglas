@@ -766,7 +766,7 @@ function optimizacion_exp_sin(exponente) {
                             \\(x \\in S \\subseteq \\mathbb{R}^{${exponente}}\\), tiene un: 
                             <ul>
                                 <li>
-                                    mínimo absoluto sí \\(\\alpha_{i} \\notin [0, 1]\\) para todo \\(i = 1, ..., n\\) y tenemos que:
+                                    Mínimo absoluto sí \\(\\alpha_{i} \\notin [0, 1]\\) para todo \\(i = 1, ..., n\\) y tenemos que:
                                     <p class="hidden_phone">
                                         \\[(-1)^{r+1} \\ \\alpha_{i_{1}} \\cdots \\alpha_{i_{r}} \\ \\biggl( \\sum \\alpha_{i_{k}} - 1 \\biggl) \\ \\geq \\ 0
                                         \\ \\ \\ \\text{para} \\ r = 1, ..., n \\ \\text{y} \\ k = 1, .., r. \\]
@@ -777,7 +777,7 @@ function optimizacion_exp_sin(exponente) {
                                     </p>
                                 </li>
                                 <li>
-                                    mínimo absoluto estricto sí \\(\\alpha_{i} \\notin [0, 1]\\) para todo \\(i = 1, ..., n\\) y tenemos que:
+                                    Mínimo absoluto estricto sí \\(\\alpha_{i} \\notin [0, 1]\\) para todo \\(i = 1, ..., n\\) y tenemos que:
                                     <p class="hidden_phone">
                                         \\[(-1)^{r+1} \\ \\alpha_{i_{1}} \\cdots \\alpha_{i_{r}} \\ \\biggl( \\sum \\alpha_{i_{k}} - 1 \\biggl) \\ > \\ 0
                                         \\ \\ \\ \\text{para} \\ r = 1, ..., n \\ \\text{y} \\ k = 1, .., r. \\]
@@ -788,10 +788,10 @@ function optimizacion_exp_sin(exponente) {
                                     </p>
                                 </li>
                                 <li>
-                                    máximo absoluto sí \\(0 < \\alpha_{i} < 1\\) y \\(\\sum \\alpha_{i} \\leq 1\\) para todo \\(i = 1, ..., n\\).
+                                    Máximo absoluto sí \\(0 < \\alpha_{i} < 1\\) y \\(\\sum \\alpha_{i} \\leq 1\\) para todo \\(i = 1, ..., n\\).
                                 </li>
                                 <li>
-                                    máximo absoluto estricto sí \\(0 < \\alpha_{i} < 1\\) y \\(\\sum \\alpha_{i} < 1\\) para todo \\(i = 1, ..., n\\).
+                                    Máximo absoluto estricto sí \\(0 < \\alpha_{i} < 1\\) y \\(\\sum \\alpha_{i} < 1\\) para todo \\(i = 1, ..., n\\).
                                 </li>
                             </ul>
                         <p>
@@ -1126,16 +1126,16 @@ function optimizacion_exp_sin(exponente) {
                 <p>Teniendo en cuenta que \\( H_{f}(x) \\) es:</p>
                 <ul>
                     <li>
-                        definida positiva si \\( M_{i} > 0 \\) para \\( 1 \\leq i \\leq ${exponente} \\).
+                        Definida positiva si \\( M_{i} > 0 \\) para \\( 1 \\leq i \\leq ${exponente} \\).
                     </li>
                     <li>
-                        definida negativa si \\( (-1)^{i} M_{i} > 0 \\) para \\( 1 \\leq i \\leq ${exponente} \\).
+                        Definida negativa si \\( (-1)^{i} M_{i} > 0 \\) para \\( 1 \\leq i \\leq ${exponente} \\).
                     </li>
                     <li>
-                        semidefinida positiva si \\( M_{i} \\geq 0 \\) para \\( 1 \\leq i \\leq ${exponente} \\).
+                        Semidefinida positiva si \\( M_{i} \\geq 0 \\) para \\( 1 \\leq i \\leq ${exponente} \\).
                     </li>
                     <li>
-                        semidefinida negativa si \\( (-1)^{i} M_{i} \\geq 0 \\) para \\( 1 \\leq i \\leq ${exponente} \\).
+                        Semidefinida negativa si \\( (-1)^{i} M_{i} \\geq 0 \\) para \\( 1 \\leq i \\leq ${exponente} \\).
                     </li>
                 </ul>
                 <p>
@@ -1144,7 +1144,7 @@ function optimizacion_exp_sin(exponente) {
                 </p>
                 <ul>
                     <li>
-                        definida positiva si se da alguno de los siguientes casos: 
+                        Definida positiva si se da alguno de los siguientes casos: 
                         <ul>
                             <li>
                                 ${exponentes_list_0}
@@ -1156,10 +1156,10 @@ function optimizacion_exp_sin(exponente) {
                         </ul>
                     </li>
                     <li>
-                        definida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\) < 1
+                        Definida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\) < 1
                     </li>
                     <li>
-                        semidefinida positiva si se da alguno de los siguientes casos:
+                        Semidefinida positiva si se da alguno de los siguientes casos:
                         <ul>
                             <li>
                                 ${exponentes_list_0}
@@ -1171,7 +1171,7 @@ function optimizacion_exp_sin(exponente) {
                         </ul>
                     </li>
                     <li>
-                        semidefinida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\) \\( \\leq \\) 1
+                        Semidefinida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\) \\( \\leq \\) 1
                     </li>
                 </ul>
                 <p>
@@ -1205,18 +1205,18 @@ function optimizacion_exp_sin(exponente) {
                 </p>
                 <ul>
                     <li>
-                        mínimo absoluto sí \\( \\alpha_{i} \\notin [0, 1] \\ \\forall \\ i = ${indices_list} \\)  y 
+                        Mínimo absoluto sí \\( \\alpha_{i} \\notin [0, 1] \\ \\forall \\ i = ${indices_list} \\)  y 
                         ${signo_operacion} \\( ${exponentes_list} \\) (\\( ${exponentes_suma} \\) - 1) \\( \\geq 0 \\)
                     </li>
                     <li>
-                        mínimo absoluto estricto sí \\( \\alpha_{i} \\notin [0, 1] \\ \\forall \\ i = ${indices_list} \\)  y 
+                        Mínimo absoluto estricto sí \\( \\alpha_{i} \\notin [0, 1] \\ \\forall \\ i = ${indices_list} \\)  y 
                         ${signo_operacion} \\( ${exponentes_list} \\) (\\( ${exponentes_suma} \\) - 1) \\( > 0 \\)
                     <li>
-                        máximo absoluto sí y sólo si \\( 0 < \\alpha_{i} < 1 \\ \\forall \\ i = ${indices_list} \\)  y  
+                        Máximo absoluto sí y sólo si \\( 0 < \\alpha_{i} < 1 \\ \\forall \\ i = ${indices_list} \\)  y  
                         \\( ${exponentes_suma} \\) \\( \\leq 1 \\)
                     </li>
                     <li>
-                        máximo absoluto estricto sí y sólo si \\( 0 < \\alpha_{i} < 1 \\ \\forall \\ i = ${indices_list} \\)  y  
+                        Máximo absoluto estricto sí y sólo si \\( 0 < \\alpha_{i} < 1 \\ \\forall \\ i = ${indices_list} \\)  y  
                         \\( ${exponentes_suma} \\) \\( < 1 \\)
                     </li>
                 </ul>

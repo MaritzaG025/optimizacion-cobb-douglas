@@ -232,7 +232,7 @@ function mostrarCobbDouglasConPresupuesto(
         \\[
             \\begin{align*}
                 \\text{${operacion_CD.substring(0, 3)}:} && f(x) = f(${lista_var_CD_con}) =  ${inicio_func} \\\\
-                \\text{Sujeto a:} && c(x) = c(${lista_var_CD_con}) = ${inicio_func_costo} = ${presupuesto} \\\\
+                \\text{sujeto a:} && c(x) = c(${lista_var_CD_con}) = ${inicio_func_costo} = ${presupuesto} \\\\
             \\end{align*}
         \\]
     </p>
@@ -240,7 +240,7 @@ function mostrarCobbDouglasConPresupuesto(
         \\[
             \\begin{align*}
                 \\text{${operacion_CD.substring(0, 3)}:} && f(x) = ${inicio_func} \\\\
-                \\text{Sujeto a:} && c(x) = ${inicio_func_costo} = ${presupuesto} \\\\
+                \\text{sujeto a:} && c(x) = ${inicio_func_costo} = ${presupuesto} \\\\
             \\end{align*}
         \\]
     </p>
@@ -498,16 +498,16 @@ function optimizacion_exp_con(exponente) {
         <p class="hidden_phone">
             \\[
                 \\begin{align*}
-                    \\text{Max o Min:} && f(x) = f(${lista_var_CD}) = A ${var_expo_func} \\\\
-                    \\text{Sujeto a:} && c(x) = c(${lista_var_CD}) = ${var_expo_costo} = c \\\\
+                    \\text{max o min:} && f(x) = f(${lista_var_CD}) = A ${var_expo_func} \\\\
+                    \\text{sujeto a:} && c(x) = c(${lista_var_CD}) = ${var_expo_costo} = c \\\\
                 \\end{align*}
             \\]
         </p>
         <p class="hidden_pc">
             \\[
                 \\begin{align*}
-                    \\text{Max o Min:} && f(x) = A \\prod_{i=1}^{${exponente}} x_{i}^{\\alpha_{i}} \\\\
-                    \\text{Sujeto a:} && c(x) = \\sum_{i=1}^{${exponente}} w_{i}x_{i} = c \\\\
+                    \\text{max o min:} && f(x) = A \\prod_{i=1}^{${exponente}} x_{i}^{\\alpha_{i}} \\\\
+                    \\text{sujeto a:} && c(x) = \\sum_{i=1}^{${exponente}} w_{i}x_{i} = c \\\\
                 \\end{align*}
             \\]
         </p>
@@ -551,8 +551,8 @@ function optimizacion_exp_con(exponente) {
                 <span class="hidden_phone">
                     \\[
                         \\begin{align*}
-                            \\text{Max o Min:} && f(x) = f(x_{1}, ..., x_{n}) = A\\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} \\\\
-                            \\text{Sujeto a:} && c(x) = c(c_{1}, ..., c_{n}) = \\sum_{i=1}^{n} w_{i}x_{i}  = c\\\\
+                            \\text{max o min:} && f(x) = f(x_{1}, ..., x_{n}) = A\\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} \\\\
+                            \\text{sujeto a:} && c(x) = c(c_{1}, ..., c_{n}) = \\sum_{i=1}^{n} w_{i}x_{i}  = c\\\\
                         \\end{align*}
                     \\]
                     donde \\( x = (x_1, \\dots, x_n) \\) es un vector de \\(n\\) variables independientes. Para resolverlo, utilizamos el método de Lagrange, definiendo la función lagrangiana:
@@ -561,8 +561,8 @@ function optimizacion_exp_con(exponente) {
                 <span class="hidden_pc">
                     \\[
                         \\begin{align*}
-                            \\text{Max o Min:} && f(x) = A\\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} \\\\
-                            \\text{Sujeto a:} && c(x) = \\sum_{i=1}^{n} w_{i}x_{i}  = c\\\\
+                            \\text{max o min:} && f(x) = A\\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} \\\\
+                            \\text{sujeto a:} && c(x) = \\sum_{i=1}^{n} w_{i}x_{i}  = c\\\\
                         \\end{align*}
                     \\]
                     Por el método del multiplicador de Lagrange, primero definimos la función lagrangiana por:
@@ -601,9 +601,9 @@ function optimizacion_exp_con(exponente) {
               \\frac{\\alpha_{i}}{x_{i} w_{i}} = \\frac{\\alpha_{j}}{x_{j} w_{j}} \\quad 
               \\Rightarrow \\quad x_{j} = \\frac{\\alpha_{j} w_{i}}{\\alpha_{i} w_{j}} x_{i}
           \\]
-          Sustituyendo esta relación en la restricción presupuestaria $c(x)$ se demuestra que la asignación óptima respeta la 
-          restricción presupuestaria, distribuyendo los recursos entre los bienes en función de sus precios y sus contribuciones 
-          relativas a la utilidad. Así obtenemos la siguiente expresión:
+          Sustituyendo esta relación en la restricción presupuestaria $c(x)$ se demuestra que la asignación óptima cumple con las 
+          condiciones impuestas por la restricción presupuestaria, distribuyendo los recursos entre los bienes en función de sus precios y sus 
+          contribuciones relativas a la utilidad. Así obtenemos la siguiente expresión:
           \\[
             \\frac{w_{i}}{\\alpha_{i}} x_{i} \\sum_{j=1}^{n} \\alpha_{j} = c, \\quad \\forall i = 1, \\ldots, n
           \\]
@@ -742,10 +742,10 @@ function optimizacion_exp_con(exponente) {
         </p>
 
         \\[
-            \\text{Max } f(x) = f(x_{1}, \\ldots, x_{n}) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}
+            \\text{max } f(x) = f(x_{1}, \\ldots, x_{n}) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}
         \\]
         \\[
-            \\text{Sujeto a } c(x) = c(x_{1}, \\ldots, x_{n}) = \\sum_{i=1}^{n} w_{i} x_{i} = c
+            \\text{sujeto a } c(x) = c(x_{1}, \\ldots, x_{n}) = \\sum_{i=1}^{n} w_{i} x_{i} = c
         \\]
 
         El objetivo es determinar cómo el consumidor asigna su presupuesto de manera óptima para maximizar la utilidad total, respetando la restricción económica. 
@@ -822,10 +822,10 @@ function optimizacion_exp_con(exponente) {
         </p>
 
         \\[
-            \\text{Min } f(X) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}
+            \\text{min } f(X) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}
         \\]
         \\[
-            \\text{Sujeto a } c(x) = \\sum_{i=1}^{n} w_{i} x_{i} = c
+            \\text{sujeto a } c(x) = \\sum_{i=1}^{n} w_{i} x_{i} = c
         \\]
 
         <p>
@@ -924,8 +924,8 @@ function optimizacion_exp_con(exponente) {
         <p>
           Igualando las expresiones de \\(\\lambda\\) para \\(x_i\\) y \\(x_j\\), con \\(i, j = ${lista_exp_CD} \\ \\text{y} \\ i \\neq j\\), obtenemos que:
           ${cant_beneficio_costo}
-          Sustituyendo esta relación en la restricción presupuestaria \\(c(x)\\) se demuestra que la asignación óptima respeta la restricción presupuestaria, 
-          distribuyendo los recursos entre los bienes en función de sus precios y sus contribuciones relativas a la utilidad. Así obtenemos la siguiente 
+          Sustituyendo esta relación en la restricción presupuestaria \\(c(x)\\) se demuestra que la asignación óptima cumple con las condiciones impuestas por la restricción 
+          presupuestaria, distribuyendo los recursos entre los bienes en función de sus precios y sus contribuciones relativas a la utilidad. Así obtenemos la siguiente 
           expresión: \\[${sumatoria_x_j}\\]
           Finalmente, despejando \\(x_{i}\\) y denominándola como \\(\\hat{x}_{i}\\) para todo \\(i = ${lista_exp_CD}\\), se tiene: ${soluciones_optimas}
           Por el teorema de Lagrange, las cantidades \\(\\hat{x_{i}}\\) obtenidas son las soluciones óptimas para el problema de optimización bajo la 
@@ -946,7 +946,7 @@ function optimizacion_exp_con(exponente) {
                 </p>
                 <ul>
                     <li>
-                        definida positiva si se da alguno de los siguientes casos: 
+                        Definida positiva si se da alguno de los siguientes casos: 
                         <ul>
                             <li>
                                 ${exponentes_list_0}
@@ -958,10 +958,10 @@ function optimizacion_exp_con(exponente) {
                         </ul>
                     </li>
                     <li>
-                        definida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\) < 1
+                        Definida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\) < 1
                     </li>
                     <li>
-                        semidefinida positiva si se da alguno de los siguientes casos:
+                        Semidefinida positiva si se da alguno de los siguientes casos:
                         <ul>
                             <li>
                                 ${exponentes_list_0}
@@ -973,7 +973,7 @@ function optimizacion_exp_con(exponente) {
                         </ul>
                     </li>
                     <li>
-                        semidefinida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\) \\( \\leq \\) 1
+                        Semidefinida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\) \\( \\leq \\) 1
                     </li>
                 </ul>
                 <p>

@@ -268,7 +268,7 @@ form.addEventListener('click', function (event) {
                         \\begin{align*}
                             \\text{${tipoOptimizacion.substring(0, 3)}:} && 
                             f(x) = ${tecnologiaA} ${funcion_CD} \\\\
-                            \\text{Sujeto a:} && 
+                            \\text{sujeto a:} && 
                             c(x) = ${funcion_costo_CD} = ${costoTotal} \\\\
                         \\end{align*}
                     \\]
@@ -278,7 +278,7 @@ form.addEventListener('click', function (event) {
                         \\begin{align*}
                             \\text{${tipoOptimizacion.substring(0, 3)}:} && 
                             f(x) = ${tecnologiaA} ${funcion_CD} \\\\
-                            \\text{Sujeto a:} && 
+                            \\text{sujeto a:} && 
                             c(x) = ${funcion_costo_CD} = ${costoTotal} \\\\
                         \\end{align*}
                     \\]
@@ -694,7 +694,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
                     \\begin{align*}
                         \\text{${operacion_CD.substring(0, 3)}:} && 
                         f(x) = ${tecnologiaA} ${funcionCD} \\\\
-                        \\text{Sujeto a:} && 
+                        \\text{sujeto a:} && 
                         c(x) = ${funcion_costo_CD} = ${costoTotal} \\\\
                     \\end{align*}
                 \\]
@@ -704,7 +704,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
                     \\begin{align*}
                         \\text{${operacion_CD.substring(0, 3)}:} && 
                         f(x) = ${tecnologiaA} ${funcionCD} \\\\
-                        \\text{Sujeto a:} && 
+                        \\text{sujeto a:} && 
                         c(x) = ${funcion_costo_CD} = ${costoTotal} \\\\
                     \\end{align*}
                 \\]
