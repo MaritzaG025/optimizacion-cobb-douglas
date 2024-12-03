@@ -226,7 +226,7 @@ def evaluar_puntos_criticos(tecno_var, n, exponentes, precios, presupuesto):
 
     return resultados_latex
 
-def evaluar_hessiana(tecno_var, n, exponentes, precios, presupuesto):
+def def_evaluar_hessiana(tecno_var, n, exponentes, precios, presupuesto):
     # Definir variables
     variables = sp.symbols(f'x1:{n+1}')
     
@@ -249,41 +249,45 @@ def evaluar_hessiana(tecno_var, n, exponentes, precios, presupuesto):
     X = []
     for i in range(n):
         X_i = (exponentes[i] * presupuesto) / (precios[i] * suma_alpha)
-        X.append(round(X_i, 2))  # Aproximar a 2 decimales
+        X.append(X_i)
     
     # Calcular la matriz Hessiana
     hessiana = sp.hessian(g, variables)
     
-    # Evaluar la Hessiana en los puntos críticos
-    valores_criticos = {variables[i]: X[i] for i in range(n)}
-    hessiana_evaluada = hessiana.subs(valores_criticos)
-    
-    # Determinar la naturaleza de la Hessiana (definida positiva, negativa, semidefinida)
-    # Verificar los menores principales
-    n_variables = len(variables)
-    menores_principales = []
-    for k in range(1, n_variables + 1):
-        menor = hessiana_evaluada[:k, :k]
-        menor_det = menor.det()
-        menores_principales.append(menor_det)
-    
-    # Clasificar la matriz Hessiana
-    es_definida_positiva = all(det > 0 for det in menores_principales)
-    es_definida_negativa = all(det < 0 for det in menores_principales)
-    es_semidefinida_positiva = all(det >= 0 for det in menores_principales)
-    es_semidefinida_negativa = all(det <= 0 for det in menores_principales)
-    
-    if es_definida_positiva:
-        tipo = "definida positiva"
-    elif es_definida_negativa:
-        tipo = "definida negativa"
-    elif es_semidefinida_positiva:
-        tipo = "semidefinida positiva"
-    elif es_semidefinida_negativa:
-        tipo = "semidefinida negativa"
-    else:
-        tipo = "indefinida"
+    try:
+        # Evaluar la Hessiana en los puntos críticos
+        valores_criticos = {variables[i]: X[i] for i in range(n)}
+        hessiana_evaluada = hessiana.subs(valores_criticos)
+        
+        # Determinar la naturaleza de la Hessiana
+        n_variables = len(variables)
+        menores_principales = []
+        for k in range(1, n_variables + 1):
+            menor = hessiana_evaluada[:k, :k]
+            menor_det = menor.det()
+            menores_principales.append(menor_det)
 
+        # Clasificar la matriz Hessiana
+        es_definida_positiva = all(det > 0 for det in menores_principales)
+        es_definida_negativa = all(det < 0 for det in menores_principales)
+        es_semidefinida_positiva = all(det >= 0 for det in menores_principales)
+        es_semidefinida_negativa = all(det <= 0 for det in menores_principales)
+        
+        if es_definida_positiva:
+            tipo = "definida positiva"
+        elif es_definida_negativa:
+            tipo = "definida negativa"
+        elif es_semidefinida_positiva:
+            tipo = "semidefinida positiva"
+        elif es_semidefinida_negativa:
+            tipo = "semidefinida negativa"
+        else:
+            tipo = "indefinida"
+
+    except Exception as e:
+        # Si hay un error en la evaluación, se clasifica como indefinida
+        tipo = "indefinida"
+    
     return tipo
 
 def calcular_cobb_douglas_restriccion(A, n, exponentes, precios, presupuesto):
@@ -292,7 +296,9 @@ def calcular_cobb_douglas_restriccion(A, n, exponentes, precios, presupuesto):
     det_bordeado = calcular_determinante_bordeado(A, n, exponentes, precios, presupuesto)   
     det_bordeado_evaluado = calcular_determinante_bordeado_evaluado(A, n, exponentes, precios, presupuesto)   
     valor_puntos_criticos = evaluar_puntos_criticos(A, n, exponentes, precios, presupuesto)
-    hessiana_evaluada = evaluar_hessiana(A, n, exponentes, precios, presupuesto)
+    print(f"ekkk (X): {valor_puntos_criticos}")  # Debug
+    
+    def_hessiana_evaluada = def_evaluar_hessiana(A, n, exponentes, precios, presupuesto)
     
     return {
         "derivadas": derivadas,
@@ -300,5 +306,5 @@ def calcular_cobb_douglas_restriccion(A, n, exponentes, precios, presupuesto):
         "det_bordeado": det_bordeado,
         "det_bordeado_evaluado": det_bordeado_evaluado,
         "valor_puntos_criticos": valor_puntos_criticos,
-        "hessiana_evaluada": hessiana_evaluada
+        "hessiana_evaluada": def_hessiana_evaluada
     }
