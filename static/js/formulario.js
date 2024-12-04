@@ -1,159 +1,159 @@
 let cantidadVariables = 5;
-let cantidadVariablesOpc = '<option select>1</option>'
+let cantidadVariablesOpc = '<option select>1</option>';
 var variableExpo = document.getElementById('inputDimension').value;
 for (let index = 2; index < cantidadVariables + 1; index++) {
-    cantidadVariablesOpc = cantidadVariablesOpc + `<option>${index}</option>`;
+    cantidadVariablesOpc += `<option>${index}</option>`;
 }
 
 document.getElementById('inputDimension').innerHTML = cantidadVariablesOpc;
 cantidadExp(variableExpo);
 
+// Función para generar filas de entrada de manera reutilizable
+function generarInputFila(id, titulo, placeholder, tipo = "text", min = null, maxLength = 10) {
+    return `
+        <tr>
+            <td>${titulo}</td>
+            <td>
+                <input 
+                    type="${tipo}" 
+                    class="form-control" 
+                    id="${id}" 
+                    ${min !== null ? `min="${min}"` : ""} 
+                    ${maxLength !== null ? `maxlength="${maxLength}"` : ""} 
+                    onkeypress="return soloNumeros(event, '${id}');" 
+                    onpaste="return false" oncut="return false" oncopy="return false" 
+                    title="Ingresa ${titulo.toLowerCase()}" 
+                    placeholder="${placeholder}" 
+                    required
+                >
+            </td>
+        </tr>`;
+}
+
+// Genera las filas de la tabla de exponentes y costos
 function cantidadExponente(e) {
     variableExpo = document.getElementById(e).value;
     cantidadExp(variableExpo);
 }
 
+// Genera las filas de la tabla de exponentes y costos
 function cantidadExp(e) {
-    let filasExp = `
-        <tr>
-            <td>&alpha;<sub>1</sub></td>
-            <td>
-                <input 
-                    type="text" 
-                    class="form-control" 
-                    id="alpha_1" 
-                    onkeypress="return soloNumeros(event);"
-                    onpaste="return false" oncut="return false" oncopy="return false" 
-                    title="Ingresa el valor del exponente de la variable 1" 
-                    placeholder="Ingresa el valor del exponente de x_1" 
-                    required
-                >
-            </td>
-        </tr>`
-    ;
+    let filasExp = generarInputFila(
+        "alpha_1", "&alpha;<sub>1</sub>", "Ingresa el valor del exponente de x_1"
+    );
     for (let index = 1; index < e; index++) {
-        filasExp = filasExp + `
-            <tr>
-                <td>&alpha;<sub>${index + 1}</sub></td>
-                <td><input 
-                    type="text" 
-                    class="form-control" 
-                    id="alpha_${index + 1}" 
-                    onkeypress="return soloNumeros(event);"
-                    onpaste="return false" oncut="return false" oncopy="return false"
-                    title="Ingresa el valor del exponente de la variable ${index + 1}" 
-                    placeholder="Ingresa el valor del exponente de x_${index + 1}" 
-                    required>
-                </td>
-            </tr>`;
+        filasExp += generarInputFila(
+            `alpha_${index + 1}`, `&alpha;<sub>${index + 1}</sub>`, `Ingresa el valor del exponente de x_${index + 1}`
+        );
     }
     document.getElementById('tablaExponentes').innerHTML = filasExp;
 
     const RestriccionCheck = document.getElementById('RestriccionCheck').checked;
 
     if (RestriccionCheck) {
-        const costoTotal = `
-            <tr><td>Total</td>
-                <td>
-                    <input 
-                        type="text" 
-                        min="0" 
-                        class="form-control" 
-                        id='costoTotal' 
-                        onkeypress="return soloNumeros(event);" 
-                        onpaste="return false" oncut="return false" oncopy="return false"
-                        title="Ingresa el valor del costo total" 
-                        placeholder="Ingresa el precio del costo total" 
-                        required
-                    >
-                </td>
-            </tr>`;
-
-        let filasVariables = `
-            <tr>
-                <td>w<sub>1</sub></td>
-                <td>
-                    <input 
-                        type="text" 
-                        min="0" 
-                        class="form-control" 
-                        id="w_1" 
-                        onkeypress="return soloNumeros(event);" 
-                        onpaste="return false" oncut="return false" oncopy="return false" 
-                        title="Ingresa el precio por unidad de la variable 1" 
-                        placeholder="Ingresa el precio de x_1" 
-                        required
-                    >
-                </td>
-            </tr>`;
-
+        const costoTotal = generarInputFila(
+            "costoTotal", "Total", "Ingresa el precio del costo total", "text", 1, 10
+        );
+        let filasVariables = generarInputFila(
+            "w_1", "w<sub>1</sub>", "Ingresa el precio de x_1", "text", 1, 10
+        );
         for (let index = 1; index < e; index++) {
-            filasVariables = filasVariables + `
-                                <tr>
-                                    <td>w<sub>${index + 1}</sub></td>
-                                    <td>
-                                        <input 
-                                            type="text" 
-                                            class="form-control" 
-                                            id="w_${index + 1}" 
-                                            onkeypress="return soloNumeros(event);" 
-                                            onpaste="return false" oncut="return false" oncopy="return false"
-                                            title="Ingresa el precio por unidad de la variable ${index + 1}" 
-                                            placeholder="Ingresa el precio de x_${index + 1}" 
-                                            required
-                                        >
-                                    </td>
-                                </tr>`;
+            filasVariables += generarInputFila(
+                `w_${index + 1}`, `w<sub>${index + 1}</sub>`, `Ingresa el precio de x_${index + 1}`, "text", 1, 10
+            );
         }
         document.getElementById('tablaUnidadesCosto').innerHTML = costoTotal + filasVariables;
         document.getElementById('unidadesCosto').classList.remove('d-none');
     } else {
         document.getElementById('unidadesCosto').classList.add('d-none');
         document.getElementById('tablaUnidadesCosto').innerHTML = "";
-
     }
 }
 
-function soloNumeros(evt) {
-    var code = (evt.which) ? evt.which : evt.keyCode;
-    var inputText = evt.target.value;
+// Función para verificar los valores ingresados
+function soloNumeros(evt, id) {
+    var input = evt.target;
+    var code = evt.which || evt.keyCode;
 
-    // Previene copiar, pegar y cortar
-    evt.target.addEventListener('paste', function(e) {
-        e.preventDefault();
-    });
-    evt.target.addEventListener('copy', function(e) {
-        e.preventDefault();
-    });
-    evt.target.addEventListener('cut', function(e) {
-        e.preventDefault();
-    });
+    // Permitir números, punto decimal y signo negativo solo al principio en los exponentes (alpha)
+    if (code === 8 || (code >= 48 && code <= 57) || code === 46 || (code === 45 && input.selectionStart === 0)) {
+        
+        // Validación para Exponentes (alpha)
+        if (id.startsWith('alpha')) {
+            // Permitir el signo negativo solo al principio
+            if (input.value.length === 1 && input.value === "-") {
+                return true; // Permitir que se quede el signo negativo al inicio
+            }
+            
+            // Verificar que no haya más de un signo negativo
+            if (input.value.indexOf('-') > 0) {
+                return false;
+            }
 
-    if (code == 8) { // backspace.
+            // Verificar si ya hay un punto decimal
+            if (input.value.indexOf('.') > -1 && code === 46) {
+                return false; // No permitir otro punto decimal
+            }
+
+            // Validar que no haya más de 2 decimales
+            var partes = input.value.split(".");
+            if (partes.length === 2 && partes[1].length > 1) {
+                return false; // No permitir más de 2 decimales
+            }
+
+            // Validar que la parte entera no tenga más de 4 dígitos
+            var parteEntera = partes[0];
+            if (
+                (parteEntera.length > 4 && parteEntera[0] !== '-') ||  // Sin signo negativo
+                (parteEntera.length > 5 && parteEntera[0] === '-')   // Con signo negativo
+            ) {
+                return false; // La parte entera no puede ser mayor a 4 dígitos
+            }
+        }
+
+        // Validación para Costo Total y precios (w): No permitir negativos y solo 2 decimales
+        if (id === "costoTotal" || id.startsWith("w_")) {
+            if (code === 45) { // Si es un signo negativo, lo bloqueamos
+                return false;
+            }
+
+            // Verificar si ya hay un punto decimal
+            if (input.value.indexOf('.') > -1 && code === 46) {
+                return false; // No permitir otro punto decimal
+            }
+
+            // Validar que no haya más de 2 decimales
+            var partes = input.value.split(".");
+            if (partes.length === 2 && partes[1].length > 1) {
+                return false;
+            }
+        }
+
+        // Verifica que la longitud actual no exceda el máximo de 7 caracteres en los exponentes (signo, parte entera y decimal)
+        if (id.startsWith("alpha") && input.value.length >= 8) {
+            return false;
+        }
+
+        // Verifica que la longitud no exceda 10 caracteres para los precios
+        if ((id === "costoTotal" || id.startsWith("w_")) && input.value.length >= 10) {
+            return false;
+        }
+
         return true;
-    } else if ((code >= 48 && code <= 57) || (code === 45 && inputText.length === 0)) { // números del 0 al 9 y guión en la primera posición.
-        return true;
-    } else if (code === 46 && inputText.indexOf('.') === -1) { // punto decimal.
-        return true;
-    } else { // otras teclas.
-        return false;
     }
+    return false;
 }
 
+// Obtener exponentes dinámicamente
 function obtenerExponentes(e, parametro) {
     let exponentes = [];
-    // Recorre todos los inputs de exponentes y captura sus valores
     for (let index = 1; index <= e; index++) {
-        let alphaValue = document.getElementById(`${parametro}_${index}`).value;
-        alphaValue = parseFloat(alphaValue); // Convierte el valor a número
-        
-        // Valida que el valor sea un número y no esté vacío
+        let alphaValue = parseFloat(document.getElementById(`${parametro}_${index}`).value);
         if (!isNaN(alphaValue)) {
-            exponentes.push(alphaValue); // Almacena el valor en el array
+            exponentes.push(alphaValue);
         }
     }
-
-    return exponentes; // Retorna el array de exponentes
+    return exponentes;
 }
 
 var form = document.getElementById('formulario-optimizacion');
@@ -251,6 +251,8 @@ form.addEventListener('click', function (event) {
         if (modalResult) {
             modalConfirm.hide();
             modalResult.hide();
+            let modalResultante = document.querySelector('#modalOptimizacionResult .modal-body');
+            modalResultante.innerHTML = ""; // Limpia contenido previo
         }
     });
     
@@ -324,29 +326,67 @@ function mostrarHessiana_Con(hessianaLatex) {
     MathJax.typeset();
 }
 
+let controller;
+
 function obtenerHessiana_Con(n) {
-    fetch(`/calcular_hessiana?n=${n}`)
-        .then(response => response.json())
-        .then(data => {
+    // Si ya existe un controlador de abort, lo abortamos
+    if (controller) {
+        controller.abort();
+    }
+
+    // Creamos un nuevo controlador de abort para esta solicitud
+    controller = new AbortController();
+
+    fetch(`/calcular_hessiana?n=${n}`, {
+        signal: controller.signal
+    })
+    .then(response => response.json())
+    .then(data => {
         mostrarHessiana_Con(data);
     })
     .catch(error => {
-        console.error("Error:", error);
+        if (error.name != 'AbortError') {
+            console.error("Error:", error);
+        }
     });
 }
 
 function obtenerCobbDouglas(datos, operacion_CD) {
+    document.querySelector('#modalOptimizacionResult .modal-body').innerHTML = `
+        <div class="modal-body text-center d-flex flex-column justify-content-center align-items-center" style="height: 300px;">
+            <!-- Texto "Espere un momento" -->
+            <h4 class = "textLoading">Espere un momento...</h4>
+
+            <!-- Animación de línea que simula una función continua optimizándose -->
+            <div class="graph-container">
+                <svg width="200" height="150" viewBox="0 0 200 150">
+                <path class="path" fill="transparent" stroke="#007bff" stroke-width="2" d="M 10 140 Q 50 100, 100 120 Q 150 140, 190 90" />
+                <circle class="dot" cx="10" cy="140" r="4" fill="#007bff" />
+                </svg>
+            </div>
+        </div>
+    `;
+
     let urlCD = '/calcular_cobb_douglas';
     if ((datos.precios).length != 0) {
         urlCD = '/calcular_cobb_douglas_con_presupuesto';
     }
+
+    // Si ya existe un controlador de abort, lo abortamos
+    if (controller) {
+        controller.abort();
+    }
+
+    // Creamos un nuevo controlador de abort para esta solicitud
+    controller = new AbortController();
 
     fetch(urlCD, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(datos)
+        body: JSON.stringify(datos),
+        signal: controller.signal // Usamos el controlador de abort en la solicitud
     })
     .then(response => {
         if (!response.ok) {
@@ -358,10 +398,13 @@ function obtenerCobbDouglas(datos, operacion_CD) {
         mostrarCobbDouglas(datos, operacion_CD, data);
     })
     .catch(error => {
-        console.error('Error:', error);
-        document.querySelector('#modalOptimizacionResult .modal-body').innerHTML = `Error: ${error.message}`;
+        if (error.name != 'AbortError') {
+            console.error('Error:', error);
+            document.querySelector('#modalOptimizacionResult .modal-body').innerHTML = `Error: ${error.message}`;
+        }
     });
 }
+
 
 function mostrarCobbDouglas(datos, operacion_CD, resultados) {
     let lista_var_CD = ``;
@@ -685,6 +728,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
     let continua_punto_critico = existe_punto_critico ? "d-block" : "d-none";
 
     let modalResultante = document.querySelector('#modalOptimizacionResult .modal-body');
+    modalResultante.innerHTML = ""; // Limpia contenido previo
     let textResult = ``;
     
     if ((datos.precios).length != 0) {
@@ -812,6 +856,8 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
             <p> ${text_deriv_parc} </p>
             <p> Igualando las derivadas parciales a cero, obtenemos: </p>
             \\[ ${resultados.puntos_criticos} \\]
+                    <div id="hessiana_con"></div>
+
             <p>
                 Sin embargo, no existen puntos críticos dentro del dominio positivo de \\( f(x) \\), ya que las derivadas parciales solo son iguales 
                 a cero cuando \\( x_{i} = 0 \\), lo cual no es válido porque \\( x_{i} > 0 \\). Además, dado que \\( \\frac{\\partial f}{\\partial x_{i}} \\) 

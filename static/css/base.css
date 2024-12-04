@@ -123,3 +123,46 @@ html {
     }
 }
 
+.graph-container {
+    margin-top: 20px;
+  }
+
+  .path {
+    animation: draw 3s ease-in-out infinite;
+  }
+
+  .dot {
+    animation: dotMove 3s ease-in-out infinite;
+  }
+
+  @keyframes draw {
+    0% {
+      stroke-dasharray: 0, 400;
+    }
+    100% {
+      stroke-dasharray: 400, 0;
+    }
+  }
+
+  @keyframes dotMove {
+    0% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(50px);
+    }
+    50% {
+      transform: translateX(100px);
+    }
+    75% {
+      transform: translateX(150px);
+    }
+    100% {
+      transform: translateX(200px);
+    }
+  }
+
+  .textLoading {
+    font-size: 18px;
+    color: #007bff;
+  }

@@ -296,8 +296,6 @@ def calcular_cobb_douglas_restriccion(A, n, exponentes, precios, presupuesto):
     det_bordeado = calcular_determinante_bordeado(A, n, exponentes, precios, presupuesto)   
     det_bordeado_evaluado = calcular_determinante_bordeado_evaluado(A, n, exponentes, precios, presupuesto)   
     valor_puntos_criticos = evaluar_puntos_criticos(A, n, exponentes, precios, presupuesto)
-    print(f"ekkk (X): {valor_puntos_criticos}")  # Debug
-    
     def_hessiana_evaluada = def_evaluar_hessiana(A, n, exponentes, precios, presupuesto)
     
     return {
