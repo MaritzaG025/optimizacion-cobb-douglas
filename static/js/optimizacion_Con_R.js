@@ -1010,7 +1010,7 @@ function optimizacion_exp_con(exponente) {
 
       inicio_maximizador += `
             <p>
-                Una función CD se maximiza cuando el determinante bordeado es positivo y la matriz Hessiana es definida negativa. Sabemos que la matriz hessiana 
+                Una función CD se maximiza cuando el determinante bordeado es positivo y la matriz Hessiana es definida negativa. Sabemos que la matriz Hessiana 
                 \\( H_{\\psi} f(x) \\) es definida negativa si ${exponentes_list_0_1} y \\( ${exponentes_suma} \\leq \\) 1
             </p>
             <p>
@@ -1029,8 +1029,8 @@ function optimizacion_exp_con(exponente) {
             </p>
             <div id="derivada_max_CD_con"></div>
             <p>
-              Igualando la derivada a cero y resolviendo la ecuación, por el teorema de Lagrange, obtenemos que el valor óptimo para cada variable, 
-              respectivamente, para maximizar la función CD bajo la restricción presupuestaria, es:
+              Igualando la derivada a cero y resolviendo la ecuación, se aplica el teorema de Lagrange para obtener el valor óptimo de cada variable. De este modo, 
+              el valor óptimo para maximizar la función CD bajo la restricción presupuestaria:
             </p>
             <div id="puntos_criticos_max_CD_con"></div>
             En consecuencia, el consumidor asigna su presupuesto de manera que se maximizan sus niveles de satisfacción (utilidad), teniendo en cuenta tanto la 
@@ -1049,7 +1049,7 @@ function optimizacion_exp_con(exponente) {
       inicio_minimizador += `
         <p>
             Una función CD se minimiza cuando el determinante bordeado es positivo y la matriz Hessiana es definida positiva. 
-            Sabemos que la matriz hessiana \\( H_{\\psi} f(x) \\) es definida positiva si se cumple alguno de los siguientes casos:
+            Sabemos que la matriz Hessiana \\( H_{\\psi} f(x) \\) es definida positiva si se cumple alguno de los siguientes casos:
             <ul>
               <li>
                 ${exponentes_list_0}
@@ -1071,8 +1071,8 @@ function optimizacion_exp_con(exponente) {
         </p>
         <div id="derivada_min_CD_con"></div>
         <p>
-          Igualando la derivada a cero y resolviendo la ecuación, por el teorema de Lagrange, obtenemos que el valor óptimo para cada variable, 
-          respectivamente, para minimizar la función CD bajo la restricción presupuestaria, es:
+          Igualando la derivada a cero y resolviendo la ecuación, se aplica el teorema de Lagrange para obtener el valor óptimo de cada variable. De este modo, 
+          el valor óptimo para maximizar la función CD bajo la restricción presupuestaria:
         </p>
         <div id="puntos_criticos_min_CD_con"></div>
         Por el valor de los exponentes de la función de producción CD, podemos afirmar que la matriz Hessiana \\(H_{\\psi}(x)\\) de la función Lagrangiana es definida positiva.

@@ -285,7 +285,7 @@ function optimizacion_exp_sin(exponente) {
     titulo_modal.innerHTML = '<span>Optimización sin restricciones de la función de tipo Cobb-Douglas para ' + exponente + variable_cant;
 
     const titulo_opt_CD = document.getElementById("text_func_opt_CD");
-    titulo_opt_CD.innerHTML = "<p>La función Cobb-Douglas (CD) a optimizar es: </p>";
+    titulo_opt_CD.innerHTML = "<p>La función de tipo Cobb-Douglas (CD) a optimizar es: </p>";
 
     const funcion_optimizar_CD_sin = document.getElementById('funcion_optimizar_CD');
     let inicio_var = `f(x) = f( `;
@@ -320,11 +320,12 @@ function optimizacion_exp_sin(exponente) {
 
     const funcion_hessiana_CD_sin = document.getElementById("funcion_hessiana_CD");
     let inicio_hessiana = `<strong>Matriz Hessiana - Analísis de convexidad y concavidad</strong>
-    <p>En el análisis de funciones económicas, las propiedades de convexidad y concavidad desempeñan 
-    un papel esencial, especialmente en el estudio de las funciones CD. Estas propiedades determinan 
-    el comportamiento de la función y, por ende, las decisiones óptimas relacionadas con la asignación 
-    de recursos y producción. Para evaluar dichas propiedades, la matriz Hessiana constituye una 
-    herramienta analítica fundamental. La matriz Hessiana de \\(f(x)\\) se expresa como:</p>`;
+    <p>
+        En el análisis de funciones económicas, las propiedades de convexidad y concavidad desempeñan un papel esencial, 
+        especialmente en el estudio de las funciones CD. Estas propiedades determinan el comportamiento de la función y las 
+        decisiones óptimas relacionadas con la asignación de recursos y la producción. Para evaluar dichas propiedades, 
+        la matriz Hessiana constituye una herramienta analítica fundamental. La matriz Hessiana de \\(f(x)\\) se expresa como:
+    </p>`;
     
     const maximizar_CD_sin = document.getElementById("maximizar_CD");
     let inicio_maximizador = '<strong>Maximización</strong>';
@@ -456,10 +457,9 @@ function optimizacion_exp_sin(exponente) {
     const text_ini_deri_parc_CD_sin = document.getElementById("text_ini_deri_parc_CD");
     text_ini_deri_parc_CD_sin.innerHTML = `
         <p>
-            En optimización, garantizar que una función alcance valores máximos y mínimos absolutos es esencial para 
-            asegurar la existencia de soluciones óptimas globales. Desde un punto de vista económico, esto permite 
-            determinar, por ejemplo, el nivel máximo de producción, la mayor utilidad alcanzable o el costo mínimo 
-            bajo ciertas condiciones.
+            En optimización garantizar que una función alcance valores máximos y mínimos absolutos es esencial para asegurar 
+            la existencia de soluciones óptimas globales. Desde un punto de vista económico esto permite determinar, 
+            por ejemplo, el nivel máximo de producción, la mayor utilidad alcanzable o el costo mínimo bajo ciertas condiciones.
             A continuación, calculamos las derivadas parciales de \\(f(x)\\) con respecto a cada \\(x_{i}\\) para 
             \\(i = ${indices_list} \\) e igualamos a cero para encontrar los puntos críticos. Las derivadas parciales son:
         </p>
@@ -515,114 +515,125 @@ function optimizacion_exp_sin(exponente) {
 
             inicio_maximizador += `
                 <p>
-                    Para maximizar funciones de producción o utilidad con
-                    <ul>
-                        <li>
-                            \\( \\alpha_{1} < 0 \\), la función sigue creciendo indefinidamente sin un máximo local a menos que existan restricciones adicionales.
-                        </li>
-                        <li>
-                            \\( 0 < \\alpha_{1} < 1 \\), la función es creciente pero a un ritmo decreciente. No hay un máximo local, la función sigue creciendo conforme \\( x_{1} \\) crece pero no de manera indefinida.
-                        </li>
-                        <li>
-                            \\( \\alpha_{1} = 1 \\), la función es lineal, no tiene máximos locales en el dominio positivo, y la función sigue creciendo linealmente conforme \\( x_{1} \\) crece.
-                        </li>
-                        <li>
-                            \\( \\alpha_{1} > 1 \\), la función crece indefinidamente a medida que \\( x_{1} \\) crece. 
-                        </li>
-                    </ul>
+                    Para maximizar funciones de producción o utilidad representadas por funciones CD, el comportamiento de la función depende del valor del exponente \\( \\alpha_1 \\). A continuación se detallan los casos más comunes:
+                </p>
+                <ul>
+                    <li>
+                        \\( \\alpha_1 < 0 \\): La función sigue creciendo indefinidamente sin alcanzar un máximo local, a menos que existan restricciones adicionales que limiten el crecimiento. Este comportamiento puede ser económico ineficiente, ya que un productor no maximiza su rendimiento bajo estas condiciones.
+                    </li>
+                    <li>
+                        \\( 0 < \\alpha_1 < 1 \\): La función es creciente, pero a un ritmo decreciente. No alcanza un máximo local, ya que sigue creciendo a medida que \\( x_1 \\) aumenta, aunque de forma más lenta. Económicamente, esto refleja rendimientos marginales decrecientes en la producción a medida que se incrementan los insumos.
+                    </li>
+                    <li>
+                        \\( \\alpha_1 = 1 \\): La función es lineal. No tiene máximos locales en el dominio positivo y sigue creciendo de manera constante conforme \\( x_1 \\) aumenta. En este caso, los recursos se asignan de manera proporcional, pero no existe un punto óptimo de producción.
+                    </li>
+                    <li>
+                        \\( \\alpha_1 > 1 \\): La función crece indefinidamente a medida que \\( x_1 \\) aumenta, lo que indica que no existe un máximo local. Esto podría ser económicamente insostenible, ya que se requeriría un incremento continuo de insumos para lograr más producción, lo cual no es eficiente.
+                    </li>
+                </ul>
+                <p>
+                    En conclusión, maximizar funciones CD de una sola variable sin restricciones es inviable, ya que la función sigue creciendo indefinidamente, lo que no refleja un comportamiento óptimo desde el punto de vista económico.
                 </p>
                 <p>
-                    Por lo tanto, maximizar funciones CD de una sola variable y sin restricciones, sería imposible ya que la función CD sigue creciendo.
-                </p>
-                <p>
-                    <u> Ejemplo </u>: Supongamos que queremos maximizar la función Cobb-Douglas de la siguiente forma:
-                </p>
-                <p>
-                    \\[
-                        f(x) = 2{x^{0.5}}
-                    \\]
-                </p>
-                <p>
-                    Calculando la derivada de \\( f(x) \\) con respecto a \\( x \\) obtenemos que:
+                    <u>Ejemplo:</u> Supongamos que queremos maximizar la siguiente función CD:
                 </p>
                 <p>
                     \\[
-                        \\frac{\\partial f}{\\partial x} = 2 \\cdot 0.5 \\cdot {x^{0.5 - 1}} = \\frac{1}{\\sqrt {x}}
+                        f(x) = 2 x^{0.5}
                     \\]
                 </p>
                 <p>
-                    Ahora, igualando la derivada a cero y resolviendo la ecuación obtenemos que no hay valores de \\( x \\)
-                    en el dominio positivo donde la derivada sea igual a cero, lo que indica que no hay un máximo para \\( x > 0,\\)
-                    dado que \\( \\frac{\\partial f}{\\partial x} > 0 \\) para todo \\( x > 0 \\) la función esta siempre en crecimiento
-                    en el dominio positivo. Sin restricciones adicionales, la función continúa aumentando a medida que \\( x \\) crece.
+                    Para obtener el valor óptimo de \\( x \\), calculamos la derivada de \\( f(x) \\) con respecto a \\( x \\):
+                </p>
+                <p>
+                    \\[
+                        \\frac{\\partial f}{\\partial x} = 2 \\cdot 0.5 \\cdot x^{0.5 - 1} = \\frac{1}{\\sqrt{x}}
+                    \\]
+                </p>
+                <p>
+                    Ahora, igualamos la derivada a cero para encontrar los puntos críticos:
+                </p>
+                <p>
+                    \\[
+                        \\frac{1}{\\sqrt{x}} = 0
+                    \\]
+                </p>
+                <p>
+                    Sin embargo, no hay soluciones para \\( x > 0 \\) que hagan que la derivada sea igual a cero, ya que \\( \\frac{1}{\\sqrt{x}} \\) siempre es positiva para \\( x > 0 \\). Esto implica que la función \\( f(x) \\) está siempre en crecimiento en el dominio positivo. 
+                </p>
+                <p>
+                    Por lo tanto, sin restricciones adicionales, la función sigue creciendo a medida que \\( x \\) aumenta, lo que indica que no existe un máximo para \\( x > 0 \\). En términos económicos, esto sugiere que, si no se imponen restricciones, la producción continuará aumentando indefinidamente, lo que no es sostenible ni eficiente en el largo plazo.
                 </p>
             `;
 
             inicio_minimizador += `
                 <p>
-                    Para minimizar funciones de producción o utilidad se considera los valores de \\( x_{1} \\) en el dominio permitido 
-                    y se verifica el comportamiento en los extremos. Así, 
-                    <ul>
-                        <li>
-                            \\( \\alpha_{1} < 0 \\), la función decrece indefinidamente conforme \\( x_{1} \\) aumenta, por lo que no tiene un mínimo.
-                            El mínimo ocurre para un valor de \\( x_{1} \\) demasiado grande, donde \\( f(x) \\) se acerca a 0.
-                        </li>
-                        <li>
-                            \\( 0 < \\alpha_{1} < 1 \\), la función no tiene un mínimo local, ya que sigue aumentando en el dominio positivo.
-                        </li>
-                        <li>
-                            \\( \\alpha_{1} = 1 \\), a función es simplemente una línea recta con pendiente \\( A \\). Si \\( A > 0 \\) no tiene mínimos locales 
-                            en el dominio positivo ya que la función sigue creciendo linealmente conforme \\( x_{1} \\) crece y si \\( A < 0 \\)
-                            el mínimo ocurre para un valor de \\( x_{1} \\) demasiado grande, donde \\( f(x) \\) se acerca a 0.
-                        </li>
-                        <li>
-                            \\( \\alpha_{1} > 1 \\), la función tiene un mínimo en \\( x_{1} = 0.\\) 
-                        </li>
-                    </ul>
+                    Para minimizar una función CD que modela costos o gastos, se sigue el mismo proceso que para maximizar funciones de producción o utilidad, pero con la diferencia de que ahora buscamos el valor de \\( x_1 \\) que minimiza el costo en lugar de maximizar la utilidad. Es importante considerar los valores de \\( x_1 \\) en el dominio permitido y analizar el comportamiento en los extremos. A continuación, se presentan los casos más comunes:
+                </p>
+                <ul>
+                    <li>
+                        \\( \\alpha_1 < 0 \\): En este caso, el costo decrece indefinidamente conforme \\( x_1 \\) aumenta. Sin embargo, no existe un mínimo local en el dominio positivo. El costo se aproxima a cero cuando \\( x_1 \\) es extremadamente grande. Económicamente, esto podría implicar que los costos no se ajustan de manera eficiente, lo que no es un comportamiento realista en la mayoría de las situaciones.
+                    </li>
+                    <li>
+                        \\( 0 < \\alpha_1 < 1 \\): Aquí, la función de costos sigue aumentando conforme \\( x_1 \\) crece, pero a un ritmo decreciente. La función no tiene un mínimo local, pero muestra un comportamiento de rendimientos marginales decrecientes. Este tipo de comportamiento es común en situaciones en las que aumentar el uso de un insumo genera costos adicionales que, aunque aumentan, lo hacen a un ritmo más bajo.
+                    </li>
+                    <li>
+                        \\( \\alpha_1 = 1 \\): En este caso, la función de costos es lineal, lo que significa que los costos aumentan de manera constante conforme \\( x_1 \\) crece. Si \\( A > 0 \\), la función sigue creciendo conforme \\( x_1 \\) aumenta. Si \\( A < 0 \\), el mínimo se alcanza cuando \\( x_1 \\) es muy grande y \\( f(x) \\) se aproxima a cero.
+                    </li>
+                    <li>
+                        \\( \\alpha_1 > 1 \\): Cuando \\( \\alpha_1 > 1 \\), la función presenta un mínimo en \\( x_1 = 0 \\), lo que sugiere que el costo mínimo se alcanza al optimizar la cantidad de insumos o factores de producción utilizados. Este escenario es común cuando se optimizan procesos de producción o distribución.
+                    </li>
+                </ul>
+                <p>
+                    Para funciones CD que modelan costos sin restricciones, si \\( \\alpha_1 > 1 \\), el mínimo de la función se encuentra en \\( x = 0 \\). Esto indica que el costo se optimiza al no utilizar ningún insumo, lo que podría interpretarse como un punto de eficiencia en algunos modelos.
                 </p>
                 <p>
-                    Para funciones CD sin restricciones, si \\( \\alpha_{1} > 1 \\) se puede minimizar la función en \\( x = 0, \\)
-                </p>
-                <p>
-                    <u> Ejemplo </u>: Supongamos que queremos minimizar la función Cobb-Douglas de la siguiente forma:
+                    <u>Ejemplo:</u> Supongamos que queremos minimizar la siguiente función CD que modela los costos de producción:
                 </p>
                 <p>
                     \\[
-                        f(x) = 3{x^{2}}
+                        f(x) = 3 x^{2}
                     \\]
                 </p>
                 <p>
-                    Calculando la derivada de \\( f(x) \\) con respecto a \\( x \\) obtenemos que:
+                    Para encontrar el valor de \\( x \\) que minimiza \\( f(x) \\), calculamos la derivada de \\( f(x) \\) con respecto a \\( x \\):
                 </p>
                 <p>
                     \\[
-                        \\frac{\\partial f}{\\partial x} = 3 \\cdot 2 \\cdot {x^{2 - 1}} = 6x
+                        \\frac{\\partial f}{\\partial x} = 3 \\cdot 2 \\cdot x^{2 - 1} = 6x
                     \\]
                 </p>
                 <p>
-                    Ahora, igualando la derivada a cero y resolviendo la ecuación obtenemos que el punto crítico es
-                    \\( x = 0 \\). Ahora, calculamos la segunda derivada para determinar si el punto crítico es un mínimo o un máximo:
+                    Ahora, igualamos la derivada a cero para encontrar los puntos críticos:
                 </p>
                 <p>
                     \\[
-                        \\frac{\\partial^{2} f}{\\partial x^{2}} = 6 \\cdot {x^{1 - 1}} = 6
+                        6x = 0
                     \\]
                 </p>
                 <p>
-                    La segunda derivada es positiva (\\( 6 > 0 \\)) para todos los valores de \\( x \\), lo que indica que 
-                    la función es convexa en todo su dominio y, \\( x = 0 \\) es un punto mínimo global. Ahora bien, dado 
-                    que \\( x = 0 \\) está en el dominio permitido, \\( f(x) = 0 \\) es el valor mínimo de la función CD.
-                    Por lo tanto, la función ( \\( f(x) = 3{x^{2}} \\) ) se minimiza en \\( x = 0 \\).
+                    Esto nos da el punto crítico \\( x = 0 \\). Para determinar si este punto es un mínimo o un máximo, calculamos la segunda derivada:
                 </p>
                 <p>
-                    
+                    \\[
+                        \\frac{\\partial^{2} f}{\\partial x^{2}} = 6 \\cdot x^{1 - 1} = 6
+                    \\]
+                </p>
+                <p>
+                    La segunda derivada es positiva (\\( 6 > 0 \\)) para todos los valores de \\( x \\), lo que indica que la función es convexa en todo su dominio. Como resultado, \\( x = 0 \\) es un punto mínimo global.
+                </p>
+                <p>
+                    Sin embargo, desde una perspectiva económica, aunque \\( x = 0 \\) sea el mínimo matemático, este resultado no es realista. En la práctica, no es posible que \\( x \\) sea igual a cero, ya que siempre se requieren ciertos insumos o factores de producción. Por lo tanto, aunque el valor mínimo de la función sea 0 en \\( x = 0 \\), el valor óptimo de \\( x \\) debería ser diferente de cero, dependiendo del contexto y las restricciones del problema económico.
                 </p>
             `;
 
             inicio_conclusion += `
                 <p>
-                    El comportamiento de la función depende de \\( \\alpha_{1} \\) y para funciones CD sin restricciones, si \\( \\alpha_{1} > 1 \\)
-                    se puede minimizar la función en \\( x = 0, \\) mientras que maximizarla sin restricciones sería imposible ya que la función CD sigue creciendo.
+                    El comportamiento de la función depende del valor de \\( \\alpha_1 \\). Para funciones CD sin restricciones, si \\( \\alpha_1 > 1 \\), 
+                    se puede minimizar la función en \\( x = 0 \\), lo que indica que el costo o el gasto puede ser optimizado al no utilizar insumos. Sin embargo, 
+                    desde una perspectiva económica, aunque \\( x = 0 \\) sea el mínimo matemático, este resultado no es realista, ya que implica la ausencia total 
+                    de factores de producción, lo cual no es posible en la práctica. Además, si \\( \\alpha_1 > 1 \\), maximizar la función sería imposible sin restricciones, 
+                    ya que la función sigue creciendo conforme \\( x_1 \\) aumenta.
                 </p>
             `;
 
@@ -665,11 +676,10 @@ function optimizacion_exp_sin(exponente) {
                     inicio_hessiana = `<p><strong>Matriz Hessiana - Analísis de convexidad y concavidad</strong></p>`;
                     inicio_hessiana += `
                         <p>
-                            En el análisis de funciones económicas, las propiedades de convexidad y concavidad desempeñan 
-                            un papel esencial, especialmente en el estudio de las funciones CD. Estas propiedades determinan 
-                            el comportamiento de la función y, por ende, las decisiones óptimas relacionadas con la asignación 
-                            de recursos y producción. Para evaluar dichas propiedades, la matriz Hessiana constituye una 
-                            herramienta analítica fundamental. La matriz Hessiana de \\(f(x)\\) se expresa como:
+                            En el análisis de funciones económicas, las propiedades de convexidad y concavidad desempeñan un papel esencial, 
+                            especialmente en el estudio de las funciones CD. Estas propiedades determinan el comportamiento de la función y las 
+                            decisiones óptimas relacionadas con la asignación de recursos y la producción. Para evaluar dichas propiedades, 
+                            la matriz Hessiana constituye una herramienta analítica fundamental. La matriz Hessiana de \\(f(x)\\) se expresa como:
                         </p>
                         <p class="hidden_pc">
                             \\[
@@ -725,7 +735,7 @@ function optimizacion_exp_sin(exponente) {
                         <p>
                             La estructura específica de la matriz Hessiana permite analizar cómo los valores de los parámetros \\(\\alpha_{i} (\\forall i = ${indices_list})\\) 
                             determinan la curvatura de la función \\(f(x)\\), lo que permite clasificarla como convexa o cóncava en un conjunto determinado, lo que a su vez ayuda a 
-                            clasificar los puntos críticos de una función. Entonces, obtenemos que la función de tipo CD \\(f(x)\\), con \\(x \\in S \\subseteq \\mathbb{R}^{n}\\), es: 
+                            clasificar los puntos críticos de una función. Entonces, obtenemos que la función CD \\(f(x)\\), con \\(x \\in S \\subseteq \\mathbb{R}^{n}\\), es: 
                             <ul>
                                 <li>
                                     Convexa sí \\(\\alpha_{i} \\notin [0, 1]\\) para todo \\(i = 1, ..., n\\) y tenemos que:
@@ -760,10 +770,9 @@ function optimizacion_exp_sin(exponente) {
                         <p>
                             En términos generales, las propiedades de convexidad y concavidad en las funciones CD tienen implicaciones directas sobre el 
                             comportamiento de la producción en relación con los insumos. La convexidad sugiere que, al aumentar los insumos, la producción 
-                            crece de manera más eficiente, lo que se traduce en una mejora en el rendimiento de los recursos. Por el contrario, la concavidad 
-                            implica que, a medida que se incrementan los insumos, la eficiencia de la producción o el rendimiento de los recursos disminuye, 
-                            reflejando un fenómeno de rendimientos decrecientes. De acuerdo con este resultado, concluimos que \\(f(x)\\), con 
-                            \\(x \\in S \\subseteq \\mathbb{R}^{${exponente}}\\), tiene un: 
+                            crece de manera más eficiente, lo que mejora el rendimiento de los recursos. Por el contrario, la concavidad 
+                            implica que a medida que se incrementan los insumos la eficiencia de la producción o el rendimiento de los recursos disminuyen. 
+                            De acuerdo con este resultado, concluimos que \\(f(x)\\), con \\(x \\in S \\subseteq \\mathbb{R}^{${exponente}}\\), tiene un: 
                             <ul>
                                 <li>
                                     Mínimo absoluto sí \\(\\alpha_{i} \\notin [0, 1]\\) para todo \\(i = 1, ..., n\\) y tenemos que:
@@ -799,82 +808,75 @@ function optimizacion_exp_sin(exponente) {
         
                     inicio_maximizador += `
                         <p>
-                            Para maximizar funciones Cobb-Douglas (CD) de n variables, es esencial entender cómo el comportamiento de la 
-                            función cambia según los exponentes en la función.
+                            Para maximizar funciones CD de \\( n \\) variables, es esencial comprender cómo varían los exponentes \\( \\alpha_i \\).
                             <ul>
                                 <li>
-                                    \\( \\alpha_{i} < 0 \\ \\forall \\ i = 1, ..., n \\), la función crece conforme las variables \\( x_{i} \\) decrecen, 
-                                    especialmente cuando \\( x_{i} \\) se acerca a cero. En este caso, la función podría tener un máximo local, 
-                                    pero es importante analizar cómo interactúan todos los exponentes para determinar si el punto crítico encontrado
-                                    es un máximo relevante en la optimización.
+                                    \\( \\alpha_i < 0 \\ \\forall \\ i = 1, \\dots, n \\): La función crece conforme las variables \\( x_i \\) decrecen, 
+                                    especialmente cuando \\( x_i \\) se acerca a cero. En este caso, pero es fundamental 
+                                    analizar cómo interactúan todos los exponentes para determinar si el punto crítico es realmente un máximo local 
+                                    en la optimización.
                                 </li>
                                 <li>
-                                    \\( 0 < \\alpha_{i} < 1 \\ \\forall \\ i = 1, ..., n \\), la función es creciente pero a un ritmo decreciente. 
-                                    No hay un máximo local; sin embargo, la función sigue creciendo conforme \\( x_{i} \\) crece, pero no 
-                                    de manera indefinida. A medida que las variables aumentan, la función se aproxima a un límite.
+                                    \\( 0 < \\alpha_i < 1 \\ \\forall \\ i = 1, \\dots, n \\): La función crece a un ritmo decreciente. No existe un máximo 
+                                    local, pero la función sigue aumentando a medida que las variables \\( x_i \\) crecen.
                                 </li>
                                 <li>
-                                    \\( \\alpha_{i} = 1 \\ \\forall \\ i = 1, ..., n \\), la función es lineal con respecto a esas variables, y no 
-                                    tiene máximos locales en el dominio positivo. La función sigue creciendo conforme las variables 
-                                    \\( x_{i} \\) correspondientes crecen. Sin embargo, la linealidad en algunos exponentes combinada 
-                                    con otros exponentes podría generar un crecimiento no lineal en la función.
+                                    \\( \\alpha_i = 1 \\ \\forall \\ i = 1, \\dots, n \\): La función es lineal con respecto a estas variables, sin máximos 
+                                    locales en el dominio positivo. Aunque las variables \\( x_i \\) siguen creciendo, la función no presenta máximos locales. 
+                                    Sin embargo, la combinación de otros exponentes podría generar un comportamiento no lineal 
+                                    y, en algunos casos, un máximo.
                                 </li>
                                 <li>
-                                    \\( \\alpha_{i} > 1 \\ \\forall \\ i = 1, ..., n \\), la función sigue creciendo indefinidamente sin un máximo local 
-                                    a menos que existan restricciones adicionales. A medida que cualquiera de las variables 
-                                    \\( x_{i} \\) crece, la función también crece de manera acelerada.
+                                    \\( \\alpha_i > 1 \\ \\forall \\ i = 1, \\dots, n \\): La función crece indefinidamente sin un máximo local, a menos que 
+                                    existan restricciones adicionales. A medida que cualquiera de las variables \\( x_i \\) crece, la función también crece 
+                                    de manera acelerada, lo que impide la existencia de un máximo sin restricciones.
                                 </li>
                             </ul>
                         </p>
                         <p>
-                            Maximizar funciones CD de n variables sin restricciones adicionales es generalmente imposible, 
-                            ya que la función sigue creciendo en función de las variables \\( x_{i} \\). Para encontrar un máximo local, 
-                            se requiere de restricciones (como restricciones presupuestarias o de recursos) o modificar la función de tal forma que 
-                            se pueda encontrar un máximo local para maximizar la función CD.
+                            Maximizar funciones CD de \\( n \\) variables sin restricciones adicionales generalmente no es posible, 
+                            ya que la función sigue creciendo indefinidamente conforme las variables \\( x_i \\) aumentan. Para encontrar un máximo local 
+                            es necesario introducir restricciones como presupuestos o recursos limitados, o modificar la función para permitir un máximo en 
+                            el dominio considerado.
                         </p>
                     `;
-        
+
                     inicio_minimizador += `
                         <p>
-                            Para minimizar funciones Cobb-Douglas (CD) de n variables, es esencial entender cómo el comportamiento de la 
-                            función cambia según los exponentes en la función.
+                            Para minimizar funciones CD de \\( n \\) variables, es fundamental entender cómo varía el comportamiento de la 
+                            función según los exponentes \\( \\alpha_i \\).
                             <ul>
                                 <li>
-                                    \\( \\alpha_{i} < 0 \\ \\forall \\ i = 1, ..., n \\), la función decrece conforme las variables  \\( x_{i} \\) 
-                                    correspondientes crecen. Esto implica que la función podría alcanzar un mínimo en algún punto donde las 
-                                    variables \\( x_{i} \\) sean suficientemente grandes. Sin embargo, sin restricciones adicionales, la función 
-                                    puede seguir decreciendo indefinidamente.
+                                    \\( \\alpha_i < 0 \\ \\forall \\ i = 1, \\dots, n \\): La función decrece conforme las variables \\( x_i \\) 
+                                    crecen, lo que sugiere que podría alcanzar un mínimo en algún punto donde las variables \\( x_i \\) sean lo 
+                                    suficientemente grandes. Sin embargo, sin restricciones adicionales la función podría seguir decreciendo indefinidamente.
                                 </li>
                                 <li>
-                                    \\( \\alpha_{i} = 0 \\ \\forall \\ i = 1, ..., n \\), la función es constante con respecto a esas variables, 
-                                    y no afecta la minimización directa. La función se reduce a depender solo de las variables con exponentes no nulos.
+                                    \\( \\alpha_i = 0 \\ \\forall \\ i = 1, \\dots, n \\): La función es constante con respecto a esas variables, 
+                                    y no influye en la minimización directa. La función depende únicamente de las variables con exponentes no nulos.
                                 </li>
                                 <li>
-                                    \\( \\alpha_{i} > 0 \\ \\forall \\ i = 1, ..., n \\), la función sigue creciendo conforme las variables 
-                                    \\( x_{i} \\) crecen, lo que significa que la función no tiene un mínimo local en el dominio positivo. 
-                                    En este caso, el mínimo se alcanzaría en los bordes del dominio, es decir, cuando alguna variable 
-                                    \\( x_{i} \\) tiende a cero. Sin embargo, para \\( x_{i} = 0 \\), la función se anula o no está definida, 
-                                    lo cual significa que no hay un mínimo significativo dentro del dominio positivo.
+                                    \\( \\alpha_i > 0 \\ \\forall \\ i = 1, \\dots, n \\): La función crece conforme las variables \\( x_i \\) 
+                                    crecen, lo que significa que no tiene un mínimo local en el dominio positivo. El mínimo se alcanzaría en los bordes 
+                                    del dominio, es decir, cuando alguna variable \\( x_i \\) tiende a cero. Sin embargo, para \\( x_i = 0 \\), la función 
+                                    se anula o no está definida, lo que implica que no hay un mínimo local dentro del dominio positivo.
                                 </li>
                                 <li>
                                     Si los exponentes son una combinación de positivos y negativos, la función tendrá un comportamiento más 
-                                    complejo y puede alcanzar un mínimo dependiendo de la interacción entre los exponentes. En este caso, 
-                                    puede existir un mínimo local, pero su determinación depende del análisis detallado de las derivadas 
-                                    parciales y la matriz Hessiana.
+                                    complejo y podría alcanzar un mínimo. En este caso, podría existir un mínimo local, cuya existencia depende del análisis detallado de las derivadas parciales y 
+                                    la matriz Hessiana.
                                 </li>
                             </ul>
                         </p>
                         <p>
-                            Minimizar una función Cobb-Douglas en n variables, sin restricciones adicionales, generalmente no es posible de 
-                            manera directa. Sin embargo, en situaciones donde los exponentes son negativos, o existe una combinación de 
-                            exponentes positivos y negativos, la función podría decrecer en algunas direcciones, lo que permite la 
-                            existencia de mínimos locales o globales bajo ciertas condiciones.
-                            
-                            Al igual que con la maximización, introducir restricciones es clave para encontrar un mínimo significativo, 
-                            especialmente en contextos donde las variables \\( x_{i} \\ \\forall \\ i = 1, ..., n \\ \\) están sujetas a límites. 
+                            Minimizar una función CD de \\( n \\) variables sin restricciones adicionales generalmente no es posible de manera directa. Sin embargo, 
+                            cuando existen exponentes negativos o una combinación de exponentes positivos y negativos, la función puede decrecer en algunas direcciones, 
+                            lo que permite la existencia de mínimos locales o globales bajo ciertas condiciones. Al igual que con la maximización, introducir restricciones 
+                            es clave para encontrar un mínimo local.
                         </p>
                     `;
-        
+
+
                     inicio_conclusion += `
                         <p>
                             Para la función CD planteada:
@@ -891,7 +893,7 @@ function optimizacion_exp_sin(exponente) {
                             </li>
                         </ul>
                         <p>
-                            En conclusión, sin restricciones, la función Cobb-Douglas sigue creciendo conforme aumentan los insumos, y no es posible encontrar un punto máximo o mínimo.
+                            En conclusión, la función CD sin restricciones sigue creciendo conforme aumentan los insumos y no es posible encontrar un punto máximo o mínimo.
                             Por lo tanto, las funciones CD estándar no tienen puntos críticos interiores sin restricciones. La maximización o minimización 
                             generalmente ocurre en los bordes del dominio, pero no en un punto interior donde las derivadas parciales se anulen. 
                             Para hallar puntos críticos, se necesita un contexto con restricciones (como restricciones de presupuesto, por ejemplo) 
@@ -944,14 +946,15 @@ function optimizacion_exp_sin(exponente) {
                                 \\[\\frac{w_{i}}{w_{n}} = \\frac{f_{x_{i}}(x_{1}, ..., x_{n})}{f_{x_{n}}(x_{1}, ..., x_{n})}\\]
                             </span>
 
-                            para cada \\(i = 1, ..., n\\). Este conjunto de ecuaciones permite comparar las productividades marginales de los insumos, demostrando que, para minimizar el 
-                            costo promedio, la relación entre los precios de los insumos debe igualarse a la relación entre sus productividades marginales. Esta condición de optimización 
-                            es fundamental, ya que, al mantener dicha igualdad, la firma asigna sus recursos de manera eficiente, asegurando que el costo de cada insumo, ponderado por 
-                            su precio, sea proporcional a su contribución a la producción. 
+                            para cada \\( i = 1, \\dots, n \\). Este conjunto de ecuaciones permite comparar las productividades marginales de los insumos, 
+                            demostrando que la relación entre los precios de los insumos debe igualarse a la relación entre sus productividades marginales 
+                            para minimizar el costo promedio. Esta condición de optimización es fundamental ya que al mantener dicha igualdad la 
+                            firma asigna sus recursos de manera eficiente, asegurando que el costo de cada insumo ponderado por su precio, sea proporcional 
+                            a su contribución a la producción.
 
-                            Ahora, el beneficio económico se define como la diferencia entre los ingresos totales generados por la venta de los productos y los costos totales 
-                            asociados a su producción <a href="referencias#ref3" target="_blank">[3]</a>. Entonces, si el productor vende su producto a \\( P \\) por unidad, 
-                            matemáticamente el beneficio, denominado por \\( \\Pi \\), está definido por:
+                            Por otro lado, el beneficio económico se define como la diferencia entre los ingresos totales generados por la venta de los 
+                            productos y los costos totales asociados a su producción <a href="referencias#ref3" target="_blank">[3]</a>. Si el productor 
+                            vende su producto a un precio \\( P \\) por unidad, matemáticamente el beneficio, denotado por \\( \\Pi \\), se expresa como:
 
                             \\[ \\Pi(x_{1}, ..., x_{n}) = Pf(x_{1}, ..., x_{n}) - \\sum_{i=1}^{n} w_{i}x_{i} \\]
 
@@ -1140,7 +1143,7 @@ function optimizacion_exp_sin(exponente) {
                 </ul>
                 <p>
                     A través del análisis de los menores principales de la matriz Hessiana y las condiciones sobre los parámetros 
-                    \\(\\alpha_{i}  (\\forall i = ${indices_list})\\), se puede concluir que la matriz hessiana \\( H_{f}(x) \\) es:
+                    \\(\\alpha_{i}  (\\forall i = ${indices_list})\\), se puede concluir que la matriz Hessiana \\( H_{f}(x) \\) es:
                 </p>
                 <ul>
                     <li>
@@ -1198,9 +1201,9 @@ function optimizacion_exp_sin(exponente) {
                 <p>
                     En términos generales, las propiedades de convexidad y concavidad en las funciones CD tienen implicaciones directas sobre el 
                     comportamiento de la producción en relación con los insumos. La convexidad sugiere que, al aumentar los insumos, la producción 
-                    crece de manera más eficiente, lo que se traduce en una mejora en el rendimiento de los recursos. Por el contrario, la concavidad 
-                    implica que, a medida que se incrementan los insumos, la eficiencia de la producción o el rendimiento de los recursos disminuye, 
-                    reflejando un fenómeno de rendimientos decrecientes. De acuerdo con este resultado, concluimos que \\(f(x)\\), con 
+                    crece de manera más eficiente, lo que mejora el rendimiento de los recursos. Por el contrario, la concavidad 
+                    implica que a medida que se incrementan los insumos la eficiencia de la producción o el rendimiento de los recursos disminuyen. 
+                    De acuerdo con este resultado, concluimos que \\(f(x)\\), con 
                     \\(x \\in S \\subseteq \\mathbb{R}^{${exponente}}\\), tiene un: 
                 </p>
                 <ul>
@@ -1231,7 +1234,7 @@ function optimizacion_exp_sin(exponente) {
                     \\( 0 < \\alpha_{i} < 1 \\ \\forall \\ i = ${indices_list} \\)  y  \\( ${exponentes_suma} \\) \\( \\leq 1 \\).
                 </p>
                 <p>
-                    <u> Ejemplo </u>: Supongamos que queremos maximizar la función Cobb-Douglas de la siguiente forma:
+                    <u> Ejemplo </u>: Supongamos que queremos maximizar la función CD:
                 </p>
                 <div id="funcion_max_CD_sin"></div>
                 <p>
@@ -1259,20 +1262,20 @@ function optimizacion_exp_sin(exponente) {
                 <div id="menores_principales_max_CD_sin"></div>
                 <p>
                     Entonces, resolviendo la ecuación obtenemos que no hay valores con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\)
-                    donde se pueda definir la hessiana, lo que indica que no hay un máximo. Por lo tanto, la función no se puede maximizar.
+                    donde se pueda definir la Hessiana, lo que indica que no hay un máximo. Por lo tanto, la función no se puede maximizar.
                 </p>
             `;
 
             inicio_minimizador += `
                 <p>
-                    La convexidad es clave para determinar la existencia de mínimos. Si una función CD es convexa, cualquier 
-                    punto crítico encontrado será un mínimo y, si la función CD es estrictamente convexa, será un mínimo global.
-                    Entonces, si existen puntos críticos en la función se puede minimizar funciones CD con valores
-                    \\( \\alpha_{i} \\notin [0, 1] \\ \\forall \\ i = ${indices_list} \\)  y 
-                        ${signo_operacion} \\( ${exponentes_list} \\) (\\( ${exponentes_suma} \\) - 1) \\( \\geq 0 \\)
+                    La convexidad es clave para determinar la existencia de mínimos. Si una función CD es convexa, cualquier punto crítico 
+                    encontrado será un mínimo. Además, si la función es estrictamente convexa, dicho mínimo será global.
+                    Por lo tanto, si existen puntos críticos en la función, es posible minimizar funciones CD bajo las condiciones 
+                    \\( \\alpha_{i} \\notin [0, 1] \\ \\forall \\ i = ${indices_list} \\) y 
+                    ${signo_operacion} \\( ${exponentes_list} \\) (\\( ${exponentes_suma} \\) - 1) \\( \\geq 0 \\).
                 </p>
                 <p>
-                    <u> Ejemplo </u>: Supongamos que queremos minimizar la función Cobb-Douglas de la siguiente forma:
+                    <u> Ejemplo </u>: Supongamos que queremos minimizar la función CD:
                 </p>
                 <div id="funcion_min_CD_sin"></div>
                 <p>
@@ -1294,7 +1297,7 @@ function optimizacion_exp_sin(exponente) {
                 <div id="menores_principales_min_CD_sin"></div>
                 <p>
                     Entonces, resolviendo la ecuación obtenemos que no hay valores con respecto a \\( x_{i} \\ \\forall \\ 1 \\leq i \\leq ${exponente} \\)
-                    donde se pueda definir la hessiana, lo que indica que no hay un mínimo. Por lo tanto, la función no se puede minimizar.
+                    donde se pueda definir la Hessiana, lo que indica que no hay un mínimo. Por lo tanto, la función no se puede minimizar.
                 </p>
             `;
 
@@ -1314,7 +1317,7 @@ function optimizacion_exp_sin(exponente) {
                             </li>
                         </ul>
                         <p>
-                            En conclusión, sin restricciones, la función Cobb-Douglas sigue creciendo conforme aumentan los insumos, y no es posible encontrar un punto máximo o mínimo.
+                            En conclusión, la función CD sin restricciones sigue creciendo conforme aumentan los insumos y no es posible encontrar un punto máximo o mínimo.
                             Por lo tanto, las funciones CD estándar no tienen puntos críticos interiores sin restricciones. La maximización o minimización 
                             generalmente ocurre en los bordes del dominio, pero no en un punto interior donde las derivadas parciales se anulen. 
                             Para hallar puntos críticos, se necesita un contexto con restricciones (como restricciones de presupuesto, por ejemplo) 
@@ -1336,13 +1339,15 @@ function optimizacion_exp_sin(exponente) {
                     Al tomar el cociente entre las expresiones correspondientes a las derivadas parciales de la producción y los precios, para cada  
                     \\(x_{i} (\\forall i = ${indices_list})\\), obtenemos las siguientes relaciones:
                     ${cant_insumo_costo}
-                    Este conjunto de ecuaciones permite comparar las productividades marginales de los insumos, demostrando que, para minimizar el costo promedio, 
-                    la relación entre los precios de los insumos debe igualarse a la relación entre sus productividades marginales. Esta condición de optimización 
-                    es fundamental, ya que, al mantener dicha igualdad, la firma asigna sus recursos de manera eficiente, asegurando que el costo de cada insumo, 
-                    ponderado por su precio, sea proporcional a su contribución a la producción.
-                    Ahora, el beneficio económico se define como la diferencia entre los ingresos totales generados por la venta de los productos y los costos totales 
-                    asociados a su producción <a href="referencias#ref3" target="_blank">[3]</a>. Entonces, si el productor vende su producto a \\( P \\) por unidad, 
-                    matemáticamente el beneficio, denominado por \\( \\Pi \\), está definido por:
+                    Este conjunto de ecuaciones permite comparar las productividades marginales de los insumos, 
+                    demostrando que la relación entre los precios de los insumos debe igualarse a la relación entre sus productividades marginales 
+                    para minimizar el costo promedio. Esta condición de optimización es fundamental ya que al mantener dicha igualdad la 
+                    firma asigna sus recursos de manera eficiente, asegurando que el costo de cada insumo ponderado por su precio, sea proporcional 
+                    a su contribución a la producción.
+
+                    Por otro lado, el beneficio económico se define como la diferencia entre los ingresos totales generados por la venta de los 
+                    productos y los costos totales asociados a su producción <a href="referencias#ref3" target="_blank">[3]</a>. Si el productor 
+                    vende su producto a un precio \\( P \\) por unidad, matemáticamente el beneficio, denotado por \\( \\Pi \\), se expresa como:
                     \\[ \\Pi(${var_list}) = Pf(${var_list}) - (${costo_suma}) \\]
                     Este enfoque permite al productor analizar el impacto de las decisiones de asignación de recursos sobre la rentabilidad, considerando tanto los precios 
                     de los insumos como la eficiencia en la producción. Entonces,

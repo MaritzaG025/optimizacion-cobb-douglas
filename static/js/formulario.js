@@ -615,7 +615,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
         el punto donde los insumos están asignados de forma óptima, es decir, donde el aumento en la cantidad 
         de un insumo ya no genera mejoras adicionales en el objetivo. Este es el punto crítico que identifica 
         el nivel óptimo de cada insumo para maximizar el resultado total.`;
-        text_conclusion_sin = `Maximizar funciones CD de n variables sin restricciones adicionales es generalmente 
+        text_conclusion_sin = `Maximizar funciones CD de \\(n\\) variables sin restricciones adicionales es generalmente 
         imposible, ya que la función sigue creciendo en función de las variables. Para encontrar un máximo local, 
         se requiere de restricciones (como restricciones presupuestarias o de recursos) o modificar la función de tal 
         forma que se pueda encontrar un máximo local para maximizar la función CD`;
@@ -627,7 +627,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
         igualar estas derivadas a cero busca identificar la combinación de insumos que minimiza el costo total, 
         manteniendo un equilibrio entre los costos de diferentes insumos y la proporción de su uso en la función 
         de producción.`;
-        text_conclusion_sin = `Minimizar una función Cobb-Douglas en n variables, sin restricciones adicionales, 
+        text_conclusion_sin = `Minimizar una función Cobb-Douglas en \\(n\\) variables, sin restricciones adicionales, 
         generalmente no es posible de manera directa. Sin embargo, en situaciones donde los exponentes son negativos, 
         o existe una combinación de exponentes positivos y negativos, la función podría decrecer en algunas direcciones, 
         lo que permite la existencia de mínimos locales o globales bajo ciertas condiciones`;
@@ -795,8 +795,8 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
                 </p>
                 <div id="derivadasParciales"></div>
                 <p>
-                    Igualando la derivada a cero y resolviendo la ecuación, por el teorema de Lagrange, obtenemos que el valor óptimo para cada variable \\(x_i\\), 
-                    para ${operacion_CD} la función CD bajo la restricción presupuestaria. Denominándo cada valor como \\( \\hat{x_i} \\), los valores óptimos son:
+                    Igualando la derivada a cero y resolviendo la ecuación, se aplica el teorema de Lagrange para obtener el valor óptimo de cada variable. De este modo, 
+                    el valor óptimo para ${operacion_CD} la función CD bajo la restricción presupuestaria, denominándo cada valor como \\( \\hat{x_i} \\), son:
                 </p>
                 \\[ ${resultados.puntos_criticos} \\]
                 <p>
@@ -810,7 +810,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
                     Para la construcción de este determinante, utilizamos la matriz Hessiana. En el contexto de funciones de tipo Cobb-Douglas, 
                     la matriz Hessiana se define como:
                     <div id="hessiana_con"></div>
-                    Evaluando en el punto crítico, obtenemos que la matriz hessiana es ${resultados.hessiana_evaluada}. Ahora, el determinante bordeado es:
+                    Evaluando en el punto crítico, obtenemos que la matriz Hessiana es ${resultados.hessiana_evaluada}. Ahora, el determinante bordeado es:
                     \\[ ${resultados.det_bordeado} \\]
 
                     Evaluando en el punto crítico, obtenemos que: 
