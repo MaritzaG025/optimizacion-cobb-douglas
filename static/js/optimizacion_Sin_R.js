@@ -276,6 +276,79 @@ function generarParametroA(min = 0.1, max = 5) {
     return A_var;
 }
 
+function generateGraph(event) {
+    event.preventDefault();
+
+    const A = parseFloat(document.getElementById("A").value);
+    const n = parseInt(document.getElementById("n").value);
+    const alphas = [];
+
+    for (let i = 1; i <= n; i++) {
+        alphas.push(parseFloat(document.getElementById(`alpha${i}`).value));
+    }
+
+    if (n === 1) {
+        plot1D(A, alphas[0]);
+    } else if (n === 2) {
+        plot2D(A, alphas);
+    } else if (n > 2 && n <= 5) {
+        plotPairs(A, alphas, n);
+    } else {
+        alert("Gráficos para más de 5 dimensiones no están soportados.");
+    }
+}
+
+function plotPairs(A, alphas, n) {
+    const x = Array.from({ length: 30 }, (_, i) => 0.1 + i * 0.3);
+    const fixedValues = Array(n).fill(1); // Valores constantes para las variables no graficadas
+
+    for (let i = 0; i < n - 1; i++) {
+        for (let j = i + 1; j < n; j++) {
+            const z = [];
+
+            for (let xi = 0; xi < x.length; xi++) {
+                z[xi] = [];
+                for (let xj = 0; xj < x.length; xj++) {
+                    // Producto de todas las variables, manteniendo constantes las no incluidas
+                    let product = A;
+                    for (let k = 0; k < n; k++) {
+                        if (k === i) {
+                            product *= Math.pow(x[xi], alphas[k]);
+                        } else if (k === j) {
+                            product *= Math.pow(x[xj], alphas[k]);
+                        } else {
+                            product *= Math.pow(fixedValues[k], alphas[k]);
+                        }
+                    }
+                    z[xi][xj] = product;
+                }
+            }
+
+            // Graficar la combinación (x[i], x[j])
+            const trace = {
+                x: x,
+                y: x,
+                z: z,
+                type: "surface",
+            };
+
+            Plotly.newPlot(
+                "graph",
+                [trace],
+                {
+                    title: `Gráfico para (x${i + 1}, x${j + 1})`,
+                    scene: {
+                        xaxis: { title: `x${i + 1}` },
+                        yaxis: { title: `x${j + 1}` },
+                        zaxis: { title: "f(x)" },
+                    },
+                }
+            );
+        }
+    }
+}
+
+
 function optimizacion_exp_sin(exponente) {
     let variable_cant = ' variables</span>';
     if (exponente == 1) {

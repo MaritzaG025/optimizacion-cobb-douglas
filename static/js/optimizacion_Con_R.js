@@ -231,7 +231,7 @@ function mostrarCobbDouglasConPresupuesto(
     <p class="hidden_phone">
         \\[
             \\begin{align*}
-                \\text{${operacion_CD.substring(0, 3)}:} && f(x) = f(${lista_var_CD_con}) =  ${inicio_func} \\\\
+                ${operacion_CD.substring(0, 3)}: && f(x) = f(${lista_var_CD_con}) =  ${inicio_func} \\\\
                 \\text{sujeto a:} && c(x) = c(${lista_var_CD_con}) = ${inicio_func_costo} = ${presupuesto} \\\\
             \\end{align*}
         \\]
@@ -239,7 +239,7 @@ function mostrarCobbDouglasConPresupuesto(
     <p class="hidden_pc">
         \\[
             \\begin{align*}
-                \\text{${operacion_CD.substring(0, 3)}:} && f(x) = ${inicio_func} \\\\
+                ${operacion_CD.substring(0, 3)}: && f(x) = ${inicio_func} \\\\
                 \\text{sujeto a:} && c(x) = ${inicio_func_costo} = ${presupuesto} \\\\
             \\end{align*}
         \\]
@@ -506,7 +506,7 @@ function optimizacion_exp_con(exponente) {
         <p class="hidden_phone">
             \\[
                 \\begin{align*}
-                    \\text{max o min:} && f(x) = f(${lista_var_CD}) = A ${var_expo_func} \\\\
+                    max \\text{ o } min \\text{:} && f(x) = f(${lista_var_CD}) = A ${var_expo_func} \\\\
                     \\text{sujeto a:} && c(x) = c(${lista_var_CD}) = ${var_expo_costo} = c \\\\
                 \\end{align*}
             \\]
@@ -514,7 +514,7 @@ function optimizacion_exp_con(exponente) {
         <p class="hidden_pc">
             \\[
                 \\begin{align*}
-                    \\text{max o min:} && f(x) = A \\prod_{i=1}^{${exponente}} x_{i}^{\\alpha_{i}} \\\\
+                    max \\text{ o } min \\text{:} && f(x) = A \\prod_{i=1}^{${exponente}} x_{i}^{\\alpha_{i}} \\\\
                     \\text{sujeto a:} && c(x) = \\sum_{i=1}^{${exponente}} w_{i}x_{i} = c \\\\
                 \\end{align*}
             \\]
@@ -559,7 +559,7 @@ function optimizacion_exp_con(exponente) {
                 <span class="hidden_phone">
                     \\[
                         \\begin{align*}
-                            \\text{max o min:} && f(x) = f(x_{1}, ..., x_{n}) = A\\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} \\\\
+                            max \\text{ o } min \\text{:} && f(x) = f(x_{1}, ..., x_{n}) = A\\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} \\\\
                             \\text{sujeto a:} && c(x) = c(c_{1}, ..., c_{n}) = \\sum_{i=1}^{n} w_{i}x_{i}  = c\\\\
                         \\end{align*}
                     \\]
@@ -569,7 +569,7 @@ function optimizacion_exp_con(exponente) {
                 <span class="hidden_pc">
                     \\[
                         \\begin{align*}
-                            \\text{max o min:} && f(x) = A\\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} \\\\
+                            max \\text{ o } min \\text{:} && f(x) = A\\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} \\\\
                             \\text{sujeto a:} && c(x) = \\sum_{i=1}^{n} w_{i}x_{i}  = c\\\\
                         \\end{align*}
                     \\]
@@ -750,10 +750,10 @@ function optimizacion_exp_con(exponente) {
         </p>
 
         \\[
-            \\text{max } f(x) = f(x_{1}, \\ldots, x_{n}) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}
+            max: f(x) = f(x_{1}, \\ldots, x_{n}) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}
         \\]
         \\[
-            \\text{sujeto a } c(x) = c(x_{1}, \\ldots, x_{n}) = \\sum_{i=1}^{n} w_{i} x_{i} = c
+            \\text{sujeto a: } c(x) = c(x_{1}, \\ldots, x_{n}) = \\sum_{i=1}^{n} w_{i} x_{i} = c
         \\]
 
         El objetivo es determinar cómo el consumidor asigna su presupuesto de manera óptima para maximizar la utilidad total, respetando la restricción económica. 
@@ -824,13 +824,13 @@ function optimizacion_exp_con(exponente) {
       inicio_minimizador += `
         <p>
           Consideremos una empresa que busca minimizar sus costos de producción \\(f(x)\\), modelados mediante una 
-          función de costos Cobb-Douglas. Los insumos \\(x_{1}, \\ldots, x_{n}\\) tienen precios por unidad \\(w_{1}, \\ldots, w_{n}\\), 
+          función de costos CD. Los insumos \\(x_{1}, \\ldots, x_{n}\\) tienen precios por unidad \\(w_{1}, \\ldots, w_{n}\\), 
           respectivamente. El objetivo es encontrar la combinación óptima de insumos que minimice el costo total, 
           respetando una restricción presupuestaria \\(c\\). El problema de optimización se plantea como:
         </p>
 
         \\[
-            \\text{min } f(X) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}
+            min: f(X) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}}
         \\]
         \\[
             \\text{sujeto a } c(x) = \\sum_{i=1}^{n} w_{i} x_{i} = c
@@ -1037,7 +1037,7 @@ function optimizacion_exp_con(exponente) {
             <div id="derivada_max_CD_con"></div>
             <p>
               Igualando la derivada a cero y resolviendo la ecuación, se aplica el teorema de Lagrange para obtener el valor óptimo de cada variable. De este modo, 
-              el valor óptimo para maximizar la función CD bajo la restricción presupuestaria:
+              el valor óptimo para maximizar la función CD bajo la restricción presupuestaria, denominándo cada valor de \\(x_i \\) como \\( \\hat{x_i} \\), es:
             </p>
             <div id="puntos_criticos_max_CD_con"></div>
             En consecuencia, el consumidor asigna su presupuesto de manera que se maximizan sus niveles de satisfacción (utilidad), teniendo en cuenta tanto la 
@@ -1079,7 +1079,7 @@ function optimizacion_exp_con(exponente) {
         <div id="derivada_min_CD_con"></div>
         <p>
           Igualando la derivada a cero y resolviendo la ecuación, se aplica el teorema de Lagrange para obtener el valor óptimo de cada variable. De este modo, 
-          el valor óptimo para maximizar la función CD bajo la restricción presupuestaria:
+          el valor óptimo para minimizar la función CD bajo la restricción presupuestaria, denominándo cada valor de \\(x_i \\) como \\( \\hat{x_i} \\), es:
         </p>
         <div id="puntos_criticos_min_CD_con"></div>
         Por el valor de los exponentes de la función de producción CD, podemos afirmar que la matriz Hessiana \\(H_{\\psi}(x)\\) de la función Lagrangiana es definida positiva.

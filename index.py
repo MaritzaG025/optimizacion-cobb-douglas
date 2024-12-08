@@ -48,7 +48,6 @@ def calcular_bordeado_endpoint():
     determinante_bordeado = calcular_determinante_bordeado(n)
     return jsonify({'hessiana_bordeada': hessiana_matriz_bordeada, 'determinante_bordeado': determinante_bordeado}) 
 
-
 # Calcular los menores principales en formato latex
 @app.route('/calcular_menores_principales', methods=['GET'])
 def calcular_menores_principales():

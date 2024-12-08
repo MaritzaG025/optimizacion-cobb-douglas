@@ -268,7 +268,7 @@ form.addEventListener('click', function (event) {
                 <p class="hidden_phone">
                     \\[
                         \\begin{align*}
-                            \\text{${tipoOptimizacion.substring(0, 3)}:} && 
+                            ${tipoOptimizacion.substring(0, 3)}: && 
                             f(x) = ${tecnologiaA} ${funcion_CD} \\\\
                             \\text{sujeto a:} && 
                             c(x) = ${funcion_costo_CD} = ${costoTotal} \\\\
@@ -278,7 +278,7 @@ form.addEventListener('click', function (event) {
                 <p class="hidden_pc">
                     \\[
                         \\begin{align*}
-                            \\text{${tipoOptimizacion.substring(0, 3)}:} && 
+                            ${tipoOptimizacion.substring(0, 3)}: && 
                             f(x) = ${tecnologiaA} ${funcion_CD} \\\\
                             \\text{sujeto a:} && 
                             c(x) = ${funcion_costo_CD} = ${costoTotal} \\\\
@@ -292,7 +292,7 @@ form.addEventListener('click', function (event) {
                 <p class="hidden_phone">
                     \\[
                         \\begin{align*}
-                            \\text{${tipoOptimizacion}:} && 
+                            ${tipoOptimizacion.substring(0, 3)}: && 
                             f(x) = ${tecnologiaA} ${funcion_CD} \\\\
                         \\end{align*}
                     \\]
@@ -300,7 +300,7 @@ form.addEventListener('click', function (event) {
                 <p class="hidden_pc">
                     \\[
                         \\begin{align*}
-                            \\text{${tipoOptimizacion.substring(0, 3)}:} && 
+                            ${tipoOptimizacion.substring(0, 3)}: && 
                             f(x) = ${tecnologiaA} ${funcion_CD} \\\\
                         \\end{align*}
                     \\]
@@ -351,12 +351,26 @@ function obtenerHessiana_Con(n) {
     });
 }
 
+// Función para mostrar los gráficos
+function mostrarGraficos(resultados) {
+    // Limpia el contenedor antes de agregar gráficos nuevos
+    const graficos_sin = document.getElementById('contenedor-graficos');
+    graficos_sin.innerHTML = '';
+    resultados.forEach(base64Image => {
+        // Crear un elemento <img> para cada gráfico base64
+        const imgElement = document.createElement('img');
+        imgElement.src = `data:image/png;base64,${base64Image}`;
+        imgElement.alt = 'Gráfico de Cobb-Douglas';
+        imgElement.classList.add('grafico'); // Aplicar estilo CSS
+        graficos_sin.appendChild(imgElement);
+    });
+}
+
 function obtenerCobbDouglas(datos, operacion_CD) {
     document.querySelector('#modalOptimizacionResult .modal-body').innerHTML = `
         <div class="modal-body text-center d-flex flex-column justify-content-center align-items-center" style="height: 300px;">
             <!-- Texto "Espere un momento" -->
             <h4 class = "textLoading">Espere un momento...</h4>
-
             <!-- Animación de línea que simula una función continua optimizándose -->
             <div class="graph-container">
                 <svg width="200" height="150" viewBox="0 0 200 150">
@@ -396,6 +410,7 @@ function obtenerCobbDouglas(datos, operacion_CD) {
     })
     .then(data => {
         mostrarCobbDouglas(datos, operacion_CD, data);
+        mostrarGraficos(data.graficos);
     })
     .catch(error => {
         if (error.name != 'AbortError') {
@@ -404,7 +419,6 @@ function obtenerCobbDouglas(datos, operacion_CD) {
         }
     });
 }
-
 
 function mostrarCobbDouglas(datos, operacion_CD, resultados) {
     let lista_var_CD = ``;
@@ -485,8 +499,8 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
                         if (operacion_CD == "minimizar") {
                             texto_resultante_max_min += `
                                 <p>
-                                    Concluyendo, hemos encontrado un punto ${parametro_optimizar} local para la función Cobb-Douglas bajo la 
-                                    restricción presupuestaria. Además, dado que la función Cobb-Douglas es ${funcion_optimizar_concava_convexa}, 
+                                    Concluyendo, hemos encontrado un punto ${parametro_optimizar} local para la función CD bajo la 
+                                    restricción presupuestaria. Además, dado que la función CD es ${funcion_optimizar_concava_convexa}, 
                                     este punto ${parametro_optimizar} es un ${parametro_optimizar} absoluto. Por lo tanto, los valores óptimos de 
                                     cada variable \\(${lista_var_CD}\\) que ${operacion_optimizar} la función son los que alcanzan el 
                                     ${parametro_optimizar}. Así, el valor de la función objetivo evaluada en las soluciones óptimas es:
@@ -505,7 +519,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
                                     ${objetivo_CD}
                                 </p>
                                 <p>
-                                    El análisis realizado mediante la función Cobb-Douglas, complementado con la evaluación de la matriz Hessiana y el determinante bordeado, 
+                                    El análisis realizado mediante la función CD, complementado con la evaluación de la matriz Hessiana y el determinante bordeado, 
                                     permite clasificar los puntos críticos y confirmar si corresponden a ${parametro_optimizar}s. Esto demuestra la importancia de utilizar la optimización 
                                     matemática para determinar condiciones precisas bajo restricciones reales, como los precios de los bienes y un presupuesto limitado. 
                                     Estos resultados no solo permiten identificar si se están maximizando beneficios o minimizando costos, sino que también resaltan la 
@@ -513,10 +527,10 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
                                 </p>
                             `;
                         } else {
-                            texto_resultante_max_min += `En el análisis de la función Cobb-Douglas, el objetivo era maximizarla bajo la restricción presupuestaria dada. 
+                            texto_resultante_max_min += `En el análisis de la función CD, el objetivo era maximizarla bajo la restricción presupuestaria dada. 
                             Sin embargo, el estudio de la matriz Hessiana y el determinante bordeado indicó que los puntos críticos corresponden a mínimos locales. 
                             Esto sugiere que la función es convexa en la región considerada, lo que significa que los puntos críticos representan niveles de producción 
-                            o utilidad mínimos bajo las restricciones. Este resultado refleja un comportamiento atípico en funciones Cobb-Douglas, pero puede presentarse 
+                            o utilidad mínimos bajo las restricciones. Este resultado refleja un comportamiento atípico en funciones CD, pero puede presentarse 
                             dependiendo de los valores de los parámetros o en escenarios económicos específicos. Desde una perspectiva económica, al buscar maximizar 
                             la producción o utilidad, los puntos críticos encontrados indican que los recursos disponibles están siendo subutilizados, ya que se alcanzan 
                             niveles mínimos de producción o utilidad. Este comportamiento podría reflejar un modelo en el que la distribución de los insumos no sea eficiente 
@@ -529,8 +543,8 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
                         if (operacion_CD == "maximizar") {
                             texto_resultante_max_min += `
                                 <p>
-                                    Concluyendo, hemos encontrado un punto ${parametro_optimizar} local para la función Cobb-Douglas bajo la 
-                                    restricción presupuestaria. Además, dado que la función Cobb-Douglas es ${funcion_optimizar_concava_convexa}, 
+                                    Concluyendo, hemos encontrado un punto ${parametro_optimizar} local para la función CD bajo la 
+                                    restricción presupuestaria. Además, dado que la función CD es ${funcion_optimizar_concava_convexa}, 
                                     este punto ${parametro_optimizar} es un ${parametro_optimizar} absoluto. Por lo tanto, los valores óptimos de 
                                     cada variable \\(${lista_var_CD}\\) que ${operacion_optimizar} la función son los que alcanzan el 
                                     ${parametro_optimizar}. Así, el valor de la función objetivo evaluada en las soluciones óptimas es:
@@ -549,7 +563,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
                                     ${objetivo_CD}
                                 </p>
                                 <p>
-                                    El análisis realizado mediante la función Cobb-Douglas, complementado con la evaluación de la matriz Hessiana y el determinante bordeado, 
+                                    El análisis realizado mediante la función CD, complementado con la evaluación de la matriz Hessiana y el determinante bordeado, 
                                     permite clasificar los puntos críticos y confirmar si corresponden a ${parametro_optimizar}s. Esto demuestra la importancia de utilizar la optimización 
                                     matemática para determinar condiciones precisas bajo restricciones reales, como los precios de los bienes y un presupuesto limitado. 
                                     Estos resultados no solo permiten identificar si se están maximizando beneficios o minimizando costos, sino que también resaltan la 
@@ -557,7 +571,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
                                 </p>
                             `;
                         } else {
-                            texto_resultante_max_min += `Al analizar la función Cobb-Douglas, se buscó minimizarla bajo la restricción presupuestaria dada. Sin embargo, el análisis de 
+                            texto_resultante_max_min += `Al analizar la función CD, se buscó minimizarla bajo la restricción presupuestaria dada. Sin embargo, el análisis de 
                             la matriz Hessiana y el determinante bordeado, reveló que los puntos críticos encontrados corresponden a máximos locales. Matemáticamente, esto implica que en la región considerada, la función es cóncava, 
                             lo que confirma que los puntos críticos representan niveles de producción o utilidad máximos bajo las restricciones impuestas. Desde el punto de vista económico, el objetivo de 
                             minimizar costos o gastos no puede lograrse con los valores de los parámetros actuales, ya que la función presenta puntos críticos que maximizan la producción o utilidad. Este 
@@ -609,7 +623,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
     if (operacion_CD == `maximizar`) {
         textOpt = `la producción o la utilidad`;
         tipo_de_punto = `máximo`;
-        text_deriv_parc = `Al maximizar una función Cobb-Douglas, como una función de utilidad o producción, 
+        text_deriv_parc = `Al maximizar la función CD, como una función de utilidad o producción, 
         las derivadas parciales representan la contribución marginal de cada insumo al resultado total 
         (ya sea utilidad o producción). Económicamente, igualar las derivadas parciales a cero implica buscar 
         el punto donde los insumos están asignados de forma óptima, es decir, donde el aumento en la cantidad 
@@ -622,12 +636,12 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
     }else{
         textOpt = `el costo o los gastos`;
         tipo_de_punto = `mínimo`;
-        text_deriv_parc = `Al minimizar una función Cobb-Douglas, como una función de costos, las derivadas 
+        text_deriv_parc = `Al minimizar la función CD, como una función de costos, las derivadas 
         parciales indican la tasa de variación del costo respecto a cambios en cada insumo. Económicamente, 
         igualar estas derivadas a cero busca identificar la combinación de insumos que minimiza el costo total, 
         manteniendo un equilibrio entre los costos de diferentes insumos y la proporción de su uso en la función 
         de producción.`;
-        text_conclusion_sin = `Minimizar una función Cobb-Douglas en \\(n\\) variables, sin restricciones adicionales, 
+        text_conclusion_sin = `Minimizar la función CD en \\(n\\) variables, sin restricciones adicionales, 
         generalmente no es posible de manera directa. Sin embargo, en situaciones donde los exponentes son negativos, 
         o existe una combinación de exponentes positivos y negativos, la función podría decrecer en algunas direcciones, 
         lo que permite la existencia de mínimos locales o globales bajo ciertas condiciones`;
@@ -661,10 +675,10 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
     if (valoresExp.every(alpha => alpha < 0) || (valoresExp.filter(alpha => alpha > 1).length <= 1 && valoresExp.filter(alpha => alpha >= 0).length == cantidadExp - 1 && sumaExp > 1)) {
         combinacionFrase += ` Además, la matriz Hessiana es definida positiva en la región del dominio, lo que implica que la función es convexa y los 
         puntos críticos encontrados corresponderán a mínimos locales.`;
-        conclusion_previa += `En el análisis de la función Cobb-Douglas, el objetivo era maximizarla bajo la restricción presupuestaria dada. 
+        conclusion_previa += `En el análisis de la función CD, el objetivo era maximizarla bajo la restricción presupuestaria dada. 
         Sin embargo, el estudio de la matriz Hessiana indicó que los puntos críticos corresponden a mínimos locales. 
         Esto sugiere que la función es convexa en la región considerada, lo que significa que los puntos críticos representan niveles de producción 
-        o utilidad mínimos bajo las restricciones. Este resultado refleja un comportamiento atípico en funciones Cobb-Douglas, pero puede presentarse 
+        o utilidad mínimos bajo las restricciones. Este resultado refleja un comportamiento atípico en funciones CD, pero puede presentarse 
         dependiendo de los valores de los parámetros o en escenarios económicos específicos. Desde una perspectiva económica, al buscar maximizar 
         la producción o utilidad, los puntos críticos encontrados indican que los recursos disponibles están siendo subutilizados, ya que se alcanzan 
         niveles mínimos de producción o utilidad. Este comportamiento podría reflejar un modelo en el que la distribución de los insumos no sea eficiente 
@@ -677,7 +691,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
     } else if (valoresExp.every(alpha => alpha > 0) && valoresExp.every(alpha => alpha < 1) && sumaExp < 1) {
         combinacionFrase += ` Además, la matriz Hessiana es definida negativa en la región del dominio, lo que implica que la función es cóncava y 
         los puntos críticos encontrados corresponderán a máximos locales.`;
-        conclusion_previa += `Al analizar la función Cobb-Douglas, se buscó minimizarla bajo la restricción presupuestaria dada. Sin embargo, el análisis de 
+        conclusion_previa += `Al analizar la función CD, se buscó minimizarla bajo la restricción presupuestaria dada. Sin embargo, el análisis de 
         la matriz Hessiana reveló que los puntos críticos encontrados corresponden a máximos locales. Matemáticamente, esto implica que en la región considerada, la función es cóncava, 
         lo que confirma que los puntos críticos representan niveles de producción o utilidad máximos bajo las restricciones impuestas. Desde el punto de vista económico, el objetivo de 
         minimizar costos o gastos no puede lograrse con los valores de los parámetros actuales, ya que la función presenta puntos críticos que maximizan la producción o utilidad. Este 
@@ -691,10 +705,10 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
     } else if (valoresExp.every(alpha => alpha < 0) || (valoresExp.filter(alpha => alpha > 1).length <= 1 && valoresExp.filter(alpha => alpha >= 0).length == cantidadExp - 1 && sumaExp >= 1)) {
         combinacionFrase += ` Además, la matriz Hessiana es semidefinida positiva en la región del dominio, lo que implica que la función es convexa y los 
         puntos críticos encontrados podrían ser mínimos locales, puntos de silla o no ser concluyentes por sí solos.`;
-        conclusion_previa += `En el análisis de la función Cobb-Douglas, el objetivo era maximizarla bajo la restricción presupuestaria dada. 
+        conclusion_previa += `En el análisis de la función CD, el objetivo era maximizarla bajo la restricción presupuestaria dada. 
         Sin embargo, el estudio de la matriz Hessiana indicó que los puntos críticos corresponden a mínimos locales. 
         Esto sugiere que la función es convexa en la región considerada, lo que significa que los puntos críticos representan niveles de producción 
-        o utilidad mínimos bajo las restricciones. Este resultado refleja un comportamiento atípico en funciones Cobb-Douglas, pero puede presentarse 
+        o utilidad mínimos bajo las restricciones. Este resultado refleja un comportamiento atípico en funciones CD, pero puede presentarse 
         dependiendo de los valores de los parámetros o en escenarios económicos específicos. Desde una perspectiva económica, al buscar maximizar 
         la producción o utilidad, los puntos críticos encontrados indican que los recursos disponibles están siendo subutilizados, ya que se alcanzan 
         niveles mínimos de producción o utilidad. Este comportamiento podría reflejar un modelo en el que la distribución de los insumos no sea eficiente 
@@ -707,7 +721,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
     } else if (valoresExp.every(alpha => alpha > 0) && valoresExp.every(alpha => alpha < 1) && sumaExp <= 1) {
         combinacionFrase += ` Además, la matriz Hessiana es semidefinida negativa en la región del dominio, lo que implica que la función es cóncava y 
         los puntos críticos encontrados podrían ser máximos locales, puntos de silla o no ser concluyentes por sí solos.`;
-        conclusion_previa += `Al analizar la función Cobb-Douglas, se buscó minimizarla bajo la restricción presupuestaria dada. Sin embargo, el análisis de 
+        conclusion_previa += `Al analizar la función CD, se buscó minimizarla bajo la restricción presupuestaria dada. Sin embargo, el análisis de 
         la matriz Hessiana reveló que los puntos críticos encontrados corresponden a máximos locales. Matemáticamente, esto implica que en la región considerada, la función es cóncava, 
         lo que confirma que los puntos críticos representan niveles de producción o utilidad máximos bajo las restricciones impuestas. Desde el punto de vista económico, el objetivo de 
         minimizar costos o gastos no puede lograrse con los valores de los parámetros actuales, ya que la función presenta puntos críticos que maximizan la producción o utilidad. Este 
@@ -736,7 +750,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
             <p class="hidden_phone">
                 \\[
                     \\begin{align*}
-                        \\text{${operacion_CD.substring(0, 3)}:} && 
+                        ${operacion_CD.substring(0, 3)}: && 
                         f(x) = ${tecnologiaA} ${funcionCD} \\\\
                         \\text{sujeto a:} && 
                         c(x) = ${funcion_costo_CD} = ${costoTotal} \\\\
@@ -746,7 +760,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
             <p class="hidden_pc">
                 \\[
                     \\begin{align*}
-                        \\text{${operacion_CD.substring(0, 3)}:} && 
+                        ${operacion_CD.substring(0, 3)}: && 
                         f(x) = ${tecnologiaA} ${funcionCD} \\\\
                         \\text{sujeto a:} && 
                         c(x) = ${funcion_costo_CD} = ${costoTotal} \\\\
@@ -756,15 +770,15 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
         `;
         textResult = `
             <p> 
-                Sea \\(x = (${lista_var_CD}) \\in \\mathbb{R}^{${cantidadVariables}}_{+} \\) donde cada 
+                Sea \\(x = (${lista_var_CD}) \\in \\mathbb{R}^{${cantidadExp}}_{+} \\) donde cada 
                 \\(x_{i} \\) representa la cantidad asignada al bien o insumo \\(i \\), \\(\\forall \\ i = ${indices_list} \\). 
-                El objetivo es ${operacion_CD} la función Cobb-Douglas \\(f(x) \\) sujeta a la restricción presupuestaria \\(c(x) \\).
+                El objetivo es ${operacion_CD} la función de tipo CD (CD) \\(f(x) \\) sujeta a la restricción presupuestaria \\(c(x) \\).
                 Esto se puede formular como: ${funcionAOptimizar}
             </p>
             <p>
                 Desde una perspectiva económica, este tipo de optimización con restricciones es relevante en situaciones donde se busca 
                 identificar la mejor combinación de insumos para ${operacion_CD} ${textOpt}, considerando limitaciones como el presupuesto o 
-                recursos disponibles. El análisis de la función Cobb-Douglas bajo restricciones proporciona una base teórica para entender cómo 
+                recursos disponibles. El análisis de la función CD bajo restricciones proporciona una base teórica para entender cómo 
                 distribuir los recursos eficientemente entre distintos insumos, destacando su importancia relativa en el rendimiento total. 
                 Resolver este tipo de problemas permite explorar puntos críticos y determinar si son ${tipo_de_punto}s, lo que contribuye a 
                 mejorar la eficiencia y la toma de decisiones estratégicas en contextos económicos reales. Para resolver este tipo de problemas 
@@ -796,7 +810,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
                 <div id="derivadasParciales"></div>
                 <p>
                     Igualando la derivada a cero y resolviendo la ecuación, se aplica el teorema de Lagrange para obtener el valor óptimo de cada variable. De este modo, 
-                    el valor óptimo para ${operacion_CD} la función CD bajo la restricción presupuestaria, denominándo cada valor como \\( \\hat{x_i} \\), son:
+                    el valor óptimo para ${operacion_CD} la función CD bajo la restricción presupuestaria, denominándo cada valor de \\(x_i \\) como \\( \\hat{x_i} \\), es:
                 </p>
                 \\[ ${resultados.puntos_criticos} \\]
                 <p>
@@ -807,7 +821,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
                     Desde un punto de vista económico, estos valores indican cómo distribuir el presupuesto de \\(c = ${costoTotal}\\) entre los \\(x_i\\) 
                     de manera proporcional a sus parámetros \\(\\alpha_{i}\\) (que reflejan la importancia relativa de cada insumo en la producción) 
                     y sus precios. Para determinar si los puntos críticos son máximos, mínimos o puntos de silla, se calcula el determinante bordeado. 
-                    Para la construcción de este determinante, utilizamos la matriz Hessiana. En el contexto de funciones de tipo Cobb-Douglas, 
+                    Para la construcción de este determinante, utilizamos la matriz Hessiana. En el contexto de funciones de tipo CD, 
                     la matriz Hessiana se define como:
                     <div id="hessiana_con"></div>
                     Evaluando en el punto crítico, obtenemos que la matriz Hessiana es ${resultados.hessiana_evaluada}. Ahora, el determinante bordeado es:
@@ -836,18 +850,19 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
         `;
         textResult = `
             <p> 
-                Sea \\(x = (${lista_var_CD}) \\in \\mathbb{R}^{${cantidadVariables}}_{+} \\) donde cada 
+                Sea \\(x = (${lista_var_CD}) \\in \\mathbb{R}^{${cantidadExp}}_{+} \\) donde cada 
                 \\(x_{i} \\) representa la cantidad asignada al bien o insumo \\(i \\), \\(\\forall \\ i = ${indices_list} \\). 
-                El objetivo es ${operacion_CD} la función Cobb-Douglas, que se expresa como: ${funcionAOptimizar}
+                El objetivo es ${operacion_CD} la función de tipo Cobb-Douglas (CD), que se expresa como: ${funcionAOptimizar}
             </p>
             <p>
                 Desde una perspectiva económica, este tipo de optimización sin restricciones es relevante en situaciones donde se busca 
                 identificar la mejor combinación de insumos para ${operacion_CD} ${textOpt}, sin considerar limitaciones externas como 
-                presupuesto o capacidad. El análisis de la función Cobb-Douglas proporciona una base teórica para entender cómo los insumos 
+                presupuesto o capacidad. El análisis de la función CD proporciona una base teórica para entender cómo los insumos 
                 o bienes interactúan entre sí, destacando la importancia de cada uno en el rendimiento total. Resolver este tipo de problemas 
                 permite explorar puntos críticos y determinar si son ${tipo_de_punto}s, lo que contribuye a mejorar la eficiencia y la toma de 
                 decisiones estratégicas en contextos económicos.
             </p>
+            <div id="contenedor-graficos"></div>
             <p>
                 A continuación, calculamos las derivadas parciales de \\(f(x)\\) con respecto a cada \\(x_{i}\\) para 
                 \\(i = ${indices_list} \\) e igualamos a cero para encontrar los puntos críticos. Las derivadas parciales son:
@@ -856,7 +871,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
             <p> ${text_deriv_parc} </p>
             <p> Igualando las derivadas parciales a cero, obtenemos: </p>
             \\[ ${resultados.puntos_criticos} \\]
-                    <div id="hessiana_con"></div>
+            <div id="hessiana_con" class="d-none"></div>
 
             <p>
                 Sin embargo, no existen puntos críticos dentro del dominio positivo de \\( f(x) \\), ya que las derivadas parciales solo son iguales 
@@ -866,7 +881,6 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
                 de insumos sea óptima. ${text_conclusion_sin}. 
             </p>
             <div id="finaliza_optimizacion" class="${fin_punto_critico}">Texto de optimización final</div>
-
         `;
     }
 

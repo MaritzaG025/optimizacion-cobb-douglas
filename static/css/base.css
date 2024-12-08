@@ -166,3 +166,31 @@ html {
     font-size: 18px;
     color: #007bff;
   }
+
+  #contenedor-graficos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.grafico {
+    flex: 1 1 calc(33.33% - 40px); /* Tres gráficos por fila */
+    max-width: calc(33.33% - 40px);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.grafico:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .grafico {
+        flex: 1 1 100%; /* Gráficos apilados en pantallas pequeñas */
+        max-width: 100%;
+    }
+}
