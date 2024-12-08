@@ -768,7 +768,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
                 distribuir los recursos eficientemente entre distintos insumos, destacando su importancia relativa en el rendimiento total. 
                 Resolver este tipo de problemas permite explorar puntos críticos y determinar si son ${tipo_de_punto}s, lo que contribuye a 
                 mejorar la eficiencia y la toma de decisiones estratégicas en contextos económicos reales. Para resolver este tipo de problemas 
-                utilizamos el método de Lagrange definiendo la función lagrangiana:
+                utilizamos el método de Lagrange definiendo la función Lagrangiana:
             </p>
             <p class="hidden_phone">
                 \\[

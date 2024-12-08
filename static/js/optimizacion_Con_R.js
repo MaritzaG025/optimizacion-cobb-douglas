@@ -166,8 +166,8 @@ function mostrarCobbDouglasConPresupuesto(
 
       texto_resultante_max_min += `
         <p>
-          Concluyendo, hemos encontrado un punto ${parametro_optimizar} local para la función Cobb-Douglas bajo la 
-          restricción presupuestaria. Además, dado que la función Cobb-Douglas es ${funcion_optimizar_concava_convexa}, 
+          Concluyendo, hemos encontrado un punto ${parametro_optimizar} local para la función CD bajo la 
+          restricción presupuestaria. Además, dado que la función CD es ${funcion_optimizar_concava_convexa}, 
           este punto ${parametro_optimizar} es un ${parametro_optimizar} absoluto. Por lo tanto, los valores óptimos de 
           cada variable \\(${lista_var_CD_con}\\) que ${operacion_optimizar} la función son los que alcanzan el 
           ${parametro_optimizar}. Así, el valor de la función objetivo evaluada en las soluciones óptimas es:
@@ -185,7 +185,7 @@ function mostrarCobbDouglasConPresupuesto(
           ${objetivo_CD}
         </p>
         <p>
-          El análisis realizado mediante la función Cobb-Douglas, complementado con la evaluación de la matriz Hessiana y el determinante bordeado, 
+          El análisis realizado mediante la función CD, complementado con la evaluación de la matriz Hessiana y el determinante bordeado, 
           permite clasificar los puntos críticos y confirmar si corresponden a ${parametro_optimizar}s. Esto demuestra la importancia de utilizar la optimización 
           matemática para determinar condiciones precisas bajo restricciones reales, como los precios de los bienes y un presupuesto limitado. 
           Estos resultados no solo permiten identificar si se están maximizando beneficios o minimizando costos, sino que también resaltan la 
@@ -491,6 +491,14 @@ function optimizacion_exp_con(exponente) {
     cant_beneficio_costo += ` \\]`;
   }
 
+  let expresionesCon = ``;
+  if (exponente != 1) {
+    expresionesCon = `<span>
+                      Igualando las expresiones de \\(\\lambda\\) para \\(x_i\\) y \\(x_j\\), con \\(i, j = ${lista_exp_CD} \\ \\text{y} \\ i \\neq j\\), obtenemos que:
+                      ${cant_beneficio_costo}
+                    </span>`;
+  }
+
   const funcion_optimizar_CD_con = document.getElementById(
     "funcion_optimizar_CD"
   );
@@ -539,7 +547,7 @@ function optimizacion_exp_con(exponente) {
 
   let inicio_hessiana = `<strong>Determinante Bordeado: Uso de la Matriz Hessiana y Análisis de Puntos Críticos</strong> 
     <p>Para determinar si los puntos críticos son máximos, mínimos o puntos de silla, se calcula el determinante bordeado. 
-    Para la construcción de este determinante, utilizamos la matriz Hessiana. En el contexto de funciones de tipo Cobb-Douglas, 
+    Para la construcción de este determinante, utilizamos la matriz Hessiana. En el contexto de funciones CD, 
     la matriz Hessiana se define como:</p>`;
 
   let inicio_lagrange = `<p> \\[\\frac{\\partial{f}}{\\partial{\\lambda}} = \\sum_{i=1}^{${exponente}} w_{i}x_{i} \\ - \\ c = 0 \\ \\ \\Rightarrow \\ \\ \\sum_{i=1}^{${exponente}} w_{i}x_{i} \\ = \\ c \\] </p>`;
@@ -555,7 +563,7 @@ function optimizacion_exp_con(exponente) {
                             \\text{sujeto a:} && c(x) = c(c_{1}, ..., c_{n}) = \\sum_{i=1}^{n} w_{i}x_{i}  = c\\\\
                         \\end{align*}
                     \\]
-                    donde \\( x = (x_1, \\dots, x_n) \\) es un vector de \\(n\\) variables independientes. Para resolverlo, utilizamos el método de Lagrange, definiendo la función lagrangiana:
+                    donde \\( x = (x_1, \\dots, x_n) \\) es un vector de \\(n\\) variables independientes. Para resolverlo, utilizamos el método de Lagrange, definiendo la función Lagrangiana:
                     \\[ \\psi(x) \\ = \\ \\psi(x_{1}, ..., x_{n}) \\ = \\ A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} \\ - \\ \\lambda \\ \\biggl( \\sum_{i=1}^{n} w_{i}x_{i} \\ - \\ c \\biggl) \\]
                 </span>
                 <span class="hidden_pc">
@@ -565,7 +573,7 @@ function optimizacion_exp_con(exponente) {
                             \\text{sujeto a:} && c(x) = \\sum_{i=1}^{n} w_{i}x_{i}  = c\\\\
                         \\end{align*}
                     \\]
-                    Por el método del multiplicador de Lagrange, primero definimos la función lagrangiana por:
+                    Por el método del multiplicador de Lagrange, primero definimos la función Lagrangiana por:
                     \\[ \\psi(x) \\ = \\ A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} \\ - \\ \\lambda \\ \\biggl( \\sum_{i=1}^{n} w_{i}x_{i} \\ - \\ c \\biggl) \\]
                 </span>
                 
@@ -749,7 +757,7 @@ function optimizacion_exp_con(exponente) {
         \\]
 
         El objetivo es determinar cómo el consumidor asigna su presupuesto de manera óptima para maximizar la utilidad total, respetando la restricción económica. 
-        Para resolverlo, utilizamos el método de Lagrange, definiendo la función lagrangiana:
+        Para resolverlo, utilizamos el método de Lagrange, definiendo la función Lagrangiana:
 
         \\[
             \\psi(x) = A \\prod_{i=1}^{n} x_{i}^{\\alpha_{i}} - \\lambda \\left( 
@@ -831,7 +839,7 @@ function optimizacion_exp_con(exponente) {
         <p>
           Este problema refleja una situación típica en la que la empresa debe decidir cuánto invertir en cada insumo para 
           alcanzar una producción eficiente, reduciendo costos y maximizando la rentabilidad de su operación. Para resolverlo, 
-          utilizamos el método del multiplicador de Lagrange, definiendo la función lagrangiana:
+          utilizamos el método del multiplicador de Lagrange, definiendo la función Lagrangiana:
         </p>
 
         \\[
@@ -855,7 +863,7 @@ function optimizacion_exp_con(exponente) {
 
         <p>
           Si verificamos que \\((-1)^{n} |\\Delta_n| > 0\\) y que la matriz Hessiana es definida positiva, podemos concluir que los valores \\(\\hat{x_{i}}\\) 
-          corresponden a un mínimo local. Además, si la función Cobb-Douglas es convexa, este mínimo local se convierte en un mínimo absoluto, 
+          corresponden a un mínimo local. Además, si la función CD es convexa, este mínimo local se convierte en un mínimo absoluto, 
           asegurando que la asignación de recursos es óptima.
         </p>
 
@@ -879,7 +887,7 @@ function optimizacion_exp_con(exponente) {
         <br> 
         <p> 
           En este análisis, hemos demostrado que la maximización de la utilidad y la minimización de los 
-          costos en una función Cobb-Douglas son procesos esenciales para la toma de decisiones en la 
+          costos en una función CD son procesos esenciales para la toma de decisiones en la 
           economía empresarial. A través del método del multiplicador de Lagrange, encontramos las 
           condiciones óptimas para las variables de producción y costos, asegurando que las decisiones 
           estén en concordancia con las restricciones presupuestarias impuestas.
@@ -887,7 +895,7 @@ function optimizacion_exp_con(exponente) {
           clasificar los puntos críticos y determinar si estos corresponden a máximos o mínimos locales. 
           Adicionalmente, la caracterización de la convexidad y la concavidad de la función es crucial para 
           verificar la naturaleza de los extremos absolutos. Hemos comprobado que, bajo las condiciones 
-          adecuadas, la función Cobb-Douglas exhibe un máximo absoluto en la maximización de la utilidad y un 
+          adecuadas, la función CD exhibe un máximo absoluto en la maximización de la utilidad y un 
           mínimo absoluto en la minimización de los costos, lo que refuerza la importancia de las relaciones 
           entre los coeficientes de producción, los precios de los insumos y la eficiencia en la asignación de 
           recursos. Estos hallazgos señalan la relevancia de la optimización para una gestión eficiente y 
@@ -902,7 +910,7 @@ function optimizacion_exp_con(exponente) {
                 donde \\(x = (${lista_var_CD})\\) es un vector de ${exponente} variables independientes. La optimización de la función 
                 CD con restricciones implica encontrar los valores de \\(x_{i} \\ (\\forall \\ i = ${lista_exp_CD}) \\) que maximizan o
                 minimizan la función \\(f(x)\\) sujeta a una restrincción presupuestaria. Para resolverlo, utilizamos el método de Lagrange, 
-                definiendo la función lagrangiana:
+                definiendo la función Lagrangiana:
 
                 <span class="hidden_phone">
                     \\[ \\psi(x) \\ = \\ \\psi(${lista_var_CD}) \\ = \\ A ${var_expo_func} \\ - \\ \\lambda \\ \\biggl( ${var_expo_costo} \\ - \\ c \\biggl) \\]
@@ -922,9 +930,8 @@ function optimizacion_exp_con(exponente) {
 
       inicio_lagrange += `
         <p>
-          Igualando las expresiones de \\(\\lambda\\) para \\(x_i\\) y \\(x_j\\), con \\(i, j = ${lista_exp_CD} \\ \\text{y} \\ i \\neq j\\), obtenemos que:
-          ${cant_beneficio_costo}
-          Sustituyendo esta relación en la restricción presupuestaria \\(c(x)\\) se demuestra que la asignación óptima cumple con las condiciones impuestas por la restricción 
+          ${expresionesCon}
+          Sustituyendo estas relaciones en la restricción presupuestaria \\(c(x)\\) se demuestra que la asignación óptima cumple con las condiciones impuestas por la restricción 
           presupuestaria, distribuyendo los recursos entre los bienes en función de sus precios y sus contribuciones relativas a la utilidad. Así obtenemos la siguiente 
           expresión: \\[${sumatoria_x_j}\\]
           Finalmente, despejando \\(x_{i}\\) y denominándola como \\(\\hat{x}_{i}\\) para todo \\(i = ${lista_exp_CD}\\), se tiene: ${soluciones_optimas}
@@ -1020,7 +1027,7 @@ function optimizacion_exp_con(exponente) {
             </p>
             <div id="funcion_max_CD_con"></div>
             El objetivo es determinar cómo el consumidor asigna su presupuesto de manera óptima para maximizar la utilidad total, respetando la restricción económica. 
-            Para resolverlo, utilizamos el método de Lagrange, definiendo la función lagrangiana:
+            Para resolverlo, utilizamos el método de Lagrange, definiendo la función Lagrangiana:
             <div id="func_lagrangiana_max_con"></div>
             <p>
               donde \\(\\lambda\\) es el multiplicador de Lagrange que nos permite manejar la restricción del presupuesto, este refleja el cambio en la utilidad total 
@@ -1061,7 +1068,7 @@ function optimizacion_exp_con(exponente) {
             </ul>
         </p>
         <p>
-            <u> Ejemplo </u>: Supongamos que queremos minimizar la función Cobb-Douglas \\( f(x) \\) sujeta a la restricción presupuestal \\( c(x) \\), de la siguiente forma:
+            <u> Ejemplo </u>: Supongamos que queremos minimizar la función CD \\( f(x) \\) sujeta a la restricción presupuestal \\( c(x) \\), de la siguiente forma:
         </p>
         <div id="funcion_min_CD_con"></div>
         Por el método del multiplicador de Lagrange, definimos la función Lagrangiana como:
