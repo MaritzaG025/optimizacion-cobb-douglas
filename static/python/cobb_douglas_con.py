@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import io
 import base64
-plt.rcParams['text.usetex'] = True
 
 def calcular_derivadas_parciales(A, n, exponentes, precios, presupuesto):
     # Definir variables
