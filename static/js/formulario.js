@@ -775,6 +775,7 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
                 El objetivo es ${operacion_CD} la función de tipo CD (CD) \\(f(x) \\) sujeta a la restricción presupuestaria \\(c(x) \\).
                 Esto se puede formular como: ${funcionAOptimizar}
             </p>
+            <div id="contenedor-graficos"></div>
             <p>
                 Desde una perspectiva económica, este tipo de optimización con restricciones es relevante en situaciones donde se busca 
                 identificar la mejor combinación de insumos para ${operacion_CD} ${textOpt}, considerando limitaciones como el presupuesto o 
@@ -872,7 +873,6 @@ function mostrarCobbDouglas(datos, operacion_CD, resultados) {
             <p> Igualando las derivadas parciales a cero, obtenemos: </p>
             \\[ ${resultados.puntos_criticos} \\]
             <div id="hessiana_con" class="d-none"></div>
-
             <p>
                 Sin embargo, no existen puntos críticos dentro del dominio positivo de \\( f(x) \\), ya que las derivadas parciales solo son iguales 
                 a cero cuando \\( x_{i} = 0 \\), lo cual no es válido porque \\( x_{i} > 0 \\). Además, dado que \\( \\frac{\\partial f}{\\partial x_{i}} \\) 

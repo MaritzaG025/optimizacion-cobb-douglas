@@ -5,8 +5,6 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import io
 import base64
-from itertools import combinations
-import itertools
 
 def calcular_derivadas_parciales(A, n, exponentes):
     # Definir variables
@@ -179,97 +177,6 @@ def evaluar_en_puntos_criticos(A, n, exponentes):
         # menores_evaluados.append(menores)
     
     return hessiana_evaluada, menores_evaluados
-
-# def generate_plots_example(A, n, exponentes):
-#     # Limpiar las gráficas previas
-#     plt.close('all')  # Cerrar todas las figuras abiertas
-
-#     def generate_title(A, exponentes, fixed_vars, changing_vars, figure_number):
-#         # Generar el título dinámico
-#         var_expr = ' \\cdot '.join([f"x_{i+1}^{{{exp:.1f}}}" for i, exp in enumerate(exponentes)])
-        
-#         # Escapar cualquier símbolo '$' en LaTeX
-#         var_expr = var_expr.replace('$', '\\$')  # Asegúrate de que '$' sea tratado correctamente
-
-#         if fixed_vars:
-#             fixed_expr = ', '.join([f"x_{var+1} = {val:.2f}" for var, val in fixed_vars.items()])
-#             return f"Figura {figure_number}: Función de tipo Cobb-Douglas $f(x) = {var_expr}$ con {fixed_expr}, cambiando {', '.join([f'x_{var+1}' for var in changing_vars])}"
-#         else:
-#             return f"Figura {figure_number}: Función de tipo Cobb-Douglas $f(x) = {var_expr}$, cambiando {', '.join([f'x_{var+1}' for var in changing_vars])}"
-
-#     graph_images = []
-#     figure_number = 1  # Para numerar las figuras
-
-#     # Reiniciar valores fijos para garantizar consistencia
-#     fixed_values_dict = {}
-
-#     # Generar gráficos para diferentes combinaciones de variables
-#     combinations_vars = list(combinations(range(n), 2))  # Combos de dos variables
-
-#     for combo in combinations_vars:
-#         var1, var2 = combo
-
-#         # Generar valores fijos para las variables no cambiantes
-#         fixed_vars = {i: fixed_values_dict.get(i, random.uniform(0.1, 1)) for i in range(n) if i not in combo}
-#         fixed_values_dict.update(fixed_vars)
-
-#         # Crear el espacio de valores para las variables cambiantes
-#         x = np.linspace(0.1, 1, 100)
-#         y = np.linspace(0.1, 1, 100)
-#         X, Y = np.meshgrid(x, y)
-
-#         # Inicializar Z con el valor de A
-#         Z = A
-#         # Calcular Z según los exponentes y valores de las variables
-#         for i in range(n):
-#             if i == var1:
-#                 Z *= X ** exponentes[i]
-#             elif i == var2:
-#                 Z *= Y ** exponentes[i]
-#             else:
-#                 Z *= fixed_vars[i] ** exponentes[i]
-
-#         # Verificar si `Z` tiene valores válidos
-#         if not np.any(np.isfinite(Z)):
-#             print(f"Advertencia: Z no tiene valores válidos para la combinación {var1+1}, {var2+1}.")
-#             continue
-
-#         # Ajustar el ángulo del gráfico según los exponentes
-#         elev_angle = 30 + sum(abs(exp) for exp in exponentes) * 0.2
-#         azim_angle = 45
-
-#         # Crear el gráfico
-#         fig = plt.figure(figsize=(10, 7))
-#         ax = fig.add_subplot(111, projection='3d')
-#         ax.plot_surface(X, Y, Z, cmap='cool')
-#         ax.set_xlabel(f'$x_{var1+1}$')
-#         ax.set_ylabel(f'$x_{var2+1}$')
-#         ax.set_zlabel('$f(x)$')
-#         ax.view_init(elev=elev_angle, azim=azim_angle)
-
-#         # Generar título
-#         title = generate_title(A, exponentes, fixed_vars, [var1, var2], figure_number)
-        
-#         # Ajustar el título para que aparezca abajo del gráfico
-#         plt.title(title, loc='center')
-
-#         # Ajustar los márgenes para mover el título hacia abajo
-#         plt.subplots_adjust(top=0.85, bottom=0.2)
-
-#         # Asegurarse de que la figura se dibuje antes de guardarla
-#         plt.draw()
-
-#         # Guardar el gráfico como imagen base64
-#         buffer = io.BytesIO()
-#         plt.savefig(buffer, format='png')
-#         plt.close(fig)  # Cerrar la figura después de guardarla
-#         buffer.seek(0)
-#         graph_images.append(base64.b64encode(buffer.read()).decode('utf-8'))
-
-#         # Incrementar número de figura
-#         figure_number += 1
-
-#     return graph_images
 
 def cobb_douglas(A, exponents, variables):
     """Calcula la función Cobb-Douglas para variables simbólicas o numéricas.
@@ -770,7 +677,6 @@ def plot_n_variables(A, n, exponents):
             return plot_5_variables(A, exponents)
     else:
         raise ValueError("El valor de 'n' debe ser un entero entre 1 y 5.")
-
 
 def calcular_cobb_douglas(A, n, exponentes):
     derivadas = calcular_derivadas_parciales(A, n, exponentes)
