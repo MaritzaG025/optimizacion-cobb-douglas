@@ -885,7 +885,7 @@ function optimizacion_exp_sin(exponente) {
                             <ul>
                                 <li>
                                     \\( \\alpha_i < 0 \\ \\forall \\ i = 1, \\dots, n \\): La función crece conforme las variables \\( x_i \\) decrecen, 
-                                    especialmente cuando \\( x_i \\) se acerca a cero. En este caso, pero es fundamental 
+                                    especialmente cuando \\( x_i \\) se acerca a cero. En este caso, es fundamental 
                                     analizar cómo interactúan todos los exponentes para determinar si el punto crítico es realmente un máximo local 
                                     en la optimización.
                                 </li>

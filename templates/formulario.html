@@ -16,7 +16,7 @@
     </div>
     <div class="col-md-3">
       <label for="inputTecnologia" class="form-label">Tecnología</label>
-      <input type="text" class="form-control" id="inputTecnologia" onkeypress="return soloNumeros(event);"
+      <input type="text" class="form-control" id="inputTecnologia" maxlength="10" onkeypress="return soloNumeros(event, 'inputTecnologia');"
         onpaste="return false" oncut="return false" oncopy="return false" />
     </div>
     <div class="col-12">

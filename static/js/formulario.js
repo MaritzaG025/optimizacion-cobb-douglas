@@ -112,7 +112,7 @@ function soloNumeros(evt, id) {
         }
 
         // Validación para Costo Total y precios (w): No permitir negativos y solo 2 decimales
-        if (id === "costoTotal" || id.startsWith("w_")) {
+        if (id == "costoTotal" || id.startsWith("w_") || id == 'inputTecnologia') {
             if (code === 45) { // Si es un signo negativo, lo bloqueamos
                 return false;
             }
@@ -135,7 +135,7 @@ function soloNumeros(evt, id) {
         }
 
         // Verifica que la longitud no exceda 10 caracteres para los precios
-        if ((id === "costoTotal" || id.startsWith("w_")) && input.value.length >= 10) {
+        if ((id == "costoTotal" || id.startsWith("w_") || id == 'inputTecnologia') && input.value.length >= 10) {
             return false;
         }
 
